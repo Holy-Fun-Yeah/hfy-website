@@ -1,0 +1,365 @@
+@import 'tailwindcss';
+
+/*
+ * Tailwind v4 Theme Extension
+ *
+ * Defines brand color and font tokens that reference CSS variables.
+ * Values are injected at runtime from app/config/brand.ts via useBrand().
+ *
+ * Single source of truth: app/config/brand.ts
+ */
+@theme {
+  /* Brand color tokens - values injected by useBrand composable */
+  --color-brand-base: var(--brand-base);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-contrast: var(--brand-contrast);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-neutral: var(--brand-neutral);
+  --color-brand-background: var(--brand-background);
+
+  /* Font family tokens - values injected by useBrand composable */
+  --font-logo: var(--brand-font-logo), system-ui, sans-serif;
+  --font-headers: var(--brand-font-headers), system-ui, sans-serif;
+  --font-primary: var(--brand-font-primary), system-ui, sans-serif;
+  --font-secondary: var(--brand-font-secondary), ui-monospace, monospace;
+}
+
+/*
+ * Base styles using brand tokens
+ */
+html {
+  font-family: var(--font-primary);
+  color: var(--color-brand-base);
+  background-color: var(--color-brand-background);
+}
+
+body {
+  @apply antialiased;
+}
+
+/*
+ * Typography defaults
+ */
+h1,
+h2,
+h3 {
+  font-family: var(--font-headers);
+}
+
+code,
+pre {
+  font-family: var(--font-secondary);
+}
+
+/*
+ * ============================================================================
+ * Prose Styles - Brand-Aware Markdown Rendering
+ * ============================================================================
+ */
+
+.prose {
+  color: var(--color-brand-base);
+  font-family: var(--font-primary);
+  line-height: 1.75;
+  max-width: 65ch;
+
+  & > * + * {
+    margin-top: 1.25em;
+  }
+
+  /* Headings */
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6 {
+    font-family: var(--font-headers);
+    color: var(--color-brand-base);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+  }
+
+  & h1 {
+    font-size: 2.25em;
+    margin-top: 0;
+  }
+
+  & h2 {
+    font-size: 1.5em;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-brand-base) 15%, transparent);
+    padding-bottom: 0.3em;
+  }
+
+  & h3 {
+    font-size: 1.25em;
+  }
+
+  & h4 {
+    font-size: 1em;
+  }
+
+  /* Paragraphs */
+  & p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+  }
+
+  /* Links */
+  & a {
+    color: var(--color-brand-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s;
+
+    &:hover {
+      color: color-mix(in srgb, var(--color-brand-accent) 80%, var(--color-brand-base));
+    }
+  }
+
+  /* Bold and emphasis */
+  & strong {
+    font-weight: 600;
+    color: var(--color-brand-base);
+  }
+
+  & em {
+    font-style: italic;
+  }
+
+  /* Lists */
+  & ul,
+  & ol {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-left: 1.5em;
+  }
+
+  & ul {
+    list-style-type: disc;
+  }
+
+  & ol {
+    list-style-type: decimal;
+  }
+
+  & li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+
+    &::marker {
+      color: color-mix(in srgb, var(--color-brand-base) 50%, transparent);
+    }
+  }
+
+  & ul ul,
+  & ol ol,
+  & ul ol,
+  & ol ul {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  /* Blockquotes */
+  & blockquote {
+    border-left: 4px solid var(--color-brand-accent);
+    padding-left: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    color: color-mix(in srgb, var(--color-brand-base) 80%, transparent);
+    font-style: italic;
+
+    & p:first-child {
+      margin-top: 0;
+    }
+
+    & p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  /* Code - inline */
+  & code {
+    font-family: var(--font-secondary);
+    font-size: 0.875em;
+    color: var(--color-brand-secondary);
+    background-color: color-mix(in srgb, var(--color-brand-base) 8%, transparent);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+  }
+
+  /* Code blocks */
+  & pre {
+    font-family: var(--font-secondary);
+    font-size: 0.875em;
+    line-height: 1.7;
+    background-color: var(--color-brand-base);
+    color: var(--color-brand-neutral);
+    padding: 1em 1.25em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+
+    & code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+  }
+
+  /* Horizontal rule */
+  & hr {
+    border: none;
+    border-top: 1px solid color-mix(in srgb, var(--color-brand-base) 20%, transparent);
+    margin: 2em 0;
+  }
+
+  /* Images */
+  & img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  /* Tables */
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    font-size: 0.875em;
+  }
+
+  & thead {
+    border-bottom: 2px solid color-mix(in srgb, var(--color-brand-base) 20%, transparent);
+
+    & th {
+      font-weight: 600;
+      text-align: left;
+      padding: 0.75em 1em;
+      color: var(--color-brand-base);
+    }
+  }
+
+  & tbody tr {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-brand-base) 10%, transparent);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  & td {
+    padding: 0.75em 1em;
+    vertical-align: top;
+  }
+
+  /* Task lists (GFM) */
+  & input[type='checkbox'] {
+    margin-right: 0.5em;
+    accent-color: var(--color-brand-accent);
+  }
+
+  /* Keyboard input */
+  & kbd {
+    font-family: var(--font-secondary);
+    font-size: 0.875em;
+    background-color: var(--color-brand-neutral);
+    border: 1px solid color-mix(in srgb, var(--color-brand-base) 20%, transparent);
+    border-radius: 0.25em;
+    padding: 0.125em 0.375em;
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-brand-base) 15%, transparent);
+  }
+
+  /* Mark/highlight */
+  & mark {
+    background-color: color-mix(in srgb, var(--color-brand-contrast) 30%, transparent);
+    color: var(--color-brand-base);
+    padding: 0.1em 0.2em;
+    border-radius: 0.125em;
+  }
+
+  /* Figures */
+  & figure {
+    margin: 1.5em 0;
+
+    & figcaption {
+      font-size: 0.875em;
+      color: color-mix(in srgb, var(--color-brand-base) 60%, transparent);
+      margin-top: 0.5em;
+      text-align: center;
+    }
+  }
+
+  /* First/last element margins */
+  & > *:first-child {
+    margin-top: 0;
+  }
+
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Prose Size Variants */
+.prose-sm {
+  font-size: 0.875rem;
+  line-height: 1.7;
+
+  & h1 {
+    font-size: 1.875em;
+  }
+
+  & h2 {
+    font-size: 1.25em;
+  }
+
+  & h3 {
+    font-size: 1.125em;
+  }
+
+  & pre {
+    font-size: 0.8125em;
+    padding: 0.75em 1em;
+  }
+}
+
+.prose-base {
+  font-size: 1rem;
+}
+
+.prose-lg {
+  font-size: 1.125rem;
+  line-height: 1.8;
+
+  & h1 {
+    font-size: 2.5em;
+  }
+
+  & h2 {
+    font-size: 1.75em;
+  }
+
+  & h3 {
+    font-size: 1.375em;
+  }
+
+  & pre {
+    padding: 1.25em 1.5em;
+  }
+}
+
+/* Prose Width Variants */
+.prose-full {
+  max-width: none;
+}
+
+.prose-narrow {
+  max-width: 45ch;
+}
