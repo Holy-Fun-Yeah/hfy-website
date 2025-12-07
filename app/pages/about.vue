@@ -16,17 +16,20 @@ const { brand } = useBrand()
 const values = [
   {
     title: 'Authenticity',
-    description: 'We honor both data and intuition, blending scientific understanding with sacred wisdom.',
+    description:
+      'We honor both data and intuition, blending scientific understanding with sacred wisdom.',
     icon: '✦',
   },
   {
     title: 'Connection',
-    description: 'Community over prediction. We create spaces for meaningful human connection and growth.',
+    description:
+      'Community over prediction. We create spaces for meaningful human connection and growth.',
     icon: '◇',
   },
   {
     title: 'Expansion',
-    description: 'Learning through movement, art, and reflection. Every experience opens new pathways.',
+    description:
+      'Learning through movement, art, and reflection. Every experience opens new pathways.',
     icon: '❋',
   },
 ]
@@ -34,15 +37,18 @@ const values = [
 const offerings = [
   {
     title: '1-to-1 Consultations',
-    description: 'Personalized sessions diving deep into your birth chart, transits, and life questions.',
+    description:
+      'Personalized sessions diving deep into your birth chart, transits, and life questions.',
   },
   {
     title: 'Group Workshops',
-    description: 'Themed gatherings aligned with lunar cycles, planetary transits, and seasonal shifts.',
+    description:
+      'Themed gatherings aligned with lunar cycles, planetary transits, and seasonal shifts.',
   },
   {
     title: 'Digital Experiences',
-    description: 'Online courses, meditations, and resources to support your ongoing cosmic journey.',
+    description:
+      'Online courses, meditations, and resources to support your ongoing cosmic journey.',
   },
 ]
 </script>
@@ -177,9 +183,7 @@ const offerings = [
             "This website is a living, breathing reflection of Source Overflow intelligence —
             designed to express Rainbow Diamond Light through every interaction."
           </p>
-          <footer class="text-brand-base/50 mt-6">
-            — AstraNova KaLeKa
-          </footer>
+          <footer class="text-brand-base/50 mt-6">— AstraNova KaLeKa</footer>
         </blockquote>
       </div>
     </PageSection>

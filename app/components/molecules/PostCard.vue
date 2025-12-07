@@ -79,11 +79,11 @@ withDefaults(defineProps<Props>(), {
       <div class="space-y-2">
         <p
           v-if="category"
-          class="text-brand-secondary text-xs font-medium uppercase tracking-wide"
+          class="text-brand-secondary text-xs font-medium tracking-wide uppercase"
         >
           {{ category }}
         </p>
-        <h3 class="font-headers text-brand-base font-semibold leading-snug">
+        <h3 class="font-headers text-brand-base leading-snug font-semibold">
           {{ title }}
         </h3>
         <p

@@ -73,7 +73,7 @@ withDefaults(defineProps<Props>(), {
       <div class="space-y-2">
         <p
           v-if="date"
-          class="text-brand-accent text-xs font-medium uppercase tracking-wide"
+          class="text-brand-accent text-xs font-medium tracking-wide uppercase"
         >
           {{ date }}
         </p>

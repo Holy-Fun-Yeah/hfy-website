@@ -7,7 +7,8 @@
  */
 useSeoMeta({
   title: 'Home',
-  description: 'Awaken your cosmic power with transformative experiences guided by modern astrology.',
+  description:
+    'Awaken your cosmic power with transformative experiences guided by modern astrology.',
 })
 
 const { brand } = useBrand()
@@ -110,8 +111,8 @@ const features = [
         <div class="flex flex-col items-center gap-6 md:flex-row md:items-start md:text-left">
           <div class="flex-1 space-y-4">
             <p class="text-brand-base/60">
-              Discover curated sessions, workshops, and celestial events designed to help you realign
-              with your inner rhythm.
+              Discover curated sessions, workshops, and celestial events designed to help you
+              realign with your inner rhythm.
             </p>
             <div class="flex flex-wrap justify-center gap-3 md:justify-start">
               <BaseButton to="/book">Book your session</BaseButton>
@@ -278,16 +279,12 @@ const features = [
           <input
             type="email"
             placeholder="Enter your email"
-            class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 outline-none transition focus:ring-2"
+            class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
             required
           />
-          <BaseButton type="submit">
-            Subscribe
-          </BaseButton>
+          <BaseButton type="submit"> Subscribe </BaseButton>
         </form>
-        <p class="text-brand-base/50 text-xs">
-          We respect your privacy. Unsubscribe anytime.
-        </p>
+        <p class="text-brand-base/50 text-xs">We respect your privacy. Unsubscribe anytime.</p>
 
         <!-- Or book CTA -->
         <div class="flex items-center gap-4">

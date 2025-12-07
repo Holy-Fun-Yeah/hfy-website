@@ -14,7 +14,9 @@ const navLinks = [
 </script>
 
 <template>
-  <header class="bg-brand-background/80 border-brand-base/10 sticky top-0 z-50 border-b backdrop-blur">
+  <header
+    class="bg-brand-background/80 border-brand-base/10 sticky top-0 z-50 border-b backdrop-blur"
+  >
     <nav class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
       <!-- Logo -->
       <NuxtLink

@@ -105,10 +105,10 @@ Event management and display.
 
 ### Frontend Pages
 
-- [ ] `app/pages/events/index.vue` - Events listing with date grouping
-- [ ] `app/pages/events/[id].vue` - Single event detail page
-- [ ] Create `EventCard` molecule component
-- [ ] Upcoming vs past events filtering
+- [x] `app/pages/events/index.vue` - Events listing with date grouping
+- [x] `app/pages/events/[id].vue` - Single event detail page
+- [x] Create `EventCard` molecule component
+- [x] Upcoming vs past events filtering
 
 ---
 
