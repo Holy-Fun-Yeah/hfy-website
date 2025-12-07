@@ -4,6 +4,7 @@
  *
  * All variants use brand color tokens from app/config/brand.ts.
  * Adapts automatically to light/dark mode.
+ * Supports rendering as button, anchor, or NuxtLink.
  *
  * @example
  * ```vue
@@ -12,6 +13,8 @@
  * <BaseButton variant="outline">Outline</BaseButton>
  * <BaseButton variant="ghost">Ghost</BaseButton>
  * <BaseButton variant="contrast">CTA</BaseButton>
+ * <BaseButton to="/about">Internal Link</BaseButton>
+ * <BaseButton href="https://example.com">External Link</BaseButton>
  * ```
  */
 
@@ -23,6 +26,8 @@ interface Props {
   size?: ButtonSize
   disabled?: boolean
   loading?: boolean
+  to?: string // NuxtLink internal route
+  href?: string // External link
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,6 +35,15 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   disabled: false,
   loading: false,
+  to: undefined,
+  href: undefined,
+})
+
+// Determine which element to render
+const componentTag = computed(() => {
+  if (props.to) return resolveComponent('NuxtLink')
+  if (props.href) return 'a'
+  return 'button'
 })
 
 /**
@@ -63,9 +77,14 @@ const buttonClasses = computed(() => [
 </script>
 
 <template>
-  <button
+  <component
+    :is="componentTag"
     :class="buttonClasses"
-    :disabled="disabled || loading"
+    :disabled="componentTag === 'button' ? disabled || loading : undefined"
+    :to="to"
+    :href="href"
+    :target="href ? '_blank' : undefined"
+    :rel="href ? 'noopener noreferrer' : undefined"
   >
     <svg
       v-if="loading"
@@ -88,5 +107,5 @@ const buttonClasses = computed(() => [
       />
     </svg>
     <slot />
-  </button>
+  </component>
 </template>

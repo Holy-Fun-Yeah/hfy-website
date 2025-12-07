@@ -21,8 +21,13 @@ const envSchema = z.object({
   // Required
   APP_ENV: z.enum(['development', 'staging', 'production']),
 
-  // Optional (services degrade gracefully)
+  // Database (Drizzle + Postgres via Supabase)
   DATABASE_URL: z.string().optional(),
+
+  // Supabase (Auth + Realtime)
+  SUPABASE_URL: z.string().url().optional(),
+  SUPABASE_ANON_KEY: z.string().optional(),
+  SUPABASE_SERVICE_KEY: z.string().optional(), // Server-side only, admin access
 })
 
 // =============================================================================
@@ -33,10 +38,24 @@ const result = envSchema.safeParse(process.env)
 
 if (!result.success) {
   const errors = result.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`)
-  throw new Error(`Environment validation failed:\n${errors.join('\n')}`)
+  // In development, warn but provide defaults. In production, fail hard.
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(`Environment validation failed:\n${errors.join('\n')}`)
+  } else {
+    console.warn(`[env] Environment validation warnings:\n${errors.join('\n')}`)
+  }
 }
 
-export const env = result.data
+// Provide defaults for development
+export const env = result.success
+  ? result.data
+  : {
+      APP_ENV: 'development' as const,
+      DATABASE_URL: undefined,
+      SUPABASE_URL: undefined,
+      SUPABASE_ANON_KEY: undefined,
+      SUPABASE_SERVICE_KEY: undefined,
+    }
 
 // =============================================================================
 // Helpers

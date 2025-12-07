@@ -12,6 +12,46 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxt/devtools'],
 
+  // SEO defaults
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+      title: 'Holy Fuck Yeah! — Awaken Your Cosmic Power',
+      titleTemplate: '%s | Holy Fuck Yeah!',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          name: 'description',
+          content:
+            'Transformative experiences guided by modern astrology and ancient intuition. Book sessions, attend celestial events, and awaken your cosmic power.',
+        },
+        { name: 'theme-color', content: '#d81b60' },
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Holy Fuck Yeah!' },
+        {
+          property: 'og:title',
+          content: 'Holy Fuck Yeah! — Awaken Your Cosmic Power',
+        },
+        {
+          property: 'og:description',
+          content:
+            'Transformative experiences guided by modern astrology and ancient intuition.',
+        },
+        // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Holy Fuck Yeah!' },
+        {
+          name: 'twitter:description',
+          content:
+            'Transformative experiences guided by modern astrology and ancient intuition.',
+        },
+      ],
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    },
+  },
+
   // Auto-import components without directory prefix
   components: [{ path: '~/components', pathPrefix: false }],
 
@@ -32,7 +72,7 @@ export default defineNuxtConfig({
     plugins: [
       Unfonts({
         google: {
-          families: ['Inter:wght@400;500;600;700', 'JetBrains Mono:wght@400;500'],
+          families: ['Playfair Display:wght@400;500;600;700', 'Poppins:wght@300;400;500;600;700'],
         },
       }),
     ],
@@ -40,8 +80,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL || '',
+    supabaseUrl: process.env.SUPABASE_URL || '',
+    supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
+    supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY || '',
     public: {
-      appName: process.env.NUXT_PUBLIC_APP_NAME || 'Nuxt Site',
+      appName: process.env.NUXT_PUBLIC_APP_NAME || 'Holy Fuck Yeah!',
+      supabaseUrl: process.env.SUPABASE_URL || '',
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
     },
   },
 

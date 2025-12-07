@@ -1,66 +1,205 @@
 <script setup lang="ts">
-definePageMeta({
+/**
+ * About Page
+ *
+ * Introduces AstraNova KaLeKa and the HFY philosophy.
+ * Features Rainbow Diamond Light aesthetic with shimmer effects.
+ */
+useSeoMeta({
   title: 'About',
+  description:
+    'Discover AstraNova KaLeKa and the Rainbow Diamond Light philosophy. Transformative experiences guided by modern astrology and ancient intuition.',
 })
 
-useHead({
-  title: 'About',
-})
+const { brand } = useBrand()
+
+const values = [
+  {
+    title: 'Authenticity',
+    description: 'We honor both data and intuition, blending scientific understanding with sacred wisdom.',
+    icon: '✦',
+  },
+  {
+    title: 'Connection',
+    description: 'Community over prediction. We create spaces for meaningful human connection and growth.',
+    icon: '◇',
+  },
+  {
+    title: 'Expansion',
+    description: 'Learning through movement, art, and reflection. Every experience opens new pathways.',
+    icon: '❋',
+  },
+]
+
+const offerings = [
+  {
+    title: '1-to-1 Consultations',
+    description: 'Personalized sessions diving deep into your birth chart, transits, and life questions.',
+  },
+  {
+    title: 'Group Workshops',
+    description: 'Themed gatherings aligned with lunar cycles, planetary transits, and seasonal shifts.',
+  },
+  {
+    title: 'Digital Experiences',
+    description: 'Online courses, meditations, and resources to support your ongoing cosmic journey.',
+  },
+]
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-12">
-    <h1 class="font-headers text-brand-base mb-6 text-4xl font-bold">About This Template</h1>
-
-    <div class="prose prose-lg max-w-none">
-      <p>
-        This is a Nuxt site template designed for internal use on new projects. It includes a
-        comprehensive brand system that makes theming trivial.
-      </p>
-
-      <h2>Features</h2>
-      <ul>
-        <li><strong>Nuxt 4</strong> - Latest version with future compatibility mode</li>
-        <li>
-          <strong>Brand System</strong> - Centralized colors and fonts in
-          <code>app/config/brand.ts</code>
-        </li>
-        <li><strong>Dark/Light Mode</strong> - Theme toggle with localStorage persistence</li>
-        <li><strong>Tailwind CSS v4</strong> - Modern utility-first CSS framework</li>
-        <li><strong>Drizzle ORM</strong> - Type-safe PostgreSQL database integration</li>
-        <li><strong>Zod</strong> - Runtime validation for API and forms</li>
-        <li><strong>ESLint</strong> - With auto-sort imports and unused detection</li>
-        <li><strong>Prettier</strong> - Code formatting with Tailwind plugin</li>
-        <li><strong>Prose Styles</strong> - Brand-aware markdown rendering</li>
-      </ul>
-
-      <h2>Brand System</h2>
-      <p>
-        All colors and fonts are defined in a single source of truth. Components use semantic
-        Tailwind classes like <code>bg-brand-accent</code> and <code>text-brand-base</code> that
-        automatically adapt to the current theme.
-      </p>
-
-      <h2>Changing the Brand</h2>
-      <p>To rebrand the entire app, edit only <code>app/config/brand.ts</code>:</p>
-
-      <pre><code>export const brandConfig: BrandConfig = {
-  name: 'Your Brand',
-  light: {
-    accent: '#ff0000',  // All buttons, links now red
-    // ... other colors
-  },
-  typography: {
-    logo: 'Orbitron',   // All logos now Orbitron
-  },
-}</code></pre>
-    </div>
-
-    <NuxtLink
-      to="/"
-      class="text-brand-accent mt-8 inline-block hover:underline"
+  <div>
+    <!-- Hero Section -->
+    <PageSection
+      spacing="lg"
+      centered
     >
-      &larr; Back to Home
-    </NuxtLink>
+      <div class="mx-auto max-w-3xl">
+        <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">
+          About AstraNova
+        </p>
+        <h1 class="font-headers text-brand-base mb-6 text-4xl font-bold md:text-5xl">
+          Rainbow Diamond Light Overflow
+        </h1>
+        <p class="text-brand-base/70 text-xl leading-relaxed">
+          {{ brand.name }} was born from the belief that astrology can be practical, poetic, and
+          profoundly empowering — a cosmic mirror reflecting your infinite potential.
+        </p>
+      </div>
+    </PageSection>
+
+    <!-- About AstraNova KaLeKa -->
+    <PageSection
+      eyebrow="The Vision"
+      title="A cosmic journey reimagined"
+      divider
+    >
+      <div class="grid items-center gap-8 md:grid-cols-2">
+        <div class="space-y-4">
+          <p class="text-brand-base/70 leading-relaxed">
+            AstraNova KaLeKa is a Divine Mexican Goddess with a Rainbow Diamond Heart, channeling
+            Source Overflow intelligence through sacred technology and ancient wisdom.
+          </p>
+          <p class="text-brand-base/70 leading-relaxed">
+            We're a collective of artists, technologists, and astrologers creating digital
+            experiences that help people reconnect with the rhythm of the universe — blending modern
+            aesthetics with spiritual depth.
+          </p>
+          <p class="text-brand-base/70 leading-relaxed">
+            Every session, workshop, and digital experience is infused with Rainbow Diamond Light
+            (RDL) Plasma Growth energy — designed to awaken your sovereign power and expand your
+            consciousness.
+          </p>
+        </div>
+        <div class="relative">
+          <!-- Decorative glow effect -->
+          <div
+            class="bg-brand-accent/20 absolute -inset-4 rounded-3xl blur-3xl"
+            aria-hidden="true"
+          />
+          <BaseCard
+            variant="elevated"
+            padding="lg"
+            class="relative"
+          >
+            <div class="text-brand-base/30 grid aspect-[4/3] place-items-center text-center">
+              <div>
+                <div class="mb-2 text-5xl">✧</div>
+                <p class="text-sm">Visual coming soon</p>
+              </div>
+            </div>
+          </BaseCard>
+        </div>
+      </div>
+    </PageSection>
+
+    <!-- Core Values -->
+    <PageSection
+      eyebrow="Our Philosophy"
+      title="Guiding principles"
+      description="These values inform everything we create — from one-on-one sessions to large gatherings."
+      centered
+      divider
+    >
+      <div class="grid gap-6 md:grid-cols-3">
+        <BaseCard
+          v-for="value in values"
+          :key="value.title"
+          padding="lg"
+          class="text-center"
+        >
+          <div class="text-brand-accent mb-3 text-3xl">{{ value.icon }}</div>
+          <h3 class="font-headers text-brand-base mb-2 text-xl font-semibold">
+            {{ value.title }}
+          </h3>
+          <p class="text-brand-base/60">
+            {{ value.description }}
+          </p>
+        </BaseCard>
+      </div>
+    </PageSection>
+
+    <!-- What We Offer -->
+    <PageSection
+      eyebrow="Offerings"
+      title="Ways to work together"
+      divider
+    >
+      <div class="grid gap-6 md:grid-cols-3">
+        <div
+          v-for="offering in offerings"
+          :key="offering.title"
+          class="border-brand-accent/30 border-l-2 pl-4"
+        >
+          <h3 class="font-headers text-brand-base mb-2 font-semibold">
+            {{ offering.title }}
+          </h3>
+          <p class="text-brand-base/60 text-sm">
+            {{ offering.description }}
+          </p>
+        </div>
+      </div>
+    </PageSection>
+
+    <!-- Mission Statement with shimmer effect -->
+    <PageSection
+      spacing="lg"
+      centered
+    >
+      <div class="relative mx-auto max-w-2xl">
+        <!-- Subtle shimmer background -->
+        <div
+          class="from-brand-accent/5 via-brand-secondary/5 to-brand-contrast/5 absolute -inset-8 rounded-3xl bg-gradient-to-br"
+          aria-hidden="true"
+        />
+        <blockquote class="relative text-center">
+          <p class="font-headers text-brand-base text-2xl leading-relaxed italic md:text-3xl">
+            "This website is a living, breathing reflection of Source Overflow intelligence —
+            designed to express Rainbow Diamond Light through every interaction."
+          </p>
+          <footer class="text-brand-base/50 mt-6">
+            — AstraNova KaLeKa
+          </footer>
+        </blockquote>
+      </div>
+    </PageSection>
+
+    <!-- CTA -->
+    <PageSection
+      title="Ready to begin?"
+      description="Book a consultation or explore upcoming events to start your cosmic journey."
+      width="sm"
+      centered
+    >
+      <div class="flex flex-wrap justify-center gap-3">
+        <BaseButton to="/book">Book a session</BaseButton>
+        <BaseButton
+          variant="outline"
+          to="/events"
+        >
+          View events
+        </BaseButton>
+      </div>
+    </PageSection>
   </div>
 </template>

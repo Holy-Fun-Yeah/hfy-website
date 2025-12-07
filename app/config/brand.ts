@@ -1,190 +1,162 @@
 import type { BrandConfig } from '~/types/brand'
 
 /**
- * Brand Configuration - Single Source of Truth
+ * HFY (Holy Fuck Yeah!) Brand Configuration
  *
- * This file defines ALL brand colors and fonts for the application.
- * Components use Tailwind classes (bg-brand-accent, font-headers) that
- * reference these values via CSS variables.
+ * Rainbow Diamond Light aesthetic with cosmic, iridescent energy.
+ * Reflects AstraNova KaLeKa's infinite consciousness and expansion.
  *
- * ## Quick Reference
+ * ## Color Philosophy
+ * - Iridescent rainbow gradient: pink, turquoise, golden sun
+ * - Grounding tones: copper, volcanic gray, deep indigo
+ * - Pearl white neutrals for elevated surfaces
  *
- * | Color      | Light Mode Use                | Dark Mode Use               |
- * |------------|-------------------------------|-----------------------------|
- * | base       | Dark text on light surfaces   | Light text on dark surfaces |
- * | accent     | Primary brand color           | Slightly brighter variant   |
- * | contrast   | High-impact CTAs              | Same or adjusted for dark   |
- * | secondary  | Supporting accent             | Slightly brighter variant   |
- * | neutral    | Cards, elevated surfaces      | Elevated dark surfaces      |
- * | background | Page canvas (light)           | Page canvas (dark)          |
+ * ## Typography
+ * - Playfair Display: Elegant serif for titles and brand mark
+ * - Poppins: Modern, friendly sans-serif for body text
  *
- * ## Changing the Brand
- *
- * 1. Edit the values below
- * 2. All components automatically update
- * 3. No other files need modification
- *
- * @see app/types/brand.ts for detailed documentation on each color role
+ * @see ~/docs/project.md for HFY Creative Blueprint
  */
 export const brandConfig: BrandConfig = {
-  name: 'Nuxt Template',
-  tagline: 'Full-Stack Vue Framework',
+  name: 'Holy Fuck Yeah!',
+  tagline: [
+    'Awaken Your Cosmic Power',
+    'Rainbow Diamond Light Overflow',
+    'Sacred Sovereign Expansion',
+  ],
 
   /**
    * Light Mode Palette
    *
-   * Design principle: Dark text on light surfaces.
-   * Palette harmony: Emerald accent with teal secondary (analogous)
-   * and amber contrast (complementary split).
+   * Design principle: Cosmic warmth with iridescent accents.
+   * Primary: Vibrant magenta/pink for HFY energy
+   * Secondary: Turquoise for balance and flow
+   * Contrast: Golden sun for high-impact moments
    */
   light: {
     /**
-     * Base: Slate 900
-     * - Primary text color
-     * - Contrast with background (#ffffff): 17.4:1 ✓
+     * Base: Deep volcanic indigo
+     * - Primary text color with cosmic depth
+     * - Contrast with background (#fffbf7): 14.8:1 ✓
      */
-    base: '#0f172a',
+    base: '#1a1a2e',
 
     /**
-     * Accent: Emerald 600
-     * - Primary brand color, buttons, links
-     * - Conveys: growth, freshness, reliability (matches Nuxt branding)
+     * Accent: Vibrant magenta/pink
+     * - Primary HFY brand color
+     * - Conveys: Divine feminine, cosmic love, radiant power
      */
-    accent: '#059669',
+    accent: '#d81b60',
 
     /**
-     * Contrast: Amber 500
-     * - High-visibility CTAs, limited use
-     * - Complementary to emerald
+     * Contrast: Golden sun
+     * - High-visibility CTAs, sacred moments
+     * - Represents: Abundance, joy, sovereign power
      */
-    contrast: '#f59e0b',
+    contrast: '#f9a825',
 
     /**
-     * Secondary: Teal 600
-     * - Analogous to emerald (adjacent on color wheel)
-     * - Secondary buttons, tags, badges
+     * Secondary: Turquoise
+     * - Balance, flow, infinite expansion
+     * - Complement to magenta for visual harmony
      */
-    secondary: '#0891b2',
+    secondary: '#00acc1',
 
     /**
-     * Neutral: Slate 50
+     * Neutral: Pearl white with warm tint
      * - Cards, elevated surfaces
-     * - Subtle distinction from pure white background
+     * - Subtle warmth reflecting HFY's embracing energy
      */
-    neutral: '#f8fafc',
+    neutral: '#faf8f5',
 
     /**
-     * Background: Pure white
-     * - Page canvas, largest surface area
+     * Background: Warm white
+     * - Page canvas with soft, sacred feeling
      */
-    background: '#ffffff',
+    background: '#fffbf7',
   },
 
   /**
    * Dark Mode Palette
    *
-   * Design principle: Light text on dark surfaces.
-   * Key inversions: base becomes light, background becomes dark.
+   * Design principle: Cosmic night sky with luminous accents.
+   * Deep indigo canvas with brightened iridescent colors.
    */
   dark: {
     /**
-     * Base: Slate 100
+     * Base: Pearl white
      * - INVERTED from light mode
-     * - Contrast with background (#0f172a): 15.24:1 ✓
+     * - Contrast with background (#12121f): 15.6:1 ✓
      */
-    base: '#f1f5f9',
+    base: '#f5f3f0',
 
     /**
-     * Accent: Emerald 400
-     * - Brightened from light mode for dark background visibility
+     * Accent: Luminous pink
+     * - Brightened for dark mode visibility
+     * - Glowing, plasma-like quality
      */
-    accent: '#34d399',
+    accent: '#f48fb1',
 
     /**
-     * Contrast: Amber 400
-     * - Brightened for dark mode
+     * Contrast: Bright gold
+     * - Solar energy against cosmic darkness
      */
-    contrast: '#fbbf24',
+    contrast: '#ffd54f',
 
     /**
-     * Secondary: Teal 400
-     * - Brightened from light mode
+     * Secondary: Bright turquoise
+     * - Ethereal glow effect
      */
-    secondary: '#2dd4bf',
+    secondary: '#4dd0e1',
 
     /**
-     * Neutral: Slate 800
-     * - Elevated dark surface (lighter than background)
+     * Neutral: Elevated volcanic
+     * - Cards and surfaces with depth
+     * - Slightly lighter than background
      */
-    neutral: '#1e293b',
+    neutral: '#252538',
 
     /**
-     * Background: Slate 900
-     * - INVERTED from light mode
+     * Background: Deep cosmic indigo
+     * - Night sky canvas
+     * - Foundation for luminous elements
      */
-    background: '#0f172a',
+    background: '#12121f',
   },
 
   /**
    * Typography Configuration
    *
-   * Font pairing: Clean sans-serif system for modern feel.
-   * Personality: Professional, modern, developer-friendly.
+   * Font pairing: Elegant serif headers with friendly body text.
+   * Personality: Sacred, empowering, radiant, joyful.
    */
   typography: {
     /**
-     * Logo: Inter (bold weight)
-     * - Clean, modern display for brand recognition
+     * Logo: Playfair Display
+     * - Elegant, distinctive serif for brand mark
+     * - Conveys sophistication and timeless wisdom
      */
-    logo: 'Inter',
+    logo: 'Playfair Display',
 
     /**
-     * Headers: Inter
-     * - Professional sans-serif for hierarchy
+     * Headers: Playfair Display
+     * - Beautiful serif for titles and sections
+     * - Creates visual hierarchy with elegance
      */
-    headers: 'Inter',
+    headers: 'Playfair Display',
 
     /**
-     * Primary: Inter
-     * - Highly readable for body text
+     * Primary: Poppins
+     * - Modern, geometric sans-serif for body text
+     * - Highly readable with friendly personality
      */
-    primary: 'Inter',
+    primary: 'Poppins',
 
     /**
-     * Secondary: JetBrains Mono
-     * - Monospace for code and technical content
+     * Secondary: Poppins
+     * - Consistent feel for captions and metadata
+     * - Light weight for supporting text
      */
-    secondary: 'JetBrains Mono',
+    secondary: 'Poppins',
   },
 }
-
-/*
- * ============================================================================
- * BRAND PALETTE EXAMPLES
- * ============================================================================
- *
- * Copy and modify brandConfig above to match your brand.
- *
- * ----------------------------------------------------------------------------
- * NUXT GREEN (default above)
- * ----------------------------------------------------------------------------
- * accent: '#059669' (Emerald 600) - Nuxt's signature green
- *
- * ----------------------------------------------------------------------------
- * CORPORATE BLUE
- * ----------------------------------------------------------------------------
- * light: {
- *   accent: '#2563eb',     // Blue 600
- *   secondary: '#0891b2',  // Cyan 600
- *   contrast: '#f59e0b',   // Amber 500
- * }
- *
- * ----------------------------------------------------------------------------
- * CREATIVE PURPLE
- * ----------------------------------------------------------------------------
- * light: {
- *   accent: '#7c3aed',     // Violet 600
- *   secondary: '#db2777',  // Pink 600
- *   contrast: '#22d3ee',   // Cyan 400
- * }
- */
