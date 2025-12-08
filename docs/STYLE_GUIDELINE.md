@@ -3,7 +3,7 @@
 Visual design system for the Holy Fuck Yeah! brand.
 
 **Aesthetic:** Holographic Mystic Maximalism
-**Direction:** Warm Abundant Base + Cosmic Accents
+**Direction:** Warm Abundant Base + Pride Rainbow Cosmic Accents
 
 ---
 
@@ -11,27 +11,30 @@ Visual design system for the Holy Fuck Yeah! brand.
 
 ### Core Aesthetic Principles
 
-| Principle     | Expression                                                   |
-| ------------- | ------------------------------------------------------------ |
-| **Warmth**    | Cream/pearl backgrounds, golden accents, soft shadows        |
-| **Abundance** | Layered surfaces, rich gradients, generous whitespace        |
-| **Cosmic**    | Iridescent accents, aurora effects, prismatic highlights     |
-| **Sacred**    | Intentional hierarchy, breathing animations, reverent pacing |
+| Principle     | Expression                                                        |
+| ------------- | ----------------------------------------------------------------- |
+| **Warmth**    | Cream/pearl backgrounds, golden accents, soft shadows             |
+| **Abundance** | Layered surfaces, rich gradients, generous whitespace             |
+| **Pride**     | LGBTQ rainbow spectrum (red→orange→yellow→green→blue→purple)      |
+| **Cosmic**    | Ethereal energy threads, sacred geometry, aurora-like decorations |
+| **Sacred**    | Intentional hierarchy, breathing animations, reverent pacing      |
 
 ### Visual Hierarchy (60-30-10 Rule)
 
 ```
 60% — Warm neutral base (background, surfaces)
 30% — Structural elements (text, borders, cards)
-10% — Prismatic accents (CTAs, highlights, decorative)
+10% — Pride rainbow accents (CTAs, headers, decorative elements)
 ```
 
 ### Mood Board Keywords
 
+- Pride Rainbow / LGBTQ Spectrum
 - Holographic / Iridescent / Prismatic
 - Goddess Core / Divine Feminine
 - Crystal / Gemstone / Aurora
-- Mexican Folk Art (grounding accent)
+- String Theory / Energy Threads
+- Sacred Geometry / Cosmic Patterns
 - Mystic Maximalism (not minimalist, but intentional)
 
 ---
@@ -88,7 +91,7 @@ interface BrandPalette {
 }
 ```
 
-#### Proposed Values
+#### Current Values (Pride Rainbow Spectrum)
 
 **Light Mode:**
 
@@ -97,11 +100,11 @@ light: {
   // ... existing ...
   muted: '#6b6b7a',           // Volcanic gray, softer
   gradient: {
-    start: '#f9a8d4',         // Pink 300
-    middle: '#c4b5fd',        // Violet 300
-    end: '#67e8f9',           // Cyan 300
+    start: '#e11d48',         // Rose 600 - vibrant pink/red
+    middle: '#7c3aed',        // Violet 600 - rich purple
+    end: '#0ea5e9',           // Sky 500 - bright blue
   },
-  glow: 'rgba(216, 27, 96, 0.25)',  // Accent with alpha
+  glow: 'rgba(216, 27, 96, 0.2)',  // Accent with alpha
 }
 ```
 
@@ -112,11 +115,27 @@ dark: {
   // ... existing ...
   muted: '#a1a1aa',           // Zinc 400
   gradient: {
-    start: '#f472b6',         // Pink 400
-    middle: '#a78bfa',        // Violet 400
-    end: '#22d3ee',           // Cyan 400
+    start: '#fb7185',         // Rose 400 - bright pink
+    middle: '#a78bfa',        // Violet 400 - bright purple
+    end: '#38bdf8',           // Sky 400 - bright blue
   },
-  glow: 'rgba(244, 143, 177, 0.3)', // Accent with alpha
+  glow: 'rgba(244, 143, 177, 0.25)', // Accent with alpha
+}
+```
+
+### Pride Rainbow Color Palette
+
+For decorative elements (energy threads, particles, orbs), use the full LGBTQ pride spectrum:
+
+```typescript
+// Pride flag colors for animations and decorations
+const prideColors = {
+  red: '#ef4444',
+  orange: '#f97316',
+  yellow: '#eab308',
+  green: '#22c55e',
+  blue: '#3b82f6',
+  purple: '#8b5cf6',
 }
 ```
 
@@ -390,14 +409,124 @@ The `<AmbientBackground>` component creates an immersive atmosphere:
 
 ```vue
 <AmbientBackground />
-<!-- Default: 3 orbs, medium -->
-<AmbientBackground :orbs="5" />
-<!-- More orbs -->
-<AmbientBackground intensity="high" />
-<!-- Larger, more visible -->
-<AmbientBackground :particles="true" />
-<!-- With shimmer particles -->
+<!-- Default: 4 orbs, medium -->
+<AmbientBackground :orbs="5" intensity="medium" :particles="true" :stars="true" />
+<!-- Full setup with pride rainbow orbs, particles, and golden stars -->
 ```
+
+---
+
+## 6.5. Ethereal Decorations
+
+Global decorative elements that create the "Holographic Mystic Maximalism" atmosphere. These are placed in the default layout and span the entire page.
+
+### EnergyThreads (String Theory Style)
+
+Smooth, flowing light beams along page margins. Inspired by aurora borealis and string theory visualizations.
+
+```vue
+<!-- In default layout -->
+<EnergyThreads side="both" :threads="3" intensity="medium" :animated="true" />
+```
+
+| Prop        | Type                         | Default    | Description                  |
+| ----------- | ---------------------------- | ---------- | ---------------------------- |
+| `side`      | `'left' \| 'right' \| 'both'` | `'both'`   | Which margins to decorate    |
+| `threads`   | `number`                     | `3`        | Number of flowing lines      |
+| `intensity` | `'low' \| 'medium' \| 'high'` | `'medium'` | Visibility/opacity           |
+| `animated`  | `boolean`                    | `true`     | Enable flowing animation     |
+
+**Features:**
+- Ultra-smooth Catmull-Rom bezier curves (40 segments)
+- Pride rainbow gradient with SVG animate color cycling
+- Subtle glow with layered blur filters
+- Gentle undulating movement (12-20s animation cycles)
+
+### SacredGeometry
+
+Rotating mystical patterns positioned at page corners.
+
+```vue
+<SacredGeometry
+  pattern="flowerOfLife"
+  position="top-left"
+  :size="600"
+  :opacity="0.07"
+  :rotate="true"
+  color="gradient"
+/>
+```
+
+| Prop       | Type                                           | Default         | Description              |
+| ---------- | ---------------------------------------------- | --------------- | ------------------------ |
+| `pattern`  | `'flowerOfLife' \| 'metatron' \| 'spiral'`     | `'flowerOfLife'` | Sacred geometry pattern  |
+| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right' \| 'center'` | `'center'` | Screen position |
+| `size`     | `number`                                       | `400`           | Size in pixels           |
+| `opacity`  | `number`                                       | `0.1`           | Visibility (0-1)         |
+| `rotate`   | `boolean`                                      | `false`         | Enable slow rotation     |
+| `color`    | `'gradient' \| 'gold' \| 'brand'`              | `'gradient'`    | Color scheme             |
+
+### RadialBurst
+
+Sunburst rays emanating from a central point, typically behind hero content.
+
+```vue
+<RadialBurst :rays="28" color="rainbow" :intensity="0.18" :pulse="true" :size="160" />
+```
+
+| Prop        | Type                           | Default     | Description             |
+| ----------- | ------------------------------ | ----------- | ----------------------- |
+| `rays`      | `number`                       | `16`        | Number of light rays    |
+| `color`     | `'rainbow' \| 'gold' \| 'brand'` | `'rainbow'` | Color scheme            |
+| `intensity` | `number`                       | `0.15`      | Opacity (0-1)           |
+| `pulse`     | `boolean`                      | `true`      | Enable pulsing glow     |
+| `size`      | `number`                       | `120`       | Size as % of container  |
+
+### ScrollGradientOverlay
+
+Subtle gradient overlay that responds to scroll position.
+
+```vue
+<ScrollGradientOverlay :intensity="0.1" position="edges" />
+```
+
+### Default Layout Setup
+
+The standard ethereal decoration setup in `layouts/default.vue`:
+
+```vue
+<template>
+  <div class="bg-brand-background relative flex min-h-screen flex-col">
+    <!-- Background layer -->
+    <AmbientBackground :orbs="5" intensity="medium" :particles="true" :stars="true" />
+
+    <!-- Scroll effects -->
+    <ScrollGradientOverlay :intensity="0.1" position="edges" />
+
+    <!-- Margin decorations (z-index: 1) -->
+    <EnergyThreads side="both" :threads="3" intensity="medium" :animated="true" />
+
+    <!-- Corner sacred geometry -->
+    <SacredGeometry pattern="flowerOfLife" position="top-left" :size="600" :opacity="0.07" :rotate="true" color="gradient" />
+    <SacredGeometry pattern="metatron" position="bottom-right" :size="550" :opacity="0.06" :rotate="true" color="gradient" />
+    <SacredGeometry pattern="spiral" position="top-right" :size="400" :opacity="0.05" :rotate="true" color="gold" />
+
+    <!-- Content (z-index: 10) -->
+    <AppHeader />
+    <main class="relative z-10 flex-1">
+      <slot />
+    </main>
+    <AppFooter />
+  </div>
+</template>
+```
+
+### Performance Considerations
+
+- **EnergyThreads**: Use 3-4 threads max; SVG path animations are GPU-accelerated
+- **SacredGeometry**: Low opacity (0.05-0.1) to avoid overwhelming content
+- **AmbientBackground**: 4-5 orbs reasonable; particles/stars add visual interest without heavy load
+- **Mobile**: Decorations automatically adjust; energy threads stay subtle on smaller screens
 
 ### Component-Specific Motion
 

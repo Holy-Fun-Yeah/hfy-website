@@ -9,18 +9,19 @@ app/
 ├── config/brand.ts      # Single source of truth for colors/fonts
 ├── types/brand.ts       # Brand type definitions
 ├── components/          # Atomic Design (auto-imported, no prefix)
-│   ├── atoms/           # Indivisible: BaseButton, BaseMarkdown
-│   ├── molecules/       # Atom groups: FeatureCard
-│   └── organisms/       # Sections: AppHeader, AppFooter
+│   ├── atoms/           # Indivisible: BaseButton, EnergyThreads, SacredGeometry
+│   ├── molecules/       # Atom groups: FeatureCard, PageSection
+│   └── organisms/       # Sections: AppHeader, HeroSection
 ├── composables/
 │   ├── useBrand.ts      # Brand colors/fonts (theme-aware)
 │   ├── useTheme.ts      # Light/dark mode
 │   ├── useMarkdown.ts   # Load markdown files
+│   ├── useScrollGradient.ts  # Scroll-based color transitions
 │   └── useApi.ts        # API fetch helpers
 ├── stores/              # Pinia stores (auto-imported)
-├── layouts/default.vue  # Main layout
+├── layouts/default.vue  # Main layout (with ethereal decorations)
 ├── pages/               # File-based routing
-└── assets/css/main.css  # Tailwind @theme + prose
+└── assets/css/main.css  # Tailwind @theme + prose + animations
 
 server/
 ├── env.ts               # Centralized env vars (Zod validated)
@@ -63,11 +64,11 @@ Required vars throw on startup if missing. See `.env.example` for reference.
 
 Components follow [Atomic Design](https://bradfrost.com/blog/post/atomic-web-design/) and are auto-imported without path prefix.
 
-| Level         | Folder       | Description             | Examples                     |
-| ------------- | ------------ | ----------------------- | ---------------------------- |
-| **Atoms**     | `atoms/`     | Indivisible UI elements | `BaseButton`, `BaseMarkdown` |
-| **Molecules** | `molecules/` | Groups of atoms         | `FeatureCard`                |
-| **Organisms** | `organisms/` | Complex sections        | `AppHeader`, `AppFooter`     |
+| Level         | Folder       | Description             | Examples                                        |
+| ------------- | ------------ | ----------------------- | ----------------------------------------------- |
+| **Atoms**     | `atoms/`     | Indivisible UI elements | `BaseButton`, `EnergyThreads`, `SacredGeometry` |
+| **Molecules** | `molecules/` | Groups of atoms         | `FeatureCard`, `PageSection`                    |
+| **Organisms** | `organisms/` | Complex sections        | `AppHeader`, `HeroSection`                      |
 
 ```vue
 <!-- All components auto-imported by name, regardless of folder -->
@@ -88,19 +89,25 @@ When creating new components:
 
 ### Aesthetic Direction
 
-**"Holographic Mystic Maximalism"** — Warm Abundant Base + Cosmic Accents
+**"Holographic Mystic Maximalism"** — Warm Abundant Base + Pride Rainbow Cosmic Accents
 
-| Principle     | Expression                                                   |
-| ------------- | ------------------------------------------------------------ |
-| **Warmth**    | Cream/pearl backgrounds, golden accents, soft shadows        |
-| **Abundance** | Layered surfaces, rich gradients, generous whitespace        |
-| **Cosmic**    | Iridescent accents, aurora effects, prismatic highlights     |
-| **Sacred**    | Intentional hierarchy, breathing animations, reverent pacing |
+| Principle     | Expression                                                        |
+| ------------- | ----------------------------------------------------------------- |
+| **Warmth**    | Cream/pearl backgrounds, golden accents, soft shadows             |
+| **Pride**     | LGBTQ rainbow spectrum (red→orange→yellow→green→blue→purple)      |
+| **Cosmic**    | Ethereal energy threads, sacred geometry, aurora-like decorations |
+| **Sacred**    | Intentional hierarchy, breathing animations, reverent pacing      |
 
 **Theme Moods:**
 
 - **Light Mode ("Sacred Daylight")**: Warm, inviting, abundant
 - **Dark Mode ("Cosmic Night")**: Mystical, deep, luminous
+
+**Ethereal Decorations** (global, in default layout):
+- `EnergyThreads` — Flowing light beams along margins (pride rainbow)
+- `SacredGeometry` — Rotating patterns at corners (flower of life, metatron, spiral)
+- `AmbientBackground` — Rainbow orbs, particles, golden stars
+- `RadialBurst` — Sunburst rays behind hero content
 
 See `docs/STYLE_GUIDELINE.md` for complete visual design system.
 
