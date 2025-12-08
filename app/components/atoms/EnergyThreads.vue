@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // Theme-aware visual colors
-const { rainbow, rainbowStops, getShiftedRainbowValues } = useVisuals()
+const { rainbowStops, getShiftedRainbowValues } = useVisuals()
 
 // Lazy load - render after layout
 const isLoaded = ref(false)
