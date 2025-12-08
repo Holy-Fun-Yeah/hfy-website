@@ -15,6 +15,39 @@ Configure the HFY visual identity and core infrastructure.
 - [x] Update `app/assets/css/main.css` with brand CSS variables
 - [x] Test light/dark mode palette switching
 
+### Brand Aesthetic Refresh ("Holographic Mystic Maximalism")
+
+Style direction: **Warm Abundant Base + Cosmic Accents**
+Reference: `docs/STYLE_GUIDELINE.md`
+
+#### Brand Config Extensions
+
+- [ ] Add `muted` color token (secondary text)
+- [ ] Add `gradient` tokens (start/middle/end for holographic effects)
+- [ ] Add `glow` token (colored shadows)
+- [ ] Update `app/types/brand.ts` with new interface
+- [ ] Update `app/assets/css/main.css` with new CSS variables
+
+#### Motion Integration (`motion-v`)
+
+- [ ] Install `motion-v` and add Nuxt module
+- [ ] **AppHeader**: AnimatePresence for mobile menu slide
+- [ ] **Hero Section**: Staggered text reveal + floating orbs with `useScroll`
+- [ ] **Card Grids**: `whileInView` scroll reveal for FeatureCard, EventCard, PostCard
+- [ ] **PageSection**: `whileInView` fade-up entrance
+- [ ] **BaseButton**: `whileHover`/`whilePress` for primary/contrast variants
+
+#### Component Styling Updates
+
+- [ ] **BaseButton**: Holographic border option, glow shadows, breathing animation
+- [ ] **BaseCard**: Glassmorphism + subtle rainbow border on hover
+- [ ] **FeatureCard**: Holographic accent, icon glow
+- [ ] **EventCard**: Warm gradient accents, hover lift
+- [ ] **PostCard**: Soft shadows, prismatic hover state
+- [ ] **PageSection**: Aurora gradient dividers (optional)
+- [ ] **AppHeader**: Frosted glass navbar, rainbow active indicator
+- [ ] **AppFooter**: Subtle gradient accent line
+
 ### Database & Auth Setup
 
 - [ ] Configure Supabase connection in `server/env.ts`
@@ -173,11 +206,19 @@ Appointment booking with calendar integration.
 
 Payment processing for bookings.
 
+### Configuration
+
+- Webhook URL: `https://hfy.world/api/webhooks/stripe`
+- Events to listen for:
+  - `checkout.session.completed` (required) - Payment succeeded
+  - `checkout.session.expired` (optional) - Session timed out
+  - `payment_intent.payment_failed` (optional) - Track failures
+
 ### Backend
 
 - [ ] Stripe SDK integration
 - [ ] `POST /api/checkout/create` - Create Stripe checkout session
-- [ ] `POST /api/webhooks/stripe` - Handle Stripe webhooks
+- [ ] `POST /api/webhooks/stripe` - Handle Stripe webhooks (`server/api/webhooks/stripe.post.ts`)
 - [ ] Payment status tracking in appointments table
 
 ### Frontend

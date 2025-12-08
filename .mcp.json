@@ -2,7 +2,10 @@
   "mcpServers": {
     "puppeteer": {
       "command": "npx",
-      "args": ["puppeteer-mcp-claude", "serve"],
+      "args": [
+        "puppeteer-mcp-claude",
+        "serve"
+      ],
       "env": {
         "NODE_ENV": "production"
       }
@@ -14,6 +17,10 @@
         "@modelcontextprotocol/server-postgres",
         "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}"
       ]
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=fjjbkbbwkivexvqoflfg"
     }
   }
 }

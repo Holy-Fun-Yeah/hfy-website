@@ -10,7 +10,7 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxt/devtools'],
+  modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxt/devtools', 'motion-v/nuxt'],
 
   // SEO defaults
   app: {

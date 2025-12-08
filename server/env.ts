@@ -28,6 +28,10 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url().optional(),
   SUPABASE_ANON_KEY: z.string().optional(),
   SUPABASE_SERVICE_KEY: z.string().optional(), // Server-side only, admin access
+
+  // Stripe (Payments)
+  STRIPE_SECRET_KEY: z.string().startsWith('sk_').optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_').optional(),
 })
 
 // =============================================================================
@@ -55,6 +59,8 @@ export const env = result.success
       SUPABASE_URL: undefined,
       SUPABASE_ANON_KEY: undefined,
       SUPABASE_SERVICE_KEY: undefined,
+      STRIPE_SECRET_KEY: undefined,
+      STRIPE_WEBHOOK_SECRET: undefined,
     }
 
 // =============================================================================

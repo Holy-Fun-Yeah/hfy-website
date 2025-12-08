@@ -33,6 +33,10 @@ server/
 ├── api/                 # API routes (file-based)
 ├── utils/               # Validation schemas
 └── database/            # Drizzle schema + connection
+
+docs/
+├── STYLE_GUIDELINE.md   # Visual design system (Holographic Mystic Maximalism)
+└── ...                  # Project docs
 ```
 
 ## Environment Variables
@@ -82,13 +86,32 @@ When creating new components:
 
 **All colors/fonts MUST come from `app/config/brand.ts`. Never hardcode.**
 
+### Aesthetic Direction
+
+**"Holographic Mystic Maximalism"** — Warm Abundant Base + Cosmic Accents
+
+| Principle | Expression |
+|-----------|------------|
+| **Warmth** | Cream/pearl backgrounds, golden accents, soft shadows |
+| **Abundance** | Layered surfaces, rich gradients, generous whitespace |
+| **Cosmic** | Iridescent accents, aurora effects, prismatic highlights |
+| **Sacred** | Intentional hierarchy, breathing animations, reverent pacing |
+
+**Theme Moods:**
+- **Light Mode ("Sacred Daylight")**: Warm, inviting, abundant
+- **Dark Mode ("Cosmic Night")**: Mystical, deep, luminous
+
+See `docs/STYLE_GUIDELINE.md` for complete visual design system.
+
 ### Available Classes
 
 ```
 Colors:  bg-brand-{background|neutral|base|accent|secondary|contrast}
-         text-brand-{base|accent|secondary|contrast|neutral}
+         text-brand-{base|muted|accent|secondary|contrast|neutral}
          border-brand-{base|accent|secondary|contrast|neutral}
          Opacity: bg-brand-accent/50, text-brand-base/80
+
+Gradients: from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end
 
 Fonts:   font-logo, font-headers, font-primary, font-secondary
 ```
@@ -100,8 +123,14 @@ Fonts:   font-logo, font-headers, font-primary, font-secondary
 <button class="bg-brand-accent text-brand-neutral">Click</button>
 <h1 class="font-headers text-brand-base">Title</h1>
 
+<!-- Holographic effect (special emphasis only) -->
+<div class="bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end p-[1px] rounded-2xl">
+  <div class="bg-brand-neutral rounded-2xl p-6">Content</div>
+</div>
+
 <!-- WRONG - Never use default Tailwind colors for UI -->
 <button class="bg-emerald-600 text-white">Click</button>
+<div class="bg-gradient-to-r from-pink-400 to-cyan-400">Hardcoded!</div>
 ```
 
 ### Theme Toggle
@@ -112,7 +141,7 @@ const { isDark, toggleTheme } = useTheme()
 </script>
 ```
 
-See `app/config/brand.ts` for color definitions, `app/types/brand.ts` for docs.
+See `app/config/brand.ts` for color definitions, `app/types/brand.ts` for type docs.
 
 ## State Management (Pinia)
 
