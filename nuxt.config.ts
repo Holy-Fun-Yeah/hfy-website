@@ -36,16 +36,14 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:description',
-          content:
-            'Transformative experiences guided by modern astrology and ancient intuition.',
+          content: 'Transformative experiences guided by modern astrology and ancient intuition.',
         },
         // Twitter
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'Holy Fuck Yeah!' },
         {
           name: 'twitter:description',
-          content:
-            'Transformative experiences guided by modern astrology and ancient intuition.',
+          content: 'Transformative experiences guided by modern astrology and ancient intuition.',
         },
       ],
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],

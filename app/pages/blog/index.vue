@@ -92,7 +92,7 @@ const {
         slug: 'saturn-return-survival',
         title: 'Surviving (and thriving) through your Saturn Return',
         excerpt:
-          'The Saturn Return is a cosmic rite of passage. Here\'s how to navigate this transformative period with grace.',
+          "The Saturn Return is a cosmic rite of passage. Here's how to navigate this transformative period with grace.",
         category: 'Transits',
         author: 'AstraNova KaLeKa',
         date: 'Nov 5, 2025',
@@ -198,7 +198,7 @@ const regularPosts = computed(() => {
 
               <!-- Content -->
               <div class="flex flex-col justify-center p-6 md:p-8">
-                <p class="text-brand-secondary mb-2 text-xs font-medium uppercase tracking-wide">
+                <p class="text-brand-secondary mb-2 text-xs font-medium tracking-wide uppercase">
                   {{ featuredPost.category }}
                 </p>
                 <h2
@@ -243,11 +243,11 @@ const regularPosts = computed(() => {
 
               <!-- Content -->
               <div class="p-4">
-                <p class="text-brand-secondary mb-1 text-xs font-medium uppercase tracking-wide">
+                <p class="text-brand-secondary mb-1 text-xs font-medium tracking-wide uppercase">
                   {{ post.category }}
                 </p>
                 <h3
-                  class="font-headers text-brand-base group-hover:text-brand-accent mb-2 font-semibold leading-snug transition"
+                  class="font-headers text-brand-base group-hover:text-brand-accent mb-2 leading-snug font-semibold transition"
                 >
                   {{ post.title }}
                 </h3>
@@ -361,7 +361,7 @@ const regularPosts = computed(() => {
         <input
           type="email"
           placeholder="Enter your email"
-          class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 outline-none transition focus:ring-2"
+          class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
           required
         />
         <BaseButton type="submit">Subscribe</BaseButton>

@@ -178,9 +178,24 @@ const { data: relatedPosts } = useLazyAsyncData<RelatedPost[]>(
   async () => {
     await new Promise((resolve) => setTimeout(resolve, 300))
     return [
-      { slug: 'moon-phases-guide', title: 'A complete guide to working with moon phases', category: 'Astrology', date: 'Nov 15' },
-      { slug: 'saturn-return-survival', title: 'Surviving your Saturn Return', category: 'Transits', date: 'Nov 5' },
-      { slug: 'morning-ritual-routine', title: 'Creating a sacred morning ritual', category: 'Rituals', date: 'Nov 10' },
+      {
+        slug: 'moon-phases-guide',
+        title: 'A complete guide to working with moon phases',
+        category: 'Astrology',
+        date: 'Nov 15',
+      },
+      {
+        slug: 'saturn-return-survival',
+        title: 'Surviving your Saturn Return',
+        category: 'Transits',
+        date: 'Nov 5',
+      },
+      {
+        slug: 'morning-ritual-routine',
+        title: 'Creating a sacred morning ritual',
+        category: 'Rituals',
+        date: 'Nov 10',
+      },
     ]
   },
   { server: false }
@@ -280,16 +295,20 @@ useSeoMeta({
       <PageSection spacing="lg">
         <article class="mx-auto max-w-3xl">
           <header class="mb-8 text-center">
-            <p class="text-brand-secondary mb-3 text-sm font-medium uppercase tracking-wide">
+            <p class="text-brand-secondary mb-3 text-sm font-medium tracking-wide uppercase">
               {{ post.category }}
             </p>
-            <h1 class="font-headers text-brand-base mb-4 text-3xl font-bold leading-tight md:text-4xl lg:text-5xl">
+            <h1
+              class="font-headers text-brand-base mb-4 text-3xl leading-tight font-bold md:text-4xl lg:text-5xl"
+            >
               {{ post.title }}
             </h1>
             <p class="text-brand-base/60 mb-6 text-lg">
               {{ post.excerpt }}
             </p>
-            <div class="text-brand-base/50 flex flex-wrap items-center justify-center gap-3 text-sm">
+            <div
+              class="text-brand-base/50 flex flex-wrap items-center justify-center gap-3 text-sm"
+            >
               <span class="font-medium">{{ post.author }}</span>
               <span>·</span>
               <span>{{ post.date }}</span>
@@ -329,7 +348,9 @@ useSeoMeta({
           >
             <BaseCard padding="lg">
               <div class="flex items-start gap-4">
-                <div class="bg-brand-accent/10 text-brand-accent flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold">
+                <div
+                  class="bg-brand-accent/10 text-brand-accent flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold"
+                >
                   {{ post.author.charAt(0) }}
                 </div>
                 <div>
@@ -362,10 +383,12 @@ useSeoMeta({
               hoverable
               padding="md"
             >
-              <p class="text-brand-secondary mb-1 text-xs font-medium uppercase tracking-wide">
+              <p class="text-brand-secondary mb-1 text-xs font-medium tracking-wide uppercase">
                 {{ related.category }}
               </p>
-              <h3 class="font-headers text-brand-base group-hover:text-brand-accent font-semibold transition">
+              <h3
+                class="font-headers text-brand-base group-hover:text-brand-accent font-semibold transition"
+              >
                 {{ related.title }}
               </h3>
               <p class="text-brand-base/40 mt-2 text-xs">{{ related.date }}</p>
