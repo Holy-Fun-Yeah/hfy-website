@@ -1,9 +1,9 @@
 <script setup lang="ts">
 /**
- * PostCard - Blog post preview card with loading state
+ * PostCard - Blog post preview with prismatic hover effects
  *
- * Displays blog post information with built-in skeleton loading.
- * When loading=true, shows skeleton placeholders instead of content.
+ * Displays blog post information with scroll-reveal animation and prismatic hover state.
+ * Uses whileInView for scroll-triggered reveal animation.
  *
  * @example
  * ```vue
@@ -18,6 +18,8 @@
  * <PostCard loading />
  * ```
  */
+
+import { Motion } from 'motion-v'
 
 interface Props {
   title?: string
@@ -34,6 +36,11 @@ withDefaults(defineProps<Props>(), {
   to: undefined,
   loading: false,
 })
+
+// Motion animation config for scroll reveal
+const revealAnimation = { opacity: 1, y: 0 }
+const initialState = { opacity: 0, y: 20 }
+const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
 </script>
 
 <template>
@@ -64,35 +71,70 @@ withDefaults(defineProps<Props>(), {
     </div>
   </BaseCard>
 
-  <!-- Content -->
-  <component
-    :is="to ? 'NuxtLink' : 'div'"
+  <!-- Content with motion -->
+  <Motion
     v-else
-    :to="to"
-    class="block"
+    as="div"
+    :initial="initialState"
+    :while-in-view="revealAnimation"
+    :transition="transitionConfig"
+    :viewport="{ once: true, margin: '-50px' }"
   >
-    <BaseCard
-      hoverable
-      padding="md"
-      class="h-full"
+    <component
+      :is="to ? 'NuxtLink' : 'div'"
+      :to="to"
+      class="block group"
     >
-      <div class="space-y-2">
-        <p
-          v-if="category"
-          class="text-brand-secondary text-xs font-medium tracking-wide uppercase"
-        >
-          {{ category }}
-        </p>
-        <h3 class="font-headers text-brand-base leading-snug font-semibold">
-          {{ title }}
-        </h3>
-        <p
-          v-if="excerpt"
-          class="text-brand-base/60 line-clamp-2 text-sm"
-        >
-          {{ excerpt }}
-        </p>
-      </div>
-    </BaseCard>
-  </component>
+      <BaseCard
+        hoverable
+        padding="md"
+        class="h-full"
+      >
+        <div class="space-y-2">
+          <!-- Category badge with prismatic accent -->
+          <div
+            v-if="category"
+            class="inline-flex"
+          >
+            <span
+              class="rounded-full bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end px-3 py-0.5 text-xs font-semibold text-white uppercase tracking-wide"
+            >
+              {{ category }}
+            </span>
+          </div>
+
+          <!-- Title with hover color transition -->
+          <h3 class="font-headers text-brand-base leading-snug font-semibold transition-colors group-hover:text-brand-accent">
+            {{ title }}
+          </h3>
+
+          <!-- Excerpt -->
+          <p
+            v-if="excerpt"
+            class="text-brand-muted line-clamp-2 text-sm leading-relaxed"
+          >
+            {{ excerpt }}
+          </p>
+
+          <!-- Read more indicator -->
+          <div class="flex items-center gap-1 pt-1 text-sm font-medium text-brand-accent opacity-0 transition-opacity group-hover:opacity-100">
+            <span>Read more</span>
+            <svg
+              class="h-4 w-4 transition-transform group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
+        </div>
+      </BaseCard>
+    </component>
+  </Motion>
 </template>

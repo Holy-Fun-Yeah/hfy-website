@@ -11,11 +11,20 @@
 @theme {
   /* Brand color tokens - values injected by useBrand composable */
   --color-brand-base: var(--brand-base);
+  --color-brand-muted: var(--brand-muted);
   --color-brand-accent: var(--brand-accent);
   --color-brand-contrast: var(--brand-contrast);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-neutral: var(--brand-neutral);
   --color-brand-background: var(--brand-background);
+
+  /* Holographic gradient stops */
+  --color-brand-gradient-start: var(--brand-gradient-start);
+  --color-brand-gradient-middle: var(--brand-gradient-middle);
+  --color-brand-gradient-end: var(--brand-gradient-end);
+
+  /* Glow/shadow color */
+  --color-brand-glow: var(--brand-glow);
 
   /* Font family tokens - values injected by useBrand composable */
   --font-logo: var(--brand-font-logo), system-ui, sans-serif;
@@ -362,4 +371,193 @@ pre {
 
 .prose-narrow {
   max-width: 45ch;
+}
+
+/*
+ * ============================================================================
+ * Ethereal Animations - Mystical Movement Effects
+ * ============================================================================
+ */
+
+/* Floating animation - gentle vertical drift */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+  75% {
+    transform: translateY(4px) rotate(-0.5deg);
+  }
+}
+
+/* Gentle pulse with glow */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--color-brand-glow);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 35px var(--color-brand-glow), 0 0 60px var(--color-brand-glow);
+  }
+}
+
+/* Shimmer effect - light sweep */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Ethereal fade in from below */
+@keyframes ethereal-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Breathing scale animation */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Orbit animation for decorative elements */
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(10px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(10px) rotate(-360deg);
+  }
+}
+
+/* Twinkle effect for stars/particles */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Gradient shift for backgrounds */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Utility classes for ethereal animations */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-ethereal-rise {
+  animation: ethereal-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-orbit {
+  animation: orbit 20s linear infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Stagger delays for sequential animations */
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+.animate-delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Hover enhancements */
+.hover-float {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hover-float:hover {
+  transform: translateY(-8px);
+}
+
+.hover-glow {
+  transition: box-shadow 0.4s ease;
+}
+
+.hover-glow:hover {
+  box-shadow:
+    0 0 20px var(--color-brand-glow),
+    0 0 40px var(--color-brand-glow);
 }

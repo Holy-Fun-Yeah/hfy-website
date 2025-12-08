@@ -26,12 +26,10 @@ export const brandConfig: BrandConfig = {
   ],
 
   /**
-   * Light Mode Palette
+   * Light Mode Palette — "Sacred Daylight"
    *
-   * Design principle: Cosmic warmth with iridescent accents.
-   * Primary: Vibrant magenta/pink for HFY energy
-   * Secondary: Turquoise for balance and flow
-   * Contrast: Golden sun for high-impact moments
+   * Design principle: Warm abundant base with cosmic accents.
+   * Aesthetic: Holographic Mystic Maximalism
    */
   light: {
     /**
@@ -40,6 +38,13 @@ export const brandConfig: BrandConfig = {
      * - Contrast with background (#fffbf7): 14.8:1 ✓
      */
     base: '#1a1a2e',
+
+    /**
+     * Muted: Warm gray
+     * - Secondary text, captions, metadata
+     * - Softer than base for visual hierarchy
+     */
+    muted: '#6b6b7a',
 
     /**
      * Accent: Vibrant magenta/pink
@@ -74,13 +79,32 @@ export const brandConfig: BrandConfig = {
      * - Page canvas with soft, sacred feeling
      */
     background: '#fffbf7',
+
+    /**
+     * Gradient: Holographic rainbow stops
+     * - Pink → Violet → Cyan for prismatic effects
+     * - Saturated for readability on light backgrounds
+     * - Use for logos, headings, borders, decorative
+     */
+    gradient: {
+      start: '#db2777', // Pink 600 - rich magenta
+      middle: '#7c3aed', // Violet 600 - deep purple
+      end: '#0891b2', // Cyan 600 - vibrant teal
+    },
+
+    /**
+     * Glow: Accent-tinted shadow
+     * - Warm pink glow for elevated elements
+     * - Creates "breathing" ambient effect
+     */
+    glow: 'rgba(216, 27, 96, 0.2)',
   },
 
   /**
-   * Dark Mode Palette
+   * Dark Mode Palette — "Cosmic Night"
    *
-   * Design principle: Cosmic night sky with luminous accents.
-   * Deep indigo canvas with brightened iridescent colors.
+   * Design principle: Mystical depths with luminous accents.
+   * Aesthetic: Aurora against cosmic void
    */
   dark: {
     /**
@@ -89,6 +113,13 @@ export const brandConfig: BrandConfig = {
      * - Contrast with background (#12121f): 15.6:1 ✓
      */
     base: '#f5f3f0',
+
+    /**
+     * Muted: Soft gray
+     * - Secondary text for dark backgrounds
+     * - Visible but subdued
+     */
+    muted: '#a1a1aa',
 
     /**
      * Accent: Luminous pink
@@ -122,6 +153,24 @@ export const brandConfig: BrandConfig = {
      * - Foundation for luminous elements
      */
     background: '#12121f',
+
+    /**
+     * Gradient: Saturated holographic stops
+     * - More vivid for dark mode visibility
+     * - Aurora-like neon quality
+     */
+    gradient: {
+      start: '#f472b6', // Pink 400
+      middle: '#a78bfa', // Violet 400
+      end: '#22d3ee', // Cyan 400
+    },
+
+    /**
+     * Glow: Luminous pink shadow
+     * - Brighter glow for dark backgrounds
+     * - Creates ethereal floating effect
+     */
+    glow: 'rgba(244, 143, 177, 0.25)',
   },
 
   /**

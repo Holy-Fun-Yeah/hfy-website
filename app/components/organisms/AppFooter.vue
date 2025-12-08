@@ -1,9 +1,12 @@
 <script setup lang="ts">
 /**
- * AppFooter - Brand-aware footer with social links and legal
+ * AppFooter - Brand-aware footer with holographic accents
  *
- * Displays social icons, quick links, and legal information
- * using brand color tokens.
+ * Features:
+ * - Gradient accent line at top border
+ * - Holographic brand logo
+ * - Glow effect on social icon hover
+ * - Uses brand color tokens
  */
 const { brand } = useBrand()
 const year = new Date().getFullYear()
@@ -28,30 +31,36 @@ const legalLinks = [
 </script>
 
 <template>
-  <footer class="border-brand-base/10 bg-brand-neutral/50 border-t">
+  <footer class="relative bg-brand-neutral/50">
+    <!-- Gradient accent line at top -->
+    <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end" />
+
     <div class="mx-auto max-w-5xl px-4 py-12">
       <!-- Top section: Brand + Links -->
       <div class="grid gap-8 md:grid-cols-3">
         <!-- Brand column -->
         <div>
+          <!-- Holographic brand logo -->
           <NuxtLink
             to="/"
-            class="font-logo text-brand-accent text-xl font-bold"
+            class="font-logo text-xl font-bold transition-all duration-300 hover:drop-shadow-[0_0_8px_var(--color-brand-glow)]"
           >
-            {{ brand.name }}
+            <span class="bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-clip-text text-transparent">
+              {{ brand.name }}
+            </span>
           </NuxtLink>
-          <p class="text-brand-base/60 mt-3 text-sm">
+          <p class="text-brand-muted mt-3 text-sm">
             Awaken your cosmic power through transformative experiences guided by modern astrology.
           </p>
 
-          <!-- Social links -->
+          <!-- Social links with glow hover -->
           <div class="mt-4 flex gap-3">
             <a
               v-for="social in socialLinks"
               :key="social.name"
               :href="social.href"
               :aria-label="social.name"
-              class="text-brand-base/50 hover:text-brand-accent transition"
+              class="text-brand-muted hover:text-brand-accent rounded-lg p-1.5 transition-all duration-300 hover:bg-brand-accent/10 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -104,7 +113,7 @@ const legalLinks = [
             >
               <NuxtLink
                 :to="link.to"
-                class="text-brand-base/60 hover:text-brand-accent text-sm transition"
+                class="text-brand-muted hover:text-brand-accent text-sm transition-colors duration-200"
               >
                 {{ link.label }}
               </NuxtLink>
@@ -122,7 +131,7 @@ const legalLinks = [
             >
               <NuxtLink
                 :to="link.to"
-                class="text-brand-base/60 hover:text-brand-accent text-sm transition"
+                class="text-brand-muted hover:text-brand-accent text-sm transition-colors duration-200"
               >
                 {{ link.label }}
               </NuxtLink>
@@ -131,9 +140,9 @@ const legalLinks = [
         </div>
       </div>
 
-      <!-- Bottom section: Copyright -->
-      <div class="border-brand-base/10 mt-8 border-t pt-6">
-        <p class="text-brand-base/40 text-center text-sm">
+      <!-- Bottom section: Copyright with gradient accent -->
+      <div class="mt-8 border-t border-brand-base/10 pt-6">
+        <p class="text-brand-muted/60 text-center text-sm">
           &copy; {{ year }} {{ brand.name }}. All rights reserved.
         </p>
       </div>

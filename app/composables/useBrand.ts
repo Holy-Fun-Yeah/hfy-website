@@ -17,7 +17,14 @@ function injectBrandCSS(palette: BrandPalette, typography: BrandTypography) {
 
   // Inject color variables
   Object.entries(palette).forEach(([key, value]) => {
-    root.style.setProperty(`--brand-${key}`, value)
+    if (key === 'gradient' && typeof value === 'object') {
+      // Flatten gradient object: gradient.start → --brand-gradient-start
+      Object.entries(value).forEach(([gradientKey, gradientValue]) => {
+        root.style.setProperty(`--brand-gradient-${gradientKey}`, gradientValue as string)
+      })
+    } else {
+      root.style.setProperty(`--brand-${key}`, value as string)
+    }
   })
 
   // Inject font variables

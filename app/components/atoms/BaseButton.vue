@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { motion } from 'motion-v'
+
 /**
- * BaseButton - Brand-aware button component
+ * BaseButton - Brand-aware button with motion animations
  *
  * All variants use brand color tokens from app/config/brand.ts.
  * Adapts automatically to light/dark mode.
- * Supports rendering as button, anchor, or NuxtLink.
+ * Primary and contrast variants include glow shadows and motion effects.
  *
  * @example
  * ```vue
@@ -13,12 +15,19 @@
  * <BaseButton variant="outline">Outline</BaseButton>
  * <BaseButton variant="ghost">Ghost</BaseButton>
  * <BaseButton variant="contrast">CTA</BaseButton>
+ * <BaseButton variant="holographic">Special</BaseButton>
  * <BaseButton to="/about">Internal Link</BaseButton>
  * <BaseButton href="https://example.com">External Link</BaseButton>
  * ```
  */
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'contrast'
+export type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'contrast'
+  | 'holographic'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 interface Props {
@@ -28,6 +37,8 @@ interface Props {
   loading?: boolean
   to?: string // NuxtLink internal route
   href?: string // External link
+  glow?: boolean // Enable glow shadow effect
+  shimmer?: boolean // Enable shimmer sweep animation
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,6 +48,8 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   to: undefined,
   href: undefined,
+  glow: false,
+  shimmer: false,
 })
 
 // Determine which element to render
@@ -46,39 +59,145 @@ const componentTag = computed(() => {
   return 'button'
 })
 
+// Enable motion for all button variants
+const useMotion = computed(() => !props.to && !props.href)
+
 /**
  * Variant classes using brand color tokens
  * These reference CSS variables set by useBrand composable
  */
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: 'bg-brand-accent text-brand-neutral hover:brightness-110 focus:ring-brand-accent',
-  secondary:
-    'bg-brand-secondary text-brand-neutral hover:brightness-110 focus:ring-brand-secondary',
-  contrast: 'bg-brand-contrast text-brand-base hover:brightness-110 focus:ring-brand-contrast',
+  primary: 'bg-brand-accent text-white focus:ring-brand-accent/50',
+  secondary: 'bg-brand-secondary text-white focus:ring-brand-secondary/50',
+  contrast: 'bg-brand-contrast text-brand-base focus:ring-brand-contrast/50',
   outline:
-    'border-2 border-brand-accent text-brand-accent hover:bg-brand-accent/10 focus:ring-brand-accent',
-  ghost: 'text-brand-base hover:bg-brand-base/10 focus:ring-brand-base',
+    'border-2 border-brand-accent text-brand-accent hover:bg-brand-accent/10 focus:ring-brand-accent/50',
+  ghost: 'text-brand-base hover:bg-brand-base/10 focus:ring-brand-base/50',
+  holographic:
+    'bg-brand-neutral text-brand-base border border-transparent focus:ring-brand-accent/50',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2 text-base',
-  lg: 'px-6 py-3 text-lg',
+  sm: 'px-3 py-1.5 text-sm rounded-lg',
+  md: 'px-5 py-2.5 text-base rounded-xl',
+  lg: 'px-7 py-3.5 text-lg rounded-2xl',
 }
 
+// Glow shadow classes for primary and contrast variants
+const glowClasses = computed(() => {
+  if (!props.glow && props.variant !== 'holographic') return ''
+  switch (props.variant) {
+    case 'primary':
+    case 'holographic':
+      return 'shadow-[0_0_20px_var(--color-brand-glow)]'
+    case 'contrast':
+      return 'shadow-[0_0_20px_rgba(249,168,37,0.3)]'
+    default:
+      return ''
+  }
+})
+
 const buttonClasses = computed(() => [
-  'inline-flex cursor-pointer items-center justify-center rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2',
+  'inline-flex cursor-pointer items-center justify-center font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 relative overflow-hidden',
   variantClasses[props.variant],
   sizeClasses[props.size],
+  glowClasses.value,
   {
     'cursor-not-allowed opacity-50': props.disabled || props.loading,
+    'btn-shimmer': props.shimmer && !props.disabled && !props.loading,
   },
 ])
+
+// Motion animation config - ethereal hover with lift and glow
+const hoverAnimation = computed(() => {
+  const base = { scale: 1.05, y: -4, rotate: 0.5 }
+  // Holographic gets extra dramatic movement
+  if (props.variant === 'holographic') {
+    return { ...base, scale: 1.06, y: -6 }
+  }
+  return base
+})
+
+const pressAnimation = { scale: 0.97, y: 0, rotate: 0 }
+const transitionConfig = { type: 'spring' as const, stiffness: 300, damping: 20 }
 </script>
 
 <template>
+  <!-- Holographic variant with gradient border wrapper -->
+  <motion.div
+    v-if="variant === 'holographic'"
+    class="btn-wrapper-holo inline-block rounded-xl bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end p-[2px]"
+    :while-hover="!disabled && !loading ? { scale: 1.06, y: -6, rotate: 0.5 } : undefined"
+    :while-tap="!disabled && !loading ? pressAnimation : undefined"
+    :transition="transitionConfig"
+  >
+    <button
+      v-if="!to && !href"
+      :class="buttonClasses"
+      :disabled="disabled || loading"
+    >
+      <svg
+        v-if="loading"
+        class="mr-2 -ml-1 h-4 w-4 animate-spin"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+        />
+      </svg>
+      <slot />
+    </button>
+    <NuxtLink
+      v-else-if="to"
+      :to="to"
+      :class="buttonClasses"
+    >
+      <slot />
+    </NuxtLink>
+    <a
+      v-else
+      :href="href"
+      :class="buttonClasses"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <slot />
+    </a>
+  </motion.div>
+
+  <!-- Motion-enabled variants (primary, contrast, etc.) -->
+  <motion.button
+    v-else-if="useMotion"
+    :class="[buttonClasses, 'btn-hover-glow']"
+    :disabled="disabled || loading"
+    :while-hover="!disabled && !loading ? hoverAnimation : undefined"
+    :while-tap="!disabled && !loading ? pressAnimation : undefined"
+    :transition="transitionConfig"
+  >
+    <svg
+      v-if="loading"
+      class="mr-2 -ml-1 h-4 w-4 animate-spin"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+      />
+    </svg>
+    <slot />
+  </motion.button>
+
+  <!-- Standard component for other variants and links -->
   <component
     :is="componentTag"
+    v-else
     :class="buttonClasses"
     :disabled="componentTag === 'button' ? disabled || loading : undefined"
     :to="to"
@@ -92,14 +211,7 @@ const buttonClasses = computed(() => [
       fill="none"
       viewBox="0 0 24 24"
     >
-      <circle
-        class="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        stroke-width="4"
-      />
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
       <path
         class="opacity-75"
         fill="currentColor"
@@ -109,3 +221,61 @@ const buttonClasses = computed(() => [
     <slot />
   </component>
 </template>
+
+<style scoped>
+/* Shimmer sweep animation for CTA buttons */
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: btn-shimmer-sweep 3s ease-in-out infinite;
+}
+
+@keyframes btn-shimmer-sweep {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+
+/* Hover glow effect for motion buttons */
+.btn-hover-glow {
+  transition:
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+.btn-hover-glow:hover:not(:disabled) {
+  box-shadow:
+    0 4px 20px var(--color-brand-glow),
+    0 0 40px var(--color-brand-glow);
+  filter: brightness(1.1);
+}
+
+/* Holographic wrapper enhanced hover */
+.btn-wrapper-holo {
+  transition:
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+.btn-wrapper-holo:hover {
+  box-shadow:
+    0 8px 30px var(--color-brand-glow),
+    0 0 60px var(--color-brand-glow),
+    0 0 100px var(--color-brand-glow);
+  filter: brightness(1.15) saturate(1.2);
+}
+</style>

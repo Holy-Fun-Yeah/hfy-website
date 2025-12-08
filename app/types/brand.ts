@@ -29,6 +29,19 @@
  * - Large text (18px+ or 14px bold): 3:1 minimum
  * - UI components: 3:1 against adjacent colors
  */
+/**
+ * Gradient configuration for holographic/rainbow effects.
+ * Used for borders, backgrounds, and decorative elements.
+ */
+export interface BrandGradient {
+  /** Starting color (typically pink/rose) */
+  start: string
+  /** Middle color (typically violet/purple) */
+  middle: string
+  /** Ending color (typically cyan/turquoise) */
+  end: string
+}
+
 export interface BrandPalette {
   /**
    * **Base** - Primary foreground color for text and icons
@@ -40,6 +53,16 @@ export interface BrandPalette {
    * Usage: `text-brand-base`, `text-brand-base/70`, `border-brand-base/10`
    */
   base: string
+
+  /**
+   * **Muted** - Secondary foreground color for supporting text
+   *
+   * Softer than base for captions, metadata, and secondary information.
+   * Light mode: Gray with slight warmth. Dark mode: Light gray.
+   *
+   * Usage: `text-brand-muted` for secondary text, timestamps, captions
+   */
+  muted: string
 
   /**
    * **Accent** - Primary brand color for interactive elements
@@ -90,6 +113,26 @@ export interface BrandPalette {
    * Usage: `bg-brand-background` at layout level
    */
   background: string
+
+  /**
+   * **Gradient** - Holographic/rainbow gradient stops
+   *
+   * Three-color gradient for prismatic effects (borders, highlights, decorative).
+   * Use sparingly for special emphasis (10% rule).
+   *
+   * Usage: `from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end`
+   */
+  gradient: BrandGradient
+
+  /**
+   * **Glow** - Colored shadow/glow color
+   *
+   * RGBA value for ambient glows and colored shadows.
+   * Typically accent color at low opacity.
+   *
+   * Usage: `shadow-[0_0_30px_var(--color-brand-glow)]`
+   */
+  glow: string
 }
 
 /**
