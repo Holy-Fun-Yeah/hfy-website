@@ -67,10 +67,7 @@ const rayPaths = computed(() => {
 // Rainbow stops for circular gradient (loops back to start)
 const rainbowCircularStops = computed(() => {
   const stops = rainbowStops.value
-  return [
-    ...stops,
-    { offset: '100%', color: stops[0]?.color || colors.value.rainbow.red },
-  ]
+  return [...stops, { offset: '100%', color: stops[0]?.color || colors.value.rainbow.red }]
 })
 
 // Gradient stops based on color prop

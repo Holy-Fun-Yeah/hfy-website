@@ -189,7 +189,11 @@ const spiralPath = computed(() => {
           :cy="circle.cy"
           :r="circle.r"
           fill="none"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.3"
         />
       </g>
@@ -204,7 +208,11 @@ const spiralPath = computed(() => {
           cy="50"
           :r="r * 10"
           fill="none"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.2"
         />
         <!-- Petals -->
@@ -215,7 +223,11 @@ const spiralPath = computed(() => {
           :cy="petal.cy"
           :r="petal.r"
           fill="none"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.2"
         />
       </g>
@@ -226,7 +238,11 @@ const spiralPath = computed(() => {
         <polygon
           points="50,30 67,40 67,60 50,70 33,60 33,40"
           fill="none"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.3"
         />
         <!-- Connecting lines -->
@@ -237,7 +253,11 @@ const spiralPath = computed(() => {
           y1="50"
           :x2="50 + 25 * Math.cos(((i * 60 - 90) * Math.PI) / 180)"
           :y2="50 + 25 * Math.sin(((i * 60 - 90) * Math.PI) / 180)"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.2"
         />
         <!-- Outer circles -->
@@ -248,7 +268,11 @@ const spiralPath = computed(() => {
           :cy="50 + 20 * Math.sin(((i * 60 - 90) * Math.PI) / 180)"
           r="8"
           fill="none"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.2"
         />
         <circle
@@ -256,7 +280,11 @@ const spiralPath = computed(() => {
           cy="50"
           r="8"
           fill="none"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.2"
         />
       </g>
@@ -266,7 +294,11 @@ const spiralPath = computed(() => {
         <path
           :d="spiralPath"
           fill="none"
-          :stroke="color === 'gold' ? `url(#goldGradient-${instanceId})` : `url(#sacredGradient-${instanceId})`"
+          :stroke="
+            color === 'gold'
+              ? `url(#goldGradient-${instanceId})`
+              : `url(#sacredGradient-${instanceId})`
+          "
           stroke-width="0.4"
           stroke-linecap="round"
         />
