@@ -78,10 +78,7 @@ const transitionConfig = {
 
 <template>
   <section
-    :class="[
-      spacingClasses[spacing],
-      decorations !== 'none' ? 'relative overflow-hidden' : '',
-    ]"
+    :class="[spacingClasses[spacing], decorations !== 'none' ? 'relative overflow-hidden' : '']"
   >
     <!-- Decorative elements for hero/subtle modes -->
     <template v-if="decorations === 'hero'">

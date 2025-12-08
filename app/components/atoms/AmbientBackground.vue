@@ -55,9 +55,9 @@ const orbConfigs = computed(() => {
 
   return Array.from({ length: count }, (_, i) => ({
     id: i,
-    size: 200 + (i * 100) * intensityMultiplier,
-    x: 10 + (i * 22) % 80,
-    y: 5 + (i * 28) % 90,
+    size: 200 + i * 100 * intensityMultiplier,
+    x: 10 + ((i * 22) % 80),
+    y: 5 + ((i * 28) % 90),
     duration: 20 + i * 5,
     delay: i * 2,
     colors: orbColors[i % orbColors.length],
@@ -156,7 +156,7 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
     <div
       v-for="star in starParticles"
       :key="`star-${star.id}`"
-      class="star absolute star-shape will-change-transform"
+      class="star star-shape absolute will-change-transform"
       :style="{
         left: `${star.x}%`,
         top: `${star.y}%`,
@@ -168,7 +168,7 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
     />
 
     <!-- Subtle noise overlay -->
-    <div class="absolute inset-0 bg-noise opacity-[0.012]" />
+    <div class="bg-noise absolute inset-0 opacity-[0.012]" />
   </div>
 </template>
 
@@ -180,7 +180,8 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
 }
 
 @keyframes float-orb {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(0.9);
     opacity: 0.5;
   }
@@ -205,7 +206,8 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
 }
 
 @keyframes twinkle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
     transform: scale(0);
   }
@@ -222,7 +224,8 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
 }
 
 @keyframes sparkle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
     transform: scale(0) rotate(0deg);
   }
@@ -235,8 +238,16 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
 .star-shape {
   background: linear-gradient(135deg, #fff 0%, #ffd700 30%, #ffaa00 60%, #ff8c00 100%);
   clip-path: polygon(
-    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
-    50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
   );
   filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
 }

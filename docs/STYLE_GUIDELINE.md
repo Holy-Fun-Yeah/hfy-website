@@ -429,14 +429,15 @@ Smooth, flowing light beams along page margins. Inspired by aurora borealis and 
 <EnergyThreads side="both" :threads="3" intensity="medium" :animated="true" />
 ```
 
-| Prop        | Type                         | Default    | Description                  |
-| ----------- | ---------------------------- | ---------- | ---------------------------- |
-| `side`      | `'left' \| 'right' \| 'both'` | `'both'`   | Which margins to decorate    |
-| `threads`   | `number`                     | `3`        | Number of flowing lines      |
-| `intensity` | `'low' \| 'medium' \| 'high'` | `'medium'` | Visibility/opacity           |
-| `animated`  | `boolean`                    | `true`     | Enable flowing animation     |
+| Prop        | Type                          | Default    | Description               |
+| ----------- | ----------------------------- | ---------- | ------------------------- |
+| `side`      | `'left' \| 'right' \| 'both'` | `'both'`   | Which margins to decorate |
+| `threads`   | `number`                      | `3`        | Number of flowing lines   |
+| `intensity` | `'low' \| 'medium' \| 'high'` | `'medium'` | Visibility/opacity        |
+| `animated`  | `boolean`                     | `true`     | Enable flowing animation  |
 
 **Features:**
+
 - Ultra-smooth Catmull-Rom bezier curves (40 segments)
 - Pride rainbow gradient with SVG animate color cycling
 - Subtle glow with layered blur filters
@@ -457,14 +458,14 @@ Rotating mystical patterns positioned at page corners.
 />
 ```
 
-| Prop       | Type                                           | Default         | Description              |
-| ---------- | ---------------------------------------------- | --------------- | ------------------------ |
-| `pattern`  | `'flowerOfLife' \| 'metatron' \| 'spiral'`     | `'flowerOfLife'` | Sacred geometry pattern  |
-| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right' \| 'center'` | `'center'` | Screen position |
-| `size`     | `number`                                       | `400`           | Size in pixels           |
-| `opacity`  | `number`                                       | `0.1`           | Visibility (0-1)         |
-| `rotate`   | `boolean`                                      | `false`         | Enable slow rotation     |
-| `color`    | `'gradient' \| 'gold' \| 'brand'`              | `'gradient'`    | Color scheme             |
+| Prop       | Type                                                                       | Default          | Description             |
+| ---------- | -------------------------------------------------------------------------- | ---------------- | ----------------------- |
+| `pattern`  | `'flowerOfLife' \| 'metatron' \| 'spiral'`                                 | `'flowerOfLife'` | Sacred geometry pattern |
+| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right' \| 'center'` | `'center'`       | Screen position         |
+| `size`     | `number`                                                                   | `400`            | Size in pixels          |
+| `opacity`  | `number`                                                                   | `0.1`            | Visibility (0-1)        |
+| `rotate`   | `boolean`                                                                  | `false`          | Enable slow rotation    |
+| `color`    | `'gradient' \| 'gold' \| 'brand'`                                          | `'gradient'`     | Color scheme            |
 
 ### RadialBurst
 
@@ -474,13 +475,13 @@ Sunburst rays emanating from a central point, typically behind hero content.
 <RadialBurst :rays="28" color="rainbow" :intensity="0.18" :pulse="true" :size="160" />
 ```
 
-| Prop        | Type                           | Default     | Description             |
-| ----------- | ------------------------------ | ----------- | ----------------------- |
-| `rays`      | `number`                       | `16`        | Number of light rays    |
-| `color`     | `'rainbow' \| 'gold' \| 'brand'` | `'rainbow'` | Color scheme            |
-| `intensity` | `number`                       | `0.15`      | Opacity (0-1)           |
-| `pulse`     | `boolean`                      | `true`      | Enable pulsing glow     |
-| `size`      | `number`                       | `120`       | Size as % of container  |
+| Prop        | Type                             | Default     | Description            |
+| ----------- | -------------------------------- | ----------- | ---------------------- |
+| `rays`      | `number`                         | `16`        | Number of light rays   |
+| `color`     | `'rainbow' \| 'gold' \| 'brand'` | `'rainbow'` | Color scheme           |
+| `intensity` | `number`                         | `0.15`      | Opacity (0-1)          |
+| `pulse`     | `boolean`                        | `true`      | Enable pulsing glow    |
+| `size`      | `number`                         | `120`       | Size as % of container |
 
 ### ScrollGradientOverlay
 
@@ -507,9 +508,30 @@ The standard ethereal decoration setup in `layouts/default.vue`:
     <EnergyThreads side="both" :threads="3" intensity="medium" :animated="true" />
 
     <!-- Corner sacred geometry -->
-    <SacredGeometry pattern="flowerOfLife" position="top-left" :size="600" :opacity="0.07" :rotate="true" color="gradient" />
-    <SacredGeometry pattern="metatron" position="bottom-right" :size="550" :opacity="0.06" :rotate="true" color="gradient" />
-    <SacredGeometry pattern="spiral" position="top-right" :size="400" :opacity="0.05" :rotate="true" color="gold" />
+    <SacredGeometry
+      pattern="flowerOfLife"
+      position="top-left"
+      :size="600"
+      :opacity="0.07"
+      :rotate="true"
+      color="gradient"
+    />
+    <SacredGeometry
+      pattern="metatron"
+      position="bottom-right"
+      :size="550"
+      :opacity="0.06"
+      :rotate="true"
+      color="gradient"
+    />
+    <SacredGeometry
+      pattern="spiral"
+      position="top-right"
+      :size="400"
+      :opacity="0.05"
+      :rotate="true"
+      color="gold"
+    />
 
     <!-- Content (z-index: 10) -->
     <AppHeader />

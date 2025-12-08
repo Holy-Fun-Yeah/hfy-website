@@ -91,12 +91,12 @@ When creating new components:
 
 **"Holographic Mystic Maximalism"** — Warm Abundant Base + Pride Rainbow Cosmic Accents
 
-| Principle     | Expression                                                        |
-| ------------- | ----------------------------------------------------------------- |
-| **Warmth**    | Cream/pearl backgrounds, golden accents, soft shadows             |
-| **Pride**     | LGBTQ rainbow spectrum (red→orange→yellow→green→blue→purple)      |
-| **Cosmic**    | Ethereal energy threads, sacred geometry, aurora-like decorations |
-| **Sacred**    | Intentional hierarchy, breathing animations, reverent pacing      |
+| Principle  | Expression                                                        |
+| ---------- | ----------------------------------------------------------------- |
+| **Warmth** | Cream/pearl backgrounds, golden accents, soft shadows             |
+| **Pride**  | LGBTQ rainbow spectrum (red→orange→yellow→green→blue→purple)      |
+| **Cosmic** | Ethereal energy threads, sacred geometry, aurora-like decorations |
+| **Sacred** | Intentional hierarchy, breathing animations, reverent pacing      |
 
 **Theme Moods:**
 
@@ -104,6 +104,7 @@ When creating new components:
 - **Dark Mode ("Cosmic Night")**: Mystical, deep, luminous
 
 **Ethereal Decorations** (global, in default layout):
+
 - `EnergyThreads` — Flowing light beams along margins (pride rainbow)
 - `SacredGeometry` — Rotating patterns at corners (flower of life, metatron, spiral)
 - `AmbientBackground` — Rainbow orbs, particles, golden stars
