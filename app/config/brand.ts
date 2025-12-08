@@ -54,11 +54,12 @@ export const brandConfig: BrandConfig = {
     accent: '#d81b60',
 
     /**
-     * Contrast: Golden sun
+     * Contrast: Warm amber
      * - High-visibility CTAs, sacred moments
+     * - Darker amber for better text contrast
      * - Represents: Abundance, joy, sovereign power
      */
-    contrast: '#f9a825',
+    contrast: '#e07c24',
 
     /**
      * Secondary: Turquoise
@@ -129,10 +130,11 @@ export const brandConfig: BrandConfig = {
     accent: '#f48fb1',
 
     /**
-     * Contrast: Bright gold
+     * Contrast: Deep amber
      * - Solar energy against cosmic darkness
+     * - Rich tone for white text contrast
      */
-    contrast: '#ffd54f',
+    contrast: '#d97706',
 
     /**
      * Secondary: Bright turquoise

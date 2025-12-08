@@ -4,7 +4,7 @@
  *
  * Creates an immersive atmosphere with:
  * - Floating gradient orbs that drift slowly (full rainbow spectrum)
- * - Golden star particles and shimmer effects
+ * - Rainbow shimmer particles
  * - CSS animations for performance (no Motion.js)
  *
  * LAZY LOADED: Renders after initial layout
@@ -15,18 +15,16 @@ interface Props {
   intensity?: 'low' | 'medium' | 'high'
   orbs?: number
   particles?: boolean
-  stars?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   intensity: 'medium',
   orbs: 4,
   particles: true,
-  stars: true,
 })
 
 // Theme-aware visual colors
-const { orbColors, particleColors, starGradient, starGlow } = useVisuals()
+const { orbColors, particleColors } = useVisuals()
 
 // Lazy load
 const isLoaded = ref(false)
@@ -76,23 +74,6 @@ const particles = computed(() =>
   }))
 )
 
-// Golden star particles - MORE and BIGGER per user request
-const starCount = computed(() => {
-  if (!props.stars) return 0
-  return isMobile.value ? 20 : 45
-})
-
-const starParticles = computed(() =>
-  Array.from({ length: starCount.value }, (_, i) => ({
-    id: i,
-    x: (i * 17 + 7) % 100,
-    y: (i * 29 + 11) % 100,
-    size: 10 + (i % 6) * 4, // Bigger: 10-30px
-    duration: 2.5 + (i % 4),
-    delay: (i % 12) * 0.8,
-  }))
-)
-
 const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
 </script>
 
@@ -133,23 +114,6 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
         boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
         animationDuration: `${particle.duration}s`,
         animationDelay: `${particle.delay}s`,
-      }"
-    />
-
-    <!-- Golden star particles - MORE and BIGGER -->
-    <div
-      v-for="star in starParticles"
-      :key="`star-${star.id}`"
-      class="star star-shape absolute will-change-transform"
-      :style="{
-        left: `${star.x}%`,
-        top: `${star.y}%`,
-        width: `${star.size}px`,
-        height: `${star.size}px`,
-        background: starGradient,
-        filter: starGlow,
-        animationDuration: `${star.duration}s`,
-        animationDelay: `${star.delay}s`,
       }"
     />
 
@@ -201,40 +165,6 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
     opacity: 1;
     transform: scale(1.1);
   }
-}
-
-/* Star sparkle animation */
-.star {
-  animation: sparkle 3s ease-in-out infinite;
-  transform: translateZ(0);
-}
-
-@keyframes sparkle {
-  0%,
-  100% {
-    opacity: 0;
-    transform: scale(0) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1) rotate(90deg);
-  }
-}
-
-/* Star shape - colors set via inline style from useVisuals() */
-.star-shape {
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
 }
 
 .bg-noise {

@@ -94,14 +94,12 @@ const transitionConfig = {
         class="h-full"
       >
         <div class="space-y-2">
-          <!-- Category badge with prismatic accent -->
+          <!-- Category badge with lava lamp effect -->
           <div
             v-if="category"
             class="inline-flex"
           >
-            <span
-              class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end rounded-full bg-gradient-to-r px-3 py-0.5 text-xs font-semibold tracking-wide text-white uppercase"
-            >
+            <span class="badge-lava relative overflow-hidden rounded-full px-3 py-0.5 text-xs font-semibold tracking-wide text-white uppercase">
               {{ category }}
             </span>
           </div>
@@ -145,3 +143,39 @@ const transitionConfig = {
     </component>
   </Motion>
 </template>
+
+<style scoped>
+/* Lava lamp effect for category badge */
+.badge-lava {
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-gradient-start),
+    var(--color-brand-gradient-middle),
+    var(--color-brand-gradient-end),
+    var(--color-brand-gradient-middle),
+    var(--color-brand-gradient-start)
+  );
+  background-size: 300% 100%;
+  animation: lava-flow 4s ease-in-out infinite;
+}
+
+@keyframes lava-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Subtle glow on hover */
+.group:hover .badge-lava {
+  box-shadow:
+    0 0 12px var(--color-brand-gradient-start),
+    0 0 20px var(--color-brand-gradient-middle);
+  animation-duration: 2s;
+}
+</style>
