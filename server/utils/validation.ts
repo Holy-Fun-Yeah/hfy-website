@@ -7,6 +7,9 @@ import {
   selectPostSchema,
   insertPostSchema,
   updatePostSchema,
+  selectEventSchema,
+  insertEventSchema,
+  updateEventSchema,
 } from '../database/schema'
 
 // Re-export schemas from database schema (single source of truth)
@@ -17,10 +20,14 @@ export {
   selectPostSchema,
   insertPostSchema,
   updatePostSchema,
+  selectEventSchema,
+  insertEventSchema,
+  updateEventSchema,
 }
 
 // Re-export types
 export type { User, NewUser, UpdateUser, Post, NewPost, UpdatePost } from '../database/schema'
+export type { Event, NewEvent, UpdateEvent, EventType, EventStatus } from '../database/schema'
 
 // ============================================================
 // Common Validation Schemas

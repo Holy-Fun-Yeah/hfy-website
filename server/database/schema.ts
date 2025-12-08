@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, boolean, integer, decimal } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, timestamp, boolean, integer, decimal, uuid, pgEnum } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
 
@@ -80,31 +80,56 @@ export type UpdatePost = z.infer<typeof updatePostSchema>
 // ============================================================
 // Events Table
 // ============================================================
+export const eventTypeEnum = pgEnum('event_type', ['online', 'in_person'])
+export const eventStatusEnum = pgEnum('event_status', ['draft', 'published', 'cancelled', 'completed'])
+
 export const events = pgTable('events', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
+  slug: text('slug').notNull().unique(),
   title: text('title').notNull(),
-  description: text('description').notNull(),
-  location: text('location'), // Physical location or "Online"
-  imageUrl: text('image_url'),
-  startsAt: timestamp('starts_at').notNull(),
-  endsAt: timestamp('ends_at'),
+  description: text('description').notNull(), // Brief text for event cards
+  detail: text('detail').notNull(), // Markdown content for full event page
+  type: eventTypeEnum('type').notNull(),
+  status: eventStatusEnum('status').default('draft').notNull(),
+  // Scheduling (stored in UTC, frontend converts to user timezone)
+  startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
+  endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
+  // Location
+  host: text('host').notNull(), // Who's leading the event
+  location: text('location').notNull(), // City name or "Online"
+  address: text('address'), // Specific venue address (in-person only)
+  googleMapsUrl: text('google_maps_url'), // Optional maps link
+  // Capacity & Pricing
   capacity: integer('capacity'), // null = unlimited
-  price: decimal('price', { precision: 10, scale: 2 }), // null = free
-  published: boolean('published').default(false).notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  usdPrice: decimal('usd_price', { precision: 10, scale: 2 }).default('0').notNull(), // 0 = free
+  // Media
+  bannerUrl: text('banner_url'), // Event card/header image (Supabase storage)
+  // Timestamps
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 })
 
 export const selectEventSchema = createSelectSchema(events)
 export const insertEventSchema = createInsertSchema(events, {
+  slug: z
+    .string()
+    .min(1, 'Slug is required')
+    .max(200)
+    .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens'),
   title: z.string().min(1, 'Title is required').max(200),
-  description: z.string().min(1, 'Description is required'),
-  location: z.string().max(200).optional().nullable(),
-  imageUrl: z.string().url().optional().nullable(),
+  description: z.string().min(1, 'Description is required').max(500),
+  detail: z.string().min(1, 'Detail is required'),
+  type: z.enum(['online', 'in_person']),
+  status: z.enum(['draft', 'published', 'cancelled', 'completed']).default('draft'),
   startsAt: z.coerce.date(),
-  endsAt: z.coerce.date().optional().nullable(),
+  endsAt: z.coerce.date(),
+  host: z.string().min(1, 'Host is required').max(100),
+  location: z.string().min(1, 'Location is required').max(200),
+  address: z.string().max(300).optional().nullable(),
+  googleMapsUrl: z.string().url().optional().nullable(),
   capacity: z.number().int().positive().optional().nullable(),
-  price: z.string().optional().nullable(), // Decimal comes as string
+  usdPrice: z.string().default('0'),
+  bannerUrl: z.string().url().optional().nullable(),
 })
 
 export const updateEventSchema = insertEventSchema.partial().omit({
@@ -116,6 +141,8 @@ export const updateEventSchema = insertEventSchema.partial().omit({
 export type Event = z.infer<typeof selectEventSchema>
 export type NewEvent = z.infer<typeof insertEventSchema>
 export type UpdateEvent = z.infer<typeof updateEventSchema>
+export type EventType = 'online' | 'in_person'
+export type EventStatus = 'draft' | 'published' | 'cancelled' | 'completed'
 
 // ============================================================
 // Services Table (Bookable offerings)
