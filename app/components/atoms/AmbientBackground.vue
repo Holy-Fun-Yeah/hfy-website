@@ -174,7 +174,7 @@ const starParticles = computed(() =>
         ease: 'easeInOut' as const,
         delay: star.delay,
       }"
-      class="absolute star-shape"
+      class="star-shape absolute"
       :style="{
         left: `${star.x}%`,
         top: `${star.y}%`,
@@ -184,7 +184,7 @@ const starParticles = computed(() =>
     />
 
     <!-- Subtle noise overlay for texture -->
-    <div class="absolute inset-0 bg-noise opacity-[0.015]" />
+    <div class="bg-noise absolute inset-0 opacity-[0.015]" />
   </div>
 </template>
 

@@ -292,7 +292,10 @@ useSeoMeta({
       </div>
 
       <!-- Article Header -->
-      <PageSection spacing="lg" decorations="subtle">
+      <PageSection
+        spacing="lg"
+        decorations="subtle"
+      >
         <article class="mx-auto max-w-3xl">
           <header class="mb-8 text-center">
             <p class="text-brand-secondary mb-3 text-sm font-medium tracking-wide uppercase">

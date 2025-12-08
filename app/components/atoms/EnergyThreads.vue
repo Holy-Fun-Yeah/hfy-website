@@ -40,8 +40,8 @@ const generateFlowingPath = (
   const xBase = isLeft ? edgeDistance : 100 - edgeDistance
 
   // Very gentle wave parameters for smooth, elegant flow
-  const amplitude = 2 + (index * 0.8)
-  const frequency = 0.8 + (index * 0.15)
+  const amplitude = 2 + index * 0.8
+  const frequency = 0.8 + index * 0.15
 
   // Many segments for ultra-smooth curves
   const segments = 40
@@ -53,8 +53,8 @@ const generateFlowingPath = (
 
     // Smooth sine wave with very gentle harmonics
     const phase = timeOffset * Math.PI * 2
-    const wave = Math.sin((t * Math.PI * frequency * 2) + phase + index) * amplitude
-    const gentleWobble = Math.sin((t * Math.PI * frequency * 3.5) + phase * 0.7) * (amplitude * 0.2)
+    const wave = Math.sin(t * Math.PI * frequency * 2 + phase + index) * amplitude
+    const gentleWobble = Math.sin(t * Math.PI * frequency * 3.5 + phase * 0.7) * (amplitude * 0.2)
 
     const xOffset = wave + gentleWobble
     const x = isLeft ? xBase + xOffset : xBase - xOffset
@@ -91,7 +91,7 @@ const generateFlowingPath = (
 const generateMorphKeyframes = (side: 'left' | 'right', index: number, total: number) => {
   // 5 smooth phases for seamless looping
   return [0, 0.25, 0.5, 0.75, 1]
-    .map(phase => generateFlowingPath(side, index, total, phase))
+    .map((phase) => generateFlowingPath(side, index, total, phase))
     .join(';')
 }
 
@@ -139,7 +139,10 @@ const instanceId = Math.random().toString(36).substring(7)
           x2="0%"
           y2="100%"
         >
-          <stop offset="0%" stop-color="#ef4444">
+          <stop
+            offset="0%"
+            stop-color="#ef4444"
+          >
             <animate
               v-if="animated"
               attributeName="stop-color"
@@ -148,7 +151,10 @@ const instanceId = Math.random().toString(36).substring(7)
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="20%" stop-color="#f97316">
+          <stop
+            offset="20%"
+            stop-color="#f97316"
+          >
             <animate
               v-if="animated"
               attributeName="stop-color"
@@ -157,7 +163,10 @@ const instanceId = Math.random().toString(36).substring(7)
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="40%" stop-color="#eab308">
+          <stop
+            offset="40%"
+            stop-color="#eab308"
+          >
             <animate
               v-if="animated"
               attributeName="stop-color"
@@ -166,7 +175,10 @@ const instanceId = Math.random().toString(36).substring(7)
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="60%" stop-color="#22c55e">
+          <stop
+            offset="60%"
+            stop-color="#22c55e"
+          >
             <animate
               v-if="animated"
               attributeName="stop-color"
@@ -175,7 +187,10 @@ const instanceId = Math.random().toString(36).substring(7)
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="80%" stop-color="#3b82f6">
+          <stop
+            offset="80%"
+            stop-color="#3b82f6"
+          >
             <animate
               v-if="animated"
               attributeName="stop-color"
@@ -184,7 +199,10 @@ const instanceId = Math.random().toString(36).substring(7)
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="100%" stop-color="#8b5cf6">
+          <stop
+            offset="100%"
+            stop-color="#8b5cf6"
+          >
             <animate
               v-if="animated"
               attributeName="stop-color"
@@ -203,8 +221,16 @@ const instanceId = Math.random().toString(36).substring(7)
           width="300%"
           height="200%"
         >
-          <feGaussianBlur in="SourceGraphic" stdDeviation="0.3" result="blur1" />
-          <feGaussianBlur in="SourceGraphic" stdDeviation="0.6" result="blur2" />
+          <feGaussianBlur
+            in="SourceGraphic"
+            stdDeviation="0.3"
+            result="blur1"
+          />
+          <feGaussianBlur
+            in="SourceGraphic"
+            stdDeviation="0.6"
+            result="blur2"
+          />
           <feMerge>
             <feMergeNode in="blur2" />
             <feMergeNode in="blur1" />
@@ -220,7 +246,11 @@ const instanceId = Math.random().toString(36).substring(7)
           width="500%"
           height="300%"
         >
-          <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="blur" />
+          <feGaussianBlur
+            in="SourceGraphic"
+            stdDeviation="1.2"
+            result="blur"
+          />
           <feColorMatrix
             in="blur"
             type="matrix"
@@ -343,7 +373,8 @@ const instanceId = Math.random().toString(36).substring(7)
 }
 
 @keyframes breathe {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.25;
   }
   50% {
@@ -352,7 +383,8 @@ const instanceId = Math.random().toString(36).substring(7)
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.8;
   }
   50% {

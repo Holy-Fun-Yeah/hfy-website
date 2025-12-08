@@ -87,7 +87,13 @@ const transitionConfig = {
     <!-- Decorative elements for hero/subtle modes -->
     <template v-if="decorations === 'hero'">
       <!-- Radial sunburst effect - centered glow -->
-      <RadialBurst :rays="24" color="rainbow" :intensity="0.15" :pulse="true" :size="150" />
+      <RadialBurst
+        :rays="24"
+        color="rainbow"
+        :intensity="0.15"
+        :pulse="true"
+        :size="150"
+      />
 
       <!-- Local sacred geometry for this section -->
       <SacredGeometry
@@ -101,10 +107,22 @@ const transitionConfig = {
 
     <template v-else-if="decorations === 'subtle'">
       <!-- Subtle radial glow only -->
-      <RadialBurst :rays="12" color="gold" :intensity="0.08" :pulse="true" :size="100" />
+      <RadialBurst
+        :rays="12"
+        color="gold"
+        :intensity="0.08"
+        :pulse="true"
+        :size="100"
+      />
     </template>
 
-    <div :class="['relative z-10 mx-auto px-4 sm:px-6', widthClasses[width], { 'text-center': centered }]">
+    <div
+      :class="[
+        'relative z-10 mx-auto px-4 sm:px-6',
+        widthClasses[width],
+        { 'text-center': centered },
+      ]"
+    >
       <!-- Header with scroll-reveal animation -->
       <Motion
         v-if="eyebrow || title || description"

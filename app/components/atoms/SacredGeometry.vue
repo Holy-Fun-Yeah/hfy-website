@@ -142,14 +142,29 @@ const spiralPath = computed(() => {
           x2="100%"
           y2="100%"
         >
-          <stop offset="0%" stop-color="var(--color-brand-gradient-start)" />
-          <stop offset="50%" stop-color="var(--color-brand-gradient-middle)" />
-          <stop offset="100%" stop-color="var(--color-brand-gradient-end)" />
+          <stop
+            offset="0%"
+            stop-color="var(--color-brand-gradient-start)"
+          />
+          <stop
+            offset="50%"
+            stop-color="var(--color-brand-gradient-middle)"
+          />
+          <stop
+            offset="100%"
+            stop-color="var(--color-brand-gradient-end)"
+          />
         </linearGradient>
 
         <linearGradient id="goldGradient">
-          <stop offset="0%" stop-color="#ffd700" />
-          <stop offset="100%" stop-color="#ff8c00" />
+          <stop
+            offset="0%"
+            stop-color="#ffd700"
+          />
+          <stop
+            offset="100%"
+            stop-color="#ff8c00"
+          />
         </linearGradient>
       </defs>
 

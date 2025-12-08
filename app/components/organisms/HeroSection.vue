@@ -64,7 +64,13 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
 <template>
   <section class="relative overflow-hidden py-20 md:py-32">
     <!-- Radial sunburst effect - hero-specific glow -->
-    <RadialBurst :rays="28" color="rainbow" :intensity="0.18" :pulse="true" :size="160" />
+    <RadialBurst
+      :rays="28"
+      color="rainbow"
+      :intensity="0.18"
+      :pulse="true"
+      :size="160"
+    />
 
     <!-- Hero-specific sacred geometry -->
     <SacredGeometry
@@ -120,7 +126,7 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
         class="font-headers mb-6 text-4xl leading-tight font-bold md:text-5xl lg:text-6xl"
       >
         <span
-          class="bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-clip-text text-transparent"
+          class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-gradient-to-r bg-clip-text text-transparent"
         >
           {{ title }}
         </span>

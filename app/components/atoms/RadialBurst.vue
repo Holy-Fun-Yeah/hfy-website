@@ -84,7 +84,7 @@ const gradientStops = computed(() => {
     :style="{ opacity: intensity }"
   >
     <svg
-      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       :class="{ 'animate-spin-slow': pulse }"
       :style="{ width: `${size}%`, height: `${size}%` }"
       viewBox="0 0 100 100"
@@ -93,10 +93,26 @@ const gradientStops = computed(() => {
       <defs>
         <!-- Radial gradient for center glow - VIVID golden white -->
         <radialGradient id="centerGlow">
-          <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
-          <stop offset="20%" stop-color="#ffd700" stop-opacity="0.6" />
-          <stop offset="50%" stop-color="#8b5cf6" stop-opacity="0.3" />
-          <stop offset="100%" stop-color="#7c3aed" stop-opacity="0" />
+          <stop
+            offset="0%"
+            stop-color="#ffffff"
+            stop-opacity="1"
+          />
+          <stop
+            offset="20%"
+            stop-color="#ffd700"
+            stop-opacity="0.6"
+          />
+          <stop
+            offset="50%"
+            stop-color="#8b5cf6"
+            stop-opacity="0.3"
+          />
+          <stop
+            offset="100%"
+            stop-color="#7c3aed"
+            stop-opacity="0"
+          />
         </radialGradient>
 
         <!-- Linear gradient for rays -->
@@ -124,7 +140,11 @@ const gradientStops = computed(() => {
           x2="100%"
           y2="0%"
         >
-          <stop offset="0%" stop-color="#ef4444" stop-opacity="0.9">
+          <stop
+            offset="0%"
+            stop-color="#ef4444"
+            stop-opacity="0.9"
+          >
             <animate
               attributeName="stop-color"
               values="#ef4444;#f97316;#eab308;#22c55e;#3b82f6;#8b5cf6;#ef4444"
@@ -132,7 +152,11 @@ const gradientStops = computed(() => {
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="40%" stop-color="#22c55e" stop-opacity="0.7">
+          <stop
+            offset="40%"
+            stop-color="#22c55e"
+            stop-opacity="0.7"
+          >
             <animate
               attributeName="stop-color"
               values="#22c55e;#3b82f6;#8b5cf6;#ef4444;#f97316;#eab308;#22c55e"
@@ -140,7 +164,11 @@ const gradientStops = computed(() => {
               repeatCount="indefinite"
             />
           </stop>
-          <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+          <stop
+            offset="100%"
+            stop-color="transparent"
+            stop-opacity="0"
+          />
         </linearGradient>
       </defs>
 
