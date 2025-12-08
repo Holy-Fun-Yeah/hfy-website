@@ -99,7 +99,9 @@ const transitionConfig = {
             v-if="category"
             class="inline-flex"
           >
-            <span class="badge-lava relative overflow-hidden rounded-full px-3 py-0.5 text-xs font-semibold tracking-wide text-white uppercase">
+            <span
+              class="badge-lava relative overflow-hidden rounded-full px-3 py-0.5 text-xs font-semibold tracking-wide text-white uppercase"
+            >
               {{ category }}
             </span>
           </div>
