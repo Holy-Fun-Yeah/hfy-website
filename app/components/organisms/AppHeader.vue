@@ -44,7 +44,7 @@ const itemInitial = { opacity: 0, x: -10 }
 
 <template>
   <header
-    class="bg-brand-background/70 border-brand-base/10 sticky top-0 z-50 border-b backdrop-blur-lg"
+    class="bg-brand-background/70 sticky top-0 z-50 backdrop-blur-lg"
   >
     <nav class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
       <!-- Logo with gradient hover -->

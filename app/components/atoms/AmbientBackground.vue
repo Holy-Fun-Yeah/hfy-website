@@ -8,6 +8,7 @@
  * - CSS animations for performance (no Motion.js)
  *
  * LAZY LOADED: Renders after initial layout
+ * Colors from ~/config/visuals.ts for consistency
  */
 
 interface Props {
@@ -24,6 +25,9 @@ const props = withDefaults(defineProps<Props>(), {
   stars: true,
 })
 
+// Theme-aware visual colors
+const { orbColors, particleColors, starGradient, starGlow } = useVisuals()
+
 // Lazy load
 const isLoaded = ref(false)
 const isMobile = ref(false)
@@ -38,16 +42,6 @@ onMounted(() => {
   })
 })
 
-// Full RAINBOW color palette for orbs - Pride flag spectrum
-const orbColors = [
-  { from: 'rgba(239, 68, 68, 0.4)', to: 'rgba(249, 115, 22, 0.25)' },
-  { from: 'rgba(249, 115, 22, 0.4)', to: 'rgba(234, 179, 8, 0.25)' },
-  { from: 'rgba(234, 179, 8, 0.4)', to: 'rgba(34, 197, 94, 0.25)' },
-  { from: 'rgba(34, 197, 94, 0.4)', to: 'rgba(59, 130, 246, 0.25)' },
-  { from: 'rgba(59, 130, 246, 0.4)', to: 'rgba(139, 92, 246, 0.25)' },
-  { from: 'rgba(139, 92, 246, 0.4)', to: 'rgba(239, 68, 68, 0.25)' },
-]
-
 // Pre-computed orb configs
 const orbConfigs = computed(() => {
   const intensityMultiplier = { low: 0.5, medium: 1, high: 1.5 }[props.intensity]
@@ -60,7 +54,7 @@ const orbConfigs = computed(() => {
     y: 5 + ((i * 28) % 90),
     duration: 20 + i * 5,
     delay: i * 2,
-    colors: orbColors[i % orbColors.length],
+    colors: orbColors.value[i % orbColors.value.length],
   }))
 })
 
@@ -70,16 +64,6 @@ const particleCount = computed(() => {
   return isMobile.value ? 15 : 35
 })
 
-const particleColors = [
-  'rgba(255, 255, 255, 0.95)',
-  'rgba(239, 68, 68, 0.85)',
-  'rgba(249, 115, 22, 0.85)',
-  'rgba(234, 179, 8, 0.9)',
-  'rgba(34, 197, 94, 0.85)',
-  'rgba(59, 130, 246, 0.85)',
-  'rgba(139, 92, 246, 0.85)',
-]
-
 const particles = computed(() =>
   Array.from({ length: particleCount.value }, (_, i) => ({
     id: i,
@@ -88,7 +72,7 @@ const particles = computed(() =>
     size: 2 + (i % 4),
     duration: 3 + (i % 5),
     delay: (i % 10) * 0.5,
-    color: particleColors[i % particleColors.length],
+    color: particleColors.value[i % particleColors.value.length],
   }))
 )
 
@@ -162,6 +146,8 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
         top: `${star.y}%`,
         width: `${star.size}px`,
         height: `${star.size}px`,
+        background: starGradient,
+        filter: starGlow,
         animationDuration: `${star.duration}s`,
         animationDelay: `${star.delay}s`,
       }"
@@ -235,8 +221,8 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
   }
 }
 
+/* Star shape - colors set via inline style from useVisuals() */
 .star-shape {
-  background: linear-gradient(135deg, #fff 0%, #ffd700 30%, #ffaa00 60%, #ff8c00 100%);
   clip-path: polygon(
     50% 0%,
     61% 35%,
@@ -249,7 +235,6 @@ const opacityMap = { low: 0.6, medium: 0.8, high: 1 }
     2% 35%,
     39% 35%
   );
-  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
 }
 
 .bg-noise {

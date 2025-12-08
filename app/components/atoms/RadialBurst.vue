@@ -5,6 +5,9 @@
  * Creates a sunburst effect with animated rays emanating from center.
  * Inspired by spiritual/cosmic imagery with golden light energy.
  *
+ * LAZY LOADED: Renders after initial layout for better performance
+ * Colors from ~/config/visuals.ts for consistency
+ *
  * @example
  * ```vue
  * <RadialBurst />
@@ -29,6 +32,20 @@ const props = withDefaults(defineProps<Props>(), {
   size: 120,
 })
 
+// Theme-aware visual colors
+const { colors, rainbow, rainbowStops, goldStops, getShiftedRainbowValues } = useVisuals()
+
+// Lazy load
+const isLoaded = ref(false)
+
+onMounted(() => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      isLoaded.value = true
+    })
+  })
+})
+
 // Generate ray paths
 const rayPaths = computed(() => {
   const paths = []
@@ -47,26 +64,22 @@ const rayPaths = computed(() => {
   return paths
 })
 
-// Gradient stops based on color prop - Full RAINBOW pride spectrum
+// Rainbow stops for circular gradient (loops back to start)
+const rainbowCircularStops = computed(() => {
+  const stops = rainbowStops.value
+  return [
+    ...stops,
+    { offset: '100%', color: stops[0]?.color || colors.value.rainbow.red },
+  ]
+})
+
+// Gradient stops based on color prop
 const gradientStops = computed(() => {
   switch (props.color) {
     case 'rainbow':
-      return [
-        { offset: '0%', color: '#ef4444' }, // Red
-        { offset: '17%', color: '#f97316' }, // Orange
-        { offset: '33%', color: '#eab308' }, // Yellow
-        { offset: '50%', color: '#22c55e' }, // Green
-        { offset: '67%', color: '#3b82f6' }, // Blue
-        { offset: '83%', color: '#8b5cf6' }, // Purple
-        { offset: '100%', color: '#ef4444' }, // Back to red
-      ]
+      return rainbowCircularStops.value
     case 'gold':
-      return [
-        { offset: '0%', color: '#ffffff' }, // White center
-        { offset: '30%', color: '#ffd700' }, // Gold
-        { offset: '70%', color: '#ffaa00' },
-        { offset: '100%', color: '#ff8c00' },
-      ]
+      return goldStops.value
     case 'brand':
       return [
         { offset: '0%', color: 'var(--color-brand-accent)' },
@@ -76,10 +89,24 @@ const gradientStops = computed(() => {
       return []
   }
 })
+
+// Animation values for rainbow cycling
+const rainbowAnimationValues = computed(() => rainbow.value.join(';') + ';' + rainbow.value[0])
+
+// Center glow colors (theme-aware)
+const centerGlowStops = computed(() => [
+  { offset: '0%', color: colors.value.gold.white, opacity: 1 },
+  { offset: '20%', color: colors.value.gold.light, opacity: 0.6 },
+  { offset: '50%', color: colors.value.rainbow.purple, opacity: 0.3 },
+  { offset: '100%', color: colors.value.accents.violet, opacity: 0 },
+])
+
+const instanceId = Math.random().toString(36).substring(7)
 </script>
 
 <template>
   <div
+    v-if="isLoaded"
     class="pointer-events-none absolute inset-0 overflow-hidden"
     :style="{ opacity: intensity }"
   >
@@ -91,33 +118,20 @@ const gradientStops = computed(() => {
       preserveAspectRatio="xMidYMid slice"
     >
       <defs>
-        <!-- Radial gradient for center glow - VIVID golden white -->
-        <radialGradient id="centerGlow">
+        <!-- Radial gradient for center glow (theme-aware) -->
+        <radialGradient :id="`centerGlow-${instanceId}`">
           <stop
-            offset="0%"
-            stop-color="#ffffff"
-            stop-opacity="1"
-          />
-          <stop
-            offset="20%"
-            stop-color="#ffd700"
-            stop-opacity="0.6"
-          />
-          <stop
-            offset="50%"
-            stop-color="#8b5cf6"
-            stop-opacity="0.3"
-          />
-          <stop
-            offset="100%"
-            stop-color="#7c3aed"
-            stop-opacity="0"
+            v-for="(stop, idx) in centerGlowStops"
+            :key="idx"
+            :offset="stop.offset"
+            :stop-color="stop.color"
+            :stop-opacity="stop.opacity"
           />
         </radialGradient>
 
         <!-- Linear gradient for rays -->
         <linearGradient
-          id="rayGradient"
+          :id="`rayGradient-${instanceId}`"
           x1="0%"
           y1="0%"
           x2="100%"
@@ -134,7 +148,7 @@ const gradientStops = computed(() => {
 
         <!-- Animated gradient for rainbow effect - Pride flag cycling -->
         <linearGradient
-          id="animatedRayGradient"
+          :id="`animatedRayGradient-${instanceId}`"
           x1="0%"
           y1="0%"
           x2="100%"
@@ -142,24 +156,24 @@ const gradientStops = computed(() => {
         >
           <stop
             offset="0%"
-            stop-color="#ef4444"
+            :stop-color="colors.rainbow.red"
             stop-opacity="0.9"
           >
             <animate
               attributeName="stop-color"
-              values="#ef4444;#f97316;#eab308;#22c55e;#3b82f6;#8b5cf6;#ef4444"
+              :values="rainbowAnimationValues"
               dur="8s"
               repeatCount="indefinite"
             />
           </stop>
           <stop
             offset="40%"
-            stop-color="#22c55e"
+            :stop-color="colors.rainbow.green"
             stop-opacity="0.7"
           >
             <animate
               attributeName="stop-color"
-              values="#22c55e;#3b82f6;#8b5cf6;#ef4444;#f97316;#eab308;#22c55e"
+              :values="getShiftedRainbowValues(3)"
               dur="8s"
               repeatCount="indefinite"
             />
@@ -177,7 +191,7 @@ const gradientStops = computed(() => {
         cx="50"
         cy="50"
         r="15"
-        fill="url(#centerGlow)"
+        :fill="`url(#centerGlow-${instanceId})`"
         class="animate-pulse-slow"
       />
 
@@ -190,7 +204,7 @@ const gradientStops = computed(() => {
           y1="50"
           :x2="50 + ray.length * Math.cos((ray.angle * Math.PI) / 180)"
           :y2="50 + ray.length * Math.sin((ray.angle * Math.PI) / 180)"
-          stroke="url(#animatedRayGradient)"
+          :stroke="`url(#animatedRayGradient-${instanceId})`"
           :stroke-width="ray.id % 2 === 0 ? 0.5 : 0.25"
           stroke-linecap="round"
           :style="{ animationDelay: `${ray.delay}s` }"
@@ -204,7 +218,7 @@ const gradientStops = computed(() => {
         cy="50"
         r="35"
         fill="none"
-        stroke="url(#rayGradient)"
+        :stroke="`url(#rayGradient-${instanceId})`"
         stroke-width="0.2"
         class="animate-ping-slow"
         style="opacity: 0.3"
@@ -214,7 +228,7 @@ const gradientStops = computed(() => {
         cy="50"
         r="45"
         fill="none"
-        stroke="url(#rayGradient)"
+        :stroke="`url(#rayGradient-${instanceId})`"
         stroke-width="0.15"
         class="animate-ping-slow"
         style="opacity: 0.2; animation-delay: 1s"

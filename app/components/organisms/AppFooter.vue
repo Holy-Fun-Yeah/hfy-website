@@ -31,12 +31,7 @@ const legalLinks = [
 </script>
 
 <template>
-  <footer class="bg-brand-neutral/50 relative">
-    <!-- Gradient accent line at top -->
-    <div
-      class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r"
-    />
-
+  <footer class="bg-brand-neutral/50">
     <div class="mx-auto max-w-5xl px-4 py-12">
       <!-- Top section: Brand + Links -->
       <div class="grid gap-8 md:grid-cols-3">

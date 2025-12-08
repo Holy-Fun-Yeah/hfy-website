@@ -6,6 +6,7 @@
  * Inspired by aurora borealis and energy currents - subtle, elegant, not confetti.
  *
  * LAZY LOADED: Renders after initial layout for better performance
+ * Colors from ~/config/visuals.ts for consistency
  */
 
 interface Props {
@@ -21,6 +22,9 @@ const props = withDefaults(defineProps<Props>(), {
   intensity: 'medium',
   animated: true,
 })
+
+// Theme-aware visual colors
+const { rainbow, rainbowStops, getShiftedRainbowValues } = useVisuals()
 
 // Lazy load - render after layout
 const isLoaded = ref(false)
@@ -152,7 +156,7 @@ const instanceId = Math.random().toString(36).substring(7)
       preserveAspectRatio="none"
     >
       <defs>
-        <!-- Smooth rainbow gradient - pride spectrum -->
+        <!-- Smooth rainbow gradient - pride spectrum (colors from visuals config) -->
         <linearGradient
           :id="`energyGradient-${instanceId}`"
           x1="0%"
@@ -161,73 +165,15 @@ const instanceId = Math.random().toString(36).substring(7)
           y2="100%"
         >
           <stop
-            offset="0%"
-            stop-color="#ef4444"
+            v-for="(stop, idx) in rainbowStops"
+            :key="idx"
+            :offset="stop.offset"
+            :stop-color="stop.color"
           >
             <animate
               v-if="animated"
               attributeName="stop-color"
-              values="#ef4444;#f97316;#eab308;#22c55e;#3b82f6;#8b5cf6;#ef4444"
-              dur="15s"
-              repeatCount="indefinite"
-            />
-          </stop>
-          <stop
-            offset="20%"
-            stop-color="#f97316"
-          >
-            <animate
-              v-if="animated"
-              attributeName="stop-color"
-              values="#f97316;#eab308;#22c55e;#3b82f6;#8b5cf6;#ef4444;#f97316"
-              dur="15s"
-              repeatCount="indefinite"
-            />
-          </stop>
-          <stop
-            offset="40%"
-            stop-color="#eab308"
-          >
-            <animate
-              v-if="animated"
-              attributeName="stop-color"
-              values="#eab308;#22c55e;#3b82f6;#8b5cf6;#ef4444;#f97316;#eab308"
-              dur="15s"
-              repeatCount="indefinite"
-            />
-          </stop>
-          <stop
-            offset="60%"
-            stop-color="#22c55e"
-          >
-            <animate
-              v-if="animated"
-              attributeName="stop-color"
-              values="#22c55e;#3b82f6;#8b5cf6;#ef4444;#f97316;#eab308;#22c55e"
-              dur="15s"
-              repeatCount="indefinite"
-            />
-          </stop>
-          <stop
-            offset="80%"
-            stop-color="#3b82f6"
-          >
-            <animate
-              v-if="animated"
-              attributeName="stop-color"
-              values="#3b82f6;#8b5cf6;#ef4444;#f97316;#eab308;#22c55e;#3b82f6"
-              dur="15s"
-              repeatCount="indefinite"
-            />
-          </stop>
-          <stop
-            offset="100%"
-            stop-color="#8b5cf6"
-          >
-            <animate
-              v-if="animated"
-              attributeName="stop-color"
-              values="#8b5cf6;#ef4444;#f97316;#eab308;#22c55e;#3b82f6;#8b5cf6"
+              :values="getShiftedRainbowValues(idx)"
               dur="15s"
               repeatCount="indefinite"
             />
