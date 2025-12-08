@@ -90,14 +90,15 @@ When creating new components:
 
 **"Holographic Mystic Maximalism"** — Warm Abundant Base + Cosmic Accents
 
-| Principle | Expression |
-|-----------|------------|
-| **Warmth** | Cream/pearl backgrounds, golden accents, soft shadows |
-| **Abundance** | Layered surfaces, rich gradients, generous whitespace |
-| **Cosmic** | Iridescent accents, aurora effects, prismatic highlights |
-| **Sacred** | Intentional hierarchy, breathing animations, reverent pacing |
+| Principle     | Expression                                                   |
+| ------------- | ------------------------------------------------------------ |
+| **Warmth**    | Cream/pearl backgrounds, golden accents, soft shadows        |
+| **Abundance** | Layered surfaces, rich gradients, generous whitespace        |
+| **Cosmic**    | Iridescent accents, aurora effects, prismatic highlights     |
+| **Sacred**    | Intentional hierarchy, breathing animations, reverent pacing |
 
 **Theme Moods:**
+
 - **Light Mode ("Sacred Daylight")**: Warm, inviting, abundant
 - **Dark Mode ("Cosmic Night")**: Mystical, deep, luminous
 

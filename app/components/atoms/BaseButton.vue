@@ -126,7 +126,7 @@ const transitionConfig = { type: 'spring' as const, stiffness: 300, damping: 20 
   <!-- Holographic variant with gradient border wrapper -->
   <motion.div
     v-if="variant === 'holographic'"
-    class="btn-wrapper-holo inline-block rounded-xl bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end p-[2px]"
+    class="btn-wrapper-holo from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end inline-block rounded-xl bg-gradient-to-r p-[2px]"
     :while-hover="!disabled && !loading ? { scale: 1.06, y: -6, rotate: 0.5 } : undefined"
     :while-tap="!disabled && !loading ? pressAnimation : undefined"
     :transition="transitionConfig"
@@ -142,7 +142,14 @@ const transitionConfig = { type: 'spring' as const, stiffness: 300, damping: 20 
         fill="none"
         viewBox="0 0 24 24"
       >
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        />
         <path
           class="opacity-75"
           fill="currentColor"
@@ -184,7 +191,14 @@ const transitionConfig = { type: 'spring' as const, stiffness: 300, damping: 20 
       fill="none"
       viewBox="0 0 24 24"
     >
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      />
       <path
         class="opacity-75"
         fill="currentColor"
@@ -211,7 +225,14 @@ const transitionConfig = { type: 'spring' as const, stiffness: 300, damping: 20 
       fill="none"
       viewBox="0 0 24 24"
     >
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      />
       <path
         class="opacity-75"
         fill="currentColor"
@@ -231,12 +252,7 @@ const transitionConfig = { type: 'spring' as const, stiffness: 300, damping: 20 
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: btn-shimmer-sweep 3s ease-in-out infinite;
 }
 

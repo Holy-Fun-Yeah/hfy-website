@@ -66,7 +66,10 @@ const spacingClasses: Record<SectionSpacing, string> = {
 // Motion animation config for scroll reveal
 const revealAnimation = { opacity: 1, y: 0 }
 const initialState = { opacity: 0, y: 30 }
-const transitionConfig = { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
+const transitionConfig = {
+  duration: 0.6,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+}
 </script>
 
 <template>
@@ -87,7 +90,9 @@ const transitionConfig = { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, n
           v-if="eyebrow"
           class="mb-2 text-sm font-semibold tracking-wider uppercase"
         >
-          <span class="bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-clip-text text-transparent">
+          <span
+            class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-gradient-to-r bg-clip-text text-transparent"
+          >
             {{ eyebrow }}
           </span>
         </p>

@@ -28,7 +28,10 @@ const navLinks = [
 const menuAnimation = { opacity: 1, height: 'auto', y: 0 }
 const menuInitial = { opacity: 0, height: 0, y: -10 }
 const menuExit = { opacity: 0, height: 0, y: -10 }
-const menuTransition = { duration: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
+const menuTransition = {
+  duration: 0.25,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+}
 
 // Stagger animation for menu items
 const getItemDelay = (index: number) => ({
@@ -49,7 +52,9 @@ const itemInitial = { opacity: 0, x: -10 }
         to="/"
         class="font-logo text-xl font-bold transition-all duration-300 hover:drop-shadow-[0_0_8px_var(--color-brand-glow)]"
       >
-        <span class="bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-clip-text text-transparent">
+        <span
+          class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-gradient-to-r bg-clip-text text-transparent"
+        >
           {{ brand.name }}
         </span>
       </NuxtLink>
@@ -75,7 +80,7 @@ const itemInitial = { opacity: 0, x: -10 }
         <!-- Theme Toggle with glow effect -->
         <button
           type="button"
-          class="text-brand-muted hover:text-brand-accent rounded-lg p-2 transition-all duration-300 hover:bg-brand-accent/10 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
+          class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/10 rounded-lg p-2 transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
           :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="toggleTheme"
         >
@@ -150,7 +155,7 @@ const itemInitial = { opacity: 0, x: -10 }
         :animate="menuAnimation"
         :exit="menuExit"
         :transition="menuTransition"
-        class="overflow-hidden border-t border-brand-base/10 bg-brand-background/90 backdrop-blur-lg md:hidden"
+        class="border-brand-base/10 bg-brand-background/90 overflow-hidden border-t backdrop-blur-lg md:hidden"
       >
         <ul class="font-primary space-y-1 px-4 py-3">
           <Motion

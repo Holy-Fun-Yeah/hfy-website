@@ -31,9 +31,11 @@ const legalLinks = [
 </script>
 
 <template>
-  <footer class="relative bg-brand-neutral/50">
+  <footer class="bg-brand-neutral/50 relative">
     <!-- Gradient accent line at top -->
-    <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end" />
+    <div
+      class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r"
+    />
 
     <div class="mx-auto max-w-5xl px-4 py-12">
       <!-- Top section: Brand + Links -->
@@ -45,7 +47,9 @@ const legalLinks = [
             to="/"
             class="font-logo text-xl font-bold transition-all duration-300 hover:drop-shadow-[0_0_8px_var(--color-brand-glow)]"
           >
-            <span class="bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-clip-text text-transparent">
+            <span
+              class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-gradient-to-r bg-clip-text text-transparent"
+            >
               {{ brand.name }}
             </span>
           </NuxtLink>
@@ -60,7 +64,7 @@ const legalLinks = [
               :key="social.name"
               :href="social.href"
               :aria-label="social.name"
-              class="text-brand-muted hover:text-brand-accent rounded-lg p-1.5 transition-all duration-300 hover:bg-brand-accent/10 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
+              class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/10 rounded-lg p-1.5 transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -141,7 +145,7 @@ const legalLinks = [
       </div>
 
       <!-- Bottom section: Copyright with gradient accent -->
-      <div class="mt-8 border-t border-brand-base/10 pt-6">
+      <div class="border-brand-base/10 mt-8 border-t pt-6">
         <p class="text-brand-muted/60 text-center text-sm">
           &copy; {{ year }} {{ brand.name }}. All rights reserved.
         </p>

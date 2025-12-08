@@ -40,7 +40,10 @@ withDefaults(defineProps<Props>(), {
 // Motion animation config for scroll reveal
 const revealAnimation = { opacity: 1, y: 0 }
 const initialState = { opacity: 0, y: 20 }
-const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
+const transitionConfig = {
+  duration: 0.5,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+}
 </script>
 
 <template>
@@ -77,7 +80,7 @@ const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, n
     <component
       :is="to ? 'NuxtLink' : 'div'"
       :to="to"
-      class="block group"
+      class="group block"
     >
       <BaseCard
         hoverable
@@ -90,14 +93,18 @@ const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, n
             v-if="date"
             class="inline-flex items-center gap-1.5"
           >
-            <span class="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-brand-gradient-start to-brand-gradient-middle" />
+            <span
+              class="from-brand-gradient-start to-brand-gradient-middle h-1.5 w-1.5 rounded-full bg-gradient-to-r"
+            />
             <p class="text-brand-accent text-xs font-semibold tracking-wide uppercase">
               {{ date }}
             </p>
           </div>
 
           <!-- Title -->
-          <h3 class="font-headers text-brand-base font-semibold transition-colors group-hover:text-brand-accent">
+          <h3
+            class="font-headers text-brand-base group-hover:text-brand-accent font-semibold transition-colors"
+          >
             {{ title }}
           </h3>
 
@@ -107,7 +114,7 @@ const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, n
             class="text-brand-muted flex items-center gap-1.5 text-sm"
           >
             <svg
-              class="h-4 w-4 text-brand-secondary"
+              class="text-brand-secondary h-4 w-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

@@ -1,4 +1,14 @@
-import { pgTable, serial, text, timestamp, boolean, integer, decimal, uuid, pgEnum } from 'drizzle-orm/pg-core'
+import {
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  boolean,
+  integer,
+  decimal,
+  uuid,
+  pgEnum,
+} from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
 
@@ -81,7 +91,12 @@ export type UpdatePost = z.infer<typeof updatePostSchema>
 // Events Table
 // ============================================================
 export const eventTypeEnum = pgEnum('event_type', ['online', 'in_person'])
-export const eventStatusEnum = pgEnum('event_status', ['draft', 'published', 'cancelled', 'completed'])
+export const eventStatusEnum = pgEnum('event_status', [
+  'draft',
+  'published',
+  'cancelled',
+  'completed',
+])
 
 export const events = pgTable('events', {
   id: uuid('id').defaultRandom().primaryKey(),

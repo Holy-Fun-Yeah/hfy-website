@@ -40,7 +40,10 @@ withDefaults(defineProps<Props>(), {
 // Motion animation config for scroll reveal
 const revealAnimation = { opacity: 1, y: 0 }
 const initialState = { opacity: 0, y: 20 }
-const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
+const transitionConfig = {
+  duration: 0.5,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+}
 </script>
 
 <template>
@@ -83,7 +86,7 @@ const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, n
     <component
       :is="to ? 'NuxtLink' : 'div'"
       :to="to"
-      class="block group"
+      class="group block"
     >
       <BaseCard
         hoverable
@@ -97,14 +100,16 @@ const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, n
             class="inline-flex"
           >
             <span
-              class="rounded-full bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end px-3 py-0.5 text-xs font-semibold text-white uppercase tracking-wide"
+              class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end rounded-full bg-gradient-to-r px-3 py-0.5 text-xs font-semibold tracking-wide text-white uppercase"
             >
               {{ category }}
             </span>
           </div>
 
           <!-- Title with hover color transition -->
-          <h3 class="font-headers text-brand-base leading-snug font-semibold transition-colors group-hover:text-brand-accent">
+          <h3
+            class="font-headers text-brand-base group-hover:text-brand-accent leading-snug font-semibold transition-colors"
+          >
             {{ title }}
           </h3>
 
@@ -117,7 +122,9 @@ const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, n
           </p>
 
           <!-- Read more indicator -->
-          <div class="flex items-center gap-1 pt-1 text-sm font-medium text-brand-accent opacity-0 transition-opacity group-hover:opacity-100">
+          <div
+            class="text-brand-accent flex items-center gap-1 pt-1 text-sm font-medium opacity-0 transition-opacity group-hover:opacity-100"
+          >
             <span>Read more</span>
             <svg
               class="h-4 w-4 transition-transform group-hover:translate-x-1"

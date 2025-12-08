@@ -11,12 +11,12 @@ Visual design system for the Holy Fuck Yeah! brand.
 
 ### Core Aesthetic Principles
 
-| Principle | Expression |
-|-----------|------------|
-| **Warmth** | Cream/pearl backgrounds, golden accents, soft shadows |
-| **Abundance** | Layered surfaces, rich gradients, generous whitespace |
-| **Cosmic** | Iridescent accents, aurora effects, prismatic highlights |
-| **Sacred** | Intentional hierarchy, breathing animations, reverent pacing |
+| Principle     | Expression                                                   |
+| ------------- | ------------------------------------------------------------ |
+| **Warmth**    | Cream/pearl backgrounds, golden accents, soft shadows        |
+| **Abundance** | Layered surfaces, rich gradients, generous whitespace        |
+| **Cosmic**    | Iridescent accents, aurora effects, prismatic highlights     |
+| **Sacred**    | Intentional hierarchy, breathing animations, reverent pacing |
 
 ### Visual Hierarchy (60-30-10 Rule)
 
@@ -42,14 +42,14 @@ Visual design system for the Holy Fuck Yeah! brand.
 
 The existing `brandConfig` provides 6 semantic colors per theme:
 
-| Token | Light Mode | Dark Mode | Role |
-|-------|------------|-----------|------|
-| `background` | Warm white `#fffbf7` | Cosmic indigo `#12121f` | Page canvas |
-| `neutral` | Pearl `#faf8f5` | Elevated dark `#252538` | Cards, surfaces |
-| `base` | Volcanic `#1a1a2e` | Pearl `#f5f3f0` | Text, icons |
-| `accent` | Magenta `#d81b60` | Luminous pink `#f48fb1` | Primary actions |
-| `secondary` | Turquoise `#00acc1` | Bright cyan `#4dd0e1` | Secondary actions |
-| `contrast` | Golden sun `#f9a825` | Bright gold `#ffd54f` | High-impact CTAs |
+| Token        | Light Mode           | Dark Mode               | Role              |
+| ------------ | -------------------- | ----------------------- | ----------------- |
+| `background` | Warm white `#fffbf7` | Cosmic indigo `#12121f` | Page canvas       |
+| `neutral`    | Pearl `#faf8f5`      | Elevated dark `#252538` | Cards, surfaces   |
+| `base`       | Volcanic `#1a1a2e`   | Pearl `#f5f3f0`         | Text, icons       |
+| `accent`     | Magenta `#d81b60`    | Luminous pink `#f48fb1` | Primary actions   |
+| `secondary`  | Turquoise `#00acc1`  | Bright cyan `#4dd0e1`   | Secondary actions |
+| `contrast`   | Golden sun `#f9a825` | Bright gold `#ffd54f`   | High-impact CTAs  |
 
 ### Proposed Extensions
 
@@ -75,9 +75,9 @@ interface BrandPalette {
    * Used for borders, backgrounds, decorative elements
    */
   gradient: {
-    start: string   // Pink/rose
-    middle: string  // Violet/purple
-    end: string     // Cyan/turquoise
+    start: string // Pink/rose
+    middle: string // Violet/purple
+    end: string // Cyan/turquoise
   }
 
   /**
@@ -91,6 +91,7 @@ interface BrandPalette {
 #### Proposed Values
 
 **Light Mode:**
+
 ```typescript
 light: {
   // ... existing ...
@@ -105,6 +106,7 @@ light: {
 ```
 
 **Dark Mode:**
+
 ```typescript
 dark: {
   // ... existing ...
@@ -148,40 +150,40 @@ If we want to avoid schema changes, define gradients in `main.css`:
 
 The default experience. Warm, inviting, abundant.
 
-| Element | Treatment |
-|---------|-----------|
-| **Background** | Warm cream (`bg-brand-background`) |
-| **Surfaces** | Pearl white with subtle warmth (`bg-brand-neutral`) |
-| **Text** | Deep volcanic for grounding (`text-brand-base`) |
-| **Accents** | Vibrant magenta, golden CTAs |
-| **Shadows** | Warm, soft, pink-tinted glows |
-| **Gradients** | Soft pastels (pink → violet → cyan) |
+| Element        | Treatment                                           |
+| -------------- | --------------------------------------------------- |
+| **Background** | Warm cream (`bg-brand-background`)                  |
+| **Surfaces**   | Pearl white with subtle warmth (`bg-brand-neutral`) |
+| **Text**       | Deep volcanic for grounding (`text-brand-base`)     |
+| **Accents**    | Vibrant magenta, golden CTAs                        |
+| **Shadows**    | Warm, soft, pink-tinted glows                       |
+| **Gradients**  | Soft pastels (pink → violet → cyan)                 |
 
 ### Dark Mode: "Cosmic Night"
 
 The alternate experience. Mystical, deep, luminous.
 
-| Element | Treatment |
-|---------|-----------|
-| **Background** | Deep cosmic indigo (`bg-brand-background`) |
-| **Surfaces** | Elevated dark with subtle depth (`bg-brand-neutral`) |
-| **Text** | Pearl white for clarity (`text-brand-base`) |
-| **Accents** | Luminous pink, bright gold (increased saturation) |
-| **Shadows** | Glowing, aurora-like, colored shadows |
-| **Gradients** | Saturated neons (pink → violet → cyan) |
+| Element        | Treatment                                            |
+| -------------- | ---------------------------------------------------- |
+| **Background** | Deep cosmic indigo (`bg-brand-background`)           |
+| **Surfaces**   | Elevated dark with subtle depth (`bg-brand-neutral`) |
+| **Text**       | Pearl white for clarity (`text-brand-base`)          |
+| **Accents**    | Luminous pink, bright gold (increased saturation)    |
+| **Shadows**    | Glowing, aurora-like, colored shadows                |
+| **Gradients**  | Saturated neons (pink → violet → cyan)               |
 
 ### Inversion Rules
 
-| Token | Inversion Behavior |
-|-------|-------------------|
-| `base` | **Full invert** — Dark ↔ Light |
-| `background` | **Full invert** — Light ↔ Dark |
-| `neutral` | **Full invert** — Lighter ↔ Darker |
-| `accent` | **Adjust brightness** — +15-20% lighter in dark mode |
-| `secondary` | **Adjust brightness** — +15-20% lighter in dark mode |
-| `contrast` | **Adjust brightness** — Slightly lighter in dark mode |
-| `gradient.*` | **Adjust saturation** — More vivid in dark mode |
-| `glow` | **Adjust opacity** — Slightly more visible in dark mode |
+| Token        | Inversion Behavior                                      |
+| ------------ | ------------------------------------------------------- |
+| `base`       | **Full invert** — Dark ↔ Light                          |
+| `background` | **Full invert** — Light ↔ Dark                          |
+| `neutral`    | **Full invert** — Lighter ↔ Darker                      |
+| `accent`     | **Adjust brightness** — +15-20% lighter in dark mode    |
+| `secondary`  | **Adjust brightness** — +15-20% lighter in dark mode    |
+| `contrast`   | **Adjust brightness** — Slightly lighter in dark mode   |
+| `gradient.*` | **Adjust saturation** — More vivid in dark mode         |
+| `glow`       | **Adjust opacity** — Slightly more visible in dark mode |
 
 ### Implementation Pattern
 
@@ -206,12 +208,12 @@ Theme switching handled by `useTheme()` composable — no component changes need
 
 ### Font Stack
 
-| Role | Font | Weight | Usage |
-|------|------|--------|-------|
-| `font-logo` | Playfair Display | 700 | Brand mark, hero text |
-| `font-headers` | Playfair Display | 600, 700 | H1, H2, H3 |
-| `font-primary` | Poppins | 400, 500, 600 | Body, buttons, labels |
-| `font-secondary` | Poppins | 300, 400 | Captions, metadata |
+| Role             | Font             | Weight        | Usage                 |
+| ---------------- | ---------------- | ------------- | --------------------- |
+| `font-logo`      | Playfair Display | 700           | Brand mark, hero text |
+| `font-headers`   | Playfair Display | 600, 700      | H1, H2, H3            |
+| `font-primary`   | Poppins          | 400, 500, 600 | Body, buttons, labels |
+| `font-secondary` | Poppins          | 300, 400      | Captions, metadata    |
 
 ### Scale
 
@@ -244,60 +246,51 @@ text-6xl   — 60px  — Display text
 
 ### Surfaces & Elevation
 
-| Level | Class | Use Case |
-|-------|-------|----------|
-| **Ground** | `bg-brand-background` | Page canvas |
-| **Surface** | `bg-brand-neutral` | Cards, sections |
-| **Elevated** | `bg-brand-neutral shadow-lg` | Modals, dropdowns |
-| **Floating** | `bg-brand-neutral/80 backdrop-blur-md` | Nav, overlays |
+| Level        | Class                                  | Use Case          |
+| ------------ | -------------------------------------- | ----------------- |
+| **Ground**   | `bg-brand-background`                  | Page canvas       |
+| **Surface**  | `bg-brand-neutral`                     | Cards, sections   |
+| **Elevated** | `bg-brand-neutral shadow-lg`           | Modals, dropdowns |
+| **Floating** | `bg-brand-neutral/80 backdrop-blur-md` | Nav, overlays     |
 
 ### Glassmorphism (Holographic Surfaces)
 
 ```html
-<div class="
-  bg-brand-neutral/70
-  backdrop-blur-md
-  border border-brand-base/10
-  rounded-2xl
-">
+<div class="bg-brand-neutral/70 border-brand-base/10 rounded-2xl border backdrop-blur-md"></div>
 ```
 
 ### Holographic Border
 
 ```html
-<div class="
-  relative rounded-2xl p-[1px]
-  bg-gradient-to-r from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end
-">
-  <div class="bg-brand-neutral rounded-2xl p-6">
-    Content
-  </div>
+<div
+  class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end relative rounded-2xl bg-gradient-to-r p-[1px]"
+>
+  <div class="bg-brand-neutral rounded-2xl p-6">Content</div>
 </div>
 ```
 
 ### Buttons
 
-| Variant | Treatment |
-|---------|-----------|
-| **Primary** | `bg-brand-accent text-white` + glow shadow |
-| **Contrast** | `bg-brand-contrast text-brand-base` + gold glow |
-| **Secondary** | `bg-brand-secondary/10 text-brand-secondary border-brand-secondary` |
-| **Ghost** | `bg-transparent text-brand-base hover:bg-brand-base/5` |
-| **Holographic** | Gradient border + glass fill |
+| Variant         | Treatment                                                           |
+| --------------- | ------------------------------------------------------------------- |
+| **Primary**     | `bg-brand-accent text-white` + glow shadow                          |
+| **Contrast**    | `bg-brand-contrast text-brand-base` + gold glow                     |
+| **Secondary**   | `bg-brand-secondary/10 text-brand-secondary border-brand-secondary` |
+| **Ghost**       | `bg-transparent text-brand-base hover:bg-brand-base/5`              |
+| **Holographic** | Gradient border + glass fill                                        |
 
 ### Cards
 
 ```html
 <!-- Standard Card -->
-<div class="bg-brand-neutral rounded-2xl p-6 shadow-lg shadow-brand-glow">
-
-<!-- Holographic Card (special emphasis) -->
-<div class="
-  relative rounded-2xl p-[1px]
-  bg-gradient-to-br from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end
-  shadow-lg shadow-brand-glow
-">
-  <div class="bg-brand-neutral rounded-2xl p-6 h-full">
+<div class="bg-brand-neutral shadow-brand-glow rounded-2xl p-6 shadow-lg">
+  <!-- Holographic Card (special emphasis) -->
+  <div
+    class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end shadow-brand-glow relative rounded-2xl bg-gradient-to-br p-[1px] shadow-lg"
+  >
+    <div class="bg-brand-neutral h-full rounded-2xl p-6"></div>
+  </div>
+</div>
 ```
 
 ---
@@ -307,6 +300,7 @@ text-6xl   — 60px  — Display text
 ### Motion Library
 
 Use `motion-v` (Motion for Vue) for:
+
 - Physics-based spring animations
 - Scroll-triggered reveals (`whileInView`)
 - Gesture interactions (`whileHover`, `whileTap`)
@@ -315,13 +309,13 @@ Use `motion-v` (Motion for Vue) for:
 
 ### Animation Principles
 
-| Principle | Implementation |
-|-----------|----------------|
-| **Breathing** | Slow pulsing glows (3-5s duration) |
-| **Floating** | Gentle vertical drift with subtle rotation |
-| **Ethereal Rise** | Fade + translate + blur on entrance |
-| **Plasma** | Organic movement, slight overshoot |
-| **Expansion** | Scale from 0.95 → 1.0 on enter |
+| Principle         | Implementation                             |
+| ----------------- | ------------------------------------------ |
+| **Breathing**     | Slow pulsing glows (3-5s duration)         |
+| **Floating**      | Gentle vertical drift with subtle rotation |
+| **Ethereal Rise** | Fade + translate + blur on entrance        |
+| **Plasma**        | Organic movement, slight overshoot         |
+| **Expansion**     | Scale from 0.95 → 1.0 on enter             |
 
 ### Ethereal Animation Classes (CSS)
 
@@ -359,7 +353,7 @@ Available animation utilities in `main.css`:
 const etherealEntrance = {
   initial: { opacity: 0, y: 30, filter: 'blur(12px)', scale: 0.95 },
   animate: { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 },
-  transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+  transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
 }
 
 // "Sacred scroll reveal"
@@ -367,7 +361,7 @@ const scrollReveal = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: '-50px' },
-  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+  transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
 }
 
 // "Floating orbs" ambient motion
@@ -378,7 +372,7 @@ const floatingOrb = {
     scale: [0.8, 1.1, 0.8],
     opacity: [0.4, 0.6, 0.4],
   },
-  transition: { duration: 20, repeat: Infinity, ease: 'easeInOut' }
+  transition: { duration: 20, repeat: Infinity, ease: 'easeInOut' },
 }
 
 // Page transition
@@ -386,7 +380,7 @@ const pageTransition = {
   initial: { opacity: 0, y: 20, filter: 'blur(4px)' },
   animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
   exit: { opacity: 0, y: -10, filter: 'blur(4px)' },
-  transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+  transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
 }
 ```
 
@@ -395,21 +389,25 @@ const pageTransition = {
 The `<AmbientBackground>` component creates an immersive atmosphere:
 
 ```vue
-<AmbientBackground />                    <!-- Default: 3 orbs, medium -->
-<AmbientBackground :orbs="5" />          <!-- More orbs -->
-<AmbientBackground intensity="high" />   <!-- Larger, more visible -->
-<AmbientBackground :particles="true" />  <!-- With shimmer particles -->
+<AmbientBackground />
+<!-- Default: 3 orbs, medium -->
+<AmbientBackground :orbs="5" />
+<!-- More orbs -->
+<AmbientBackground intensity="high" />
+<!-- Larger, more visible -->
+<AmbientBackground :particles="true" />
+<!-- With shimmer particles -->
 ```
 
 ### Component-Specific Motion
 
-| Component | Animation |
-|-----------|-----------|
-| **HeroSection** | Staggered blur-to-focus text reveal |
-| **PageSection** | whileInView fade-up header |
-| **Cards** | Float prop for levitation hover effect |
-| **BaseButton** | Spring physics whileHover/whileTap |
-| **AppHeader** | AnimatePresence mobile menu + stagger |
+| Component       | Animation                              |
+| --------------- | -------------------------------------- |
+| **HeroSection** | Staggered blur-to-focus text reveal    |
+| **PageSection** | whileInView fade-up header             |
+| **Cards**       | Float prop for levitation hover effect |
+| **BaseButton**  | Spring physics whileHover/whileTap     |
+| **AppHeader**   | AnimatePresence mobile menu + stagger  |
 
 ### Performance Guidelines
 
@@ -534,10 +532,10 @@ Then update `main.css` to register these as CSS custom properties.
 
 ## 10. File Reference
 
-| File | Purpose |
-|------|---------|
-| `app/config/brand.ts` | Color and typography values |
-| `app/types/brand.ts` | TypeScript interfaces |
-| `app/assets/css/main.css` | CSS custom properties, Tailwind theme |
-| `app/composables/useBrand.ts` | Runtime access to brand values |
-| `app/composables/useTheme.ts` | Light/dark mode switching |
+| File                          | Purpose                               |
+| ----------------------------- | ------------------------------------- |
+| `app/config/brand.ts`         | Color and typography values           |
+| `app/types/brand.ts`          | TypeScript interfaces                 |
+| `app/assets/css/main.css`     | CSS custom properties, Tailwind theme |
+| `app/composables/useBrand.ts` | Runtime access to brand values        |
+| `app/composables/useTheme.ts` | Light/dark mode switching             |

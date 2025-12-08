@@ -62,7 +62,10 @@ const colorClasses = {
 // Motion animation config for scroll reveal
 const revealAnimation = { opacity: 1, y: 0 }
 const initialState = { opacity: 0, y: 20 }
-const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
+const transitionConfig = {
+  duration: 0.5,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+}
 </script>
 
 <template>
@@ -75,7 +78,7 @@ const transitionConfig = { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, n
     class="group"
   >
     <div
-      class="bg-brand-neutral border-brand-base/10 rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-brand-glow)] hover:-translate-y-1"
+      class="bg-brand-neutral border-brand-base/10 rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--color-brand-glow)] hover:shadow-lg"
     >
       <!-- Icon with glow effect -->
       <div

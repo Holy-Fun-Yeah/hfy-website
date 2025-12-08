@@ -66,13 +66,13 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
     <!-- Decorative floating orbs -->
     <div class="pointer-events-none absolute inset-0">
       <div
-        class="animate-float-slow absolute left-[10%] top-[20%] h-32 w-32 rounded-full bg-gradient-to-br from-brand-gradient-start/20 to-transparent blur-2xl"
+        class="animate-float-slow from-brand-gradient-start/20 absolute top-[20%] left-[10%] h-32 w-32 rounded-full bg-gradient-to-br to-transparent blur-2xl"
       />
       <div
-        class="animate-float animate-delay-200 absolute right-[15%] top-[30%] h-40 w-40 rounded-full bg-gradient-to-br from-brand-gradient-middle/20 to-transparent blur-2xl"
+        class="animate-float animate-delay-200 from-brand-gradient-middle/20 absolute top-[30%] right-[15%] h-40 w-40 rounded-full bg-gradient-to-br to-transparent blur-2xl"
       />
       <div
-        class="animate-float-fast animate-delay-400 absolute bottom-[20%] left-[20%] h-24 w-24 rounded-full bg-gradient-to-br from-brand-gradient-end/20 to-transparent blur-2xl"
+        class="animate-float-fast animate-delay-400 from-brand-gradient-end/20 absolute bottom-[20%] left-[20%] h-24 w-24 rounded-full bg-gradient-to-br to-transparent blur-2xl"
       />
     </div>
 
@@ -93,7 +93,7 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
         class="mb-4"
       >
         <span
-          class="inline-block rounded-full border border-brand-accent/30 bg-brand-accent/10 px-4 py-1.5 text-sm font-medium tracking-wide text-brand-accent"
+          class="border-brand-accent/30 bg-brand-accent/10 text-brand-accent inline-block rounded-full border px-4 py-1.5 text-sm font-medium tracking-wide"
         >
           {{ eyebrow }}
         </span>
@@ -105,10 +105,10 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
         :initial="titleInitial"
         :animate="titleAnimation"
         :transition="{ duration: 0.8, ease: etherealEase, delay: 0.2 }"
-        class="font-headers mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl"
+        class="font-headers mb-6 text-4xl leading-tight font-bold md:text-5xl lg:text-6xl"
       >
         <span
-          class="bg-gradient-to-r from-brand-base via-brand-accent to-brand-secondary bg-clip-text text-transparent"
+          class="from-brand-base via-brand-accent to-brand-secondary bg-gradient-to-r bg-clip-text text-transparent"
         >
           {{ title }}
         </span>
@@ -121,7 +121,7 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
         :initial="descInitial"
         :animate="descAnimation"
         :transition="{ duration: 0.6, ease: etherealEase, delay: 0.4 }"
-        class="mx-auto mb-8 max-w-2xl text-lg text-brand-muted md:text-xl"
+        class="text-brand-muted mx-auto mb-8 max-w-2xl text-lg md:text-xl"
       >
         {{ description }}
       </Motion>
@@ -162,7 +162,7 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
           :initial="{ opacity: 0, scale: 0 }"
           :animate="{ opacity: 0.5, scale: 1 }"
           :transition="{ duration: 1, ease: etherealEase, delay: 0.8 }"
-          class="h-px w-40 bg-gradient-to-r from-transparent via-brand-accent to-transparent"
+          class="via-brand-accent h-px w-40 bg-gradient-to-r from-transparent to-transparent"
         />
       </div>
     </Motion>
@@ -175,8 +175,8 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
       :transition="{ duration: 0.5, delay: 1.2 }"
       class="absolute bottom-8 left-1/2 -translate-x-1/2"
     >
-      <div class="animate-float flex flex-col items-center gap-2 text-brand-muted/50">
-        <span class="text-xs uppercase tracking-widest">Scroll</span>
+      <div class="animate-float text-brand-muted/50 flex flex-col items-center gap-2">
+        <span class="text-xs tracking-widest uppercase">Scroll</span>
         <svg
           class="h-5 w-5"
           fill="none"

@@ -20,11 +20,7 @@ export default defineApiHandler(async (event) => {
   const [result] = await db
     .select()
     .from(events)
-    .where(
-      isUUID
-        ? eq(events.id, idOrSlug)
-        : eq(events.slug, idOrSlug)
-    )
+    .where(isUUID ? eq(events.id, idOrSlug) : eq(events.slug, idOrSlug))
     .limit(1)
 
   if (!result) throw Errors.notFound('Event not found')

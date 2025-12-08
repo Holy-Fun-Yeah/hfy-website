@@ -113,7 +113,7 @@ const gradientClasses = [
         ease: 'easeInOut' as const,
         delay: particle.delay,
       }"
-      class="absolute rounded-full bg-brand-accent/60"
+      class="bg-brand-accent/60 absolute rounded-full"
       :style="{
         left: `${particle.x}%`,
         top: `${particle.y}%`,
@@ -123,7 +123,7 @@ const gradientClasses = [
     />
 
     <!-- Subtle noise overlay for texture -->
-    <div class="absolute inset-0 bg-noise opacity-[0.02]" />
+    <div class="bg-noise absolute inset-0 opacity-[0.02]" />
   </div>
 </template>
 

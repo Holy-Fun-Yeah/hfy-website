@@ -49,10 +49,7 @@ export default definePaginatedApiHandler(async (event) => {
     .offset(offset)
 
   // Count total for pagination
-  const countResult = await db
-    .select({ total: count() })
-    .from(events)
-    .where(whereCondition)
+  const countResult = await db.select({ total: count() }).from(events).where(whereCondition)
 
   const total = countResult[0]?.total ?? 0
   const pagination = createPaginationInfo(total, page, limit)

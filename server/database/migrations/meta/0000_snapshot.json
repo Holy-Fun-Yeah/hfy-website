@@ -109,12 +109,8 @@
           "name": "appointments_service_id_services_id_fk",
           "tableFrom": "appointments",
           "tableTo": "services",
-          "columnsFrom": [
-            "service_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["service_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -252,9 +248,7 @@
         "events_slug_unique": {
           "name": "events_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -323,12 +317,8 @@
           "name": "posts_author_id_users_id_fk",
           "tableFrom": "posts",
           "tableTo": "users",
-          "columnsFrom": [
-            "author_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["author_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -338,9 +328,7 @@
         "posts_slug_unique": {
           "name": "posts_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -474,9 +462,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -488,20 +474,12 @@
     "public.event_status": {
       "name": "event_status",
       "schema": "public",
-      "values": [
-        "draft",
-        "published",
-        "cancelled",
-        "completed"
-      ]
+      "values": ["draft", "published", "cancelled", "completed"]
     },
     "public.event_type": {
       "name": "event_type",
       "schema": "public",
-      "values": [
-        "online",
-        "in_person"
-      ]
+      "values": ["online", "in_person"]
     }
   },
   "schemas": {},

@@ -83,11 +83,14 @@ const isHolographic = computed(() => props.variant === 'holographic')
   <!-- Holographic variant with gradient border wrapper -->
   <div
     v-if="isHolographic"
-    class="rounded-2xl bg-gradient-to-br from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end p-[1px] transition-all duration-500 ease-out"
+    class="from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end rounded-2xl bg-gradient-to-br p-[1px] transition-all duration-500 ease-out"
     :class="[
-      float && 'hover:shadow-[0_8px_40px_var(--color-brand-glow),0_0_80px_var(--color-brand-glow)] hover:-translate-y-3 hover:rotate-[0.5deg] cursor-pointer',
-      hoverable && !float && 'hover:shadow-[0_0_30px_var(--color-brand-glow)] hover:-translate-y-1 cursor-pointer',
-      glow && 'shadow-[0_0_25px_var(--color-brand-glow)] animate-pulse-glow',
+      float &&
+        'cursor-pointer hover:-translate-y-3 hover:rotate-[0.5deg] hover:shadow-[0_8px_40px_var(--color-brand-glow),0_0_80px_var(--color-brand-glow)]',
+      hoverable &&
+        !float &&
+        'cursor-pointer hover:-translate-y-1 hover:shadow-[0_0_30px_var(--color-brand-glow)]',
+      glow && 'animate-pulse-glow shadow-[0_0_25px_var(--color-brand-glow)]',
     ]"
   >
     <component

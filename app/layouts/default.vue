@@ -22,9 +22,14 @@ const pageTransition = {
 </script>
 
 <template>
-  <div class="bg-brand-background relative flex min-h-screen flex-col transition-colors duration-200">
+  <div
+    class="bg-brand-background relative flex min-h-screen flex-col transition-colors duration-200"
+  >
     <!-- Ethereal ambient background -->
-    <AmbientBackground :orbs="4" intensity="medium" />
+    <AmbientBackground
+      :orbs="4"
+      intensity="medium"
+    />
 
     <AppHeader />
 
