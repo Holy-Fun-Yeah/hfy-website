@@ -59,6 +59,7 @@ const offerings = [
     <PageSection
       spacing="lg"
       centered
+      decorations="hero"
     >
       <div class="mx-auto max-w-3xl">
         <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">

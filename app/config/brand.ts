@@ -81,15 +81,15 @@ export const brandConfig: BrandConfig = {
     background: '#fffbf7',
 
     /**
-     * Gradient: Holographic rainbow stops
-     * - Pink → Violet → Cyan for prismatic effects
-     * - Saturated for readability on light backgrounds
+     * Gradient: Pride rainbow spectrum
+     * - Clean, vibrant pride flag colors for headers
+     * - Red/Pink → Purple/Violet → Blue/Cyan
      * - Use for logos, headings, borders, decorative
      */
     gradient: {
-      start: '#db2777', // Pink 600 - rich magenta
-      middle: '#7c3aed', // Violet 600 - deep purple
-      end: '#0891b2', // Cyan 600 - vibrant teal
+      start: '#e11d48', // Rose 600 - vibrant pink/red
+      middle: '#7c3aed', // Violet 600 - rich purple
+      end: '#0ea5e9', // Sky 500 - bright blue
     },
 
     /**
@@ -155,14 +155,14 @@ export const brandConfig: BrandConfig = {
     background: '#12121f',
 
     /**
-     * Gradient: Saturated holographic stops
-     * - More vivid for dark mode visibility
-     * - Aurora-like neon quality
+     * Gradient: Pride rainbow spectrum (dark mode)
+     * - Brighter, more vivid for dark backgrounds
+     * - Neon quality for glow effect
      */
     gradient: {
-      start: '#f472b6', // Pink 400
-      middle: '#a78bfa', // Violet 400
-      end: '#22d3ee', // Cyan 400
+      start: '#fb7185', // Rose 400 - bright pink
+      middle: '#a78bfa', // Violet 400 - bright purple
+      end: '#38bdf8', // Sky 400 - bright blue
     },
 
     /**

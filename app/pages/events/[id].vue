@@ -201,7 +201,7 @@ useSeoMeta({
       </div>
 
       <!-- Hero -->
-      <PageSection spacing="lg">
+      <PageSection spacing="lg" decorations="subtle">
         <div class="mx-auto max-w-5xl">
           <div class="grid items-start gap-8 lg:grid-cols-3">
             <!-- Main Content -->

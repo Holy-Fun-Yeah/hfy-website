@@ -118,6 +118,7 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
     <PageSection
       spacing="lg"
       centered
+      decorations="hero"
     >
       <div class="mx-auto max-w-2xl">
         <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">Events</p>

@@ -22,13 +22,40 @@ const pageTransition = {
 </script>
 
 <template>
-  <div
-    class="bg-brand-background relative flex min-h-screen flex-col transition-colors duration-200"
-  >
-    <!-- Ethereal ambient background -->
-    <AmbientBackground
-      :orbs="4"
-      intensity="medium"
+  <div class="bg-brand-background relative flex min-h-screen flex-col transition-colors duration-200">
+    <!-- Ethereal ambient background with rainbow orbs and stars -->
+    <AmbientBackground :orbs="5" intensity="medium" :particles="true" :stars="true" />
+
+    <!-- Scroll-reactive gradient overlay on edges -->
+    <ScrollGradientOverlay :intensity="0.1" position="edges" />
+
+    <!-- Continuous energy threads along margins (spans full page) - String theory style -->
+    <EnergyThreads side="both" :threads="3" intensity="medium" :animated="true" />
+
+    <!-- Sacred geometry floating elements - more visible -->
+    <SacredGeometry
+      pattern="flowerOfLife"
+      position="top-left"
+      :size="600"
+      :opacity="0.07"
+      :rotate="true"
+      color="gradient"
+    />
+    <SacredGeometry
+      pattern="metatron"
+      position="bottom-right"
+      :size="550"
+      :opacity="0.06"
+      :rotate="true"
+      color="gradient"
+    />
+    <SacredGeometry
+      pattern="spiral"
+      position="top-right"
+      :size="400"
+      :opacity="0.05"
+      :rotate="true"
+      color="gold"
     />
 
     <AppHeader />

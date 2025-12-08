@@ -100,43 +100,15 @@ const features = [
 
 <template>
   <div>
-    <!-- Hero Section (static, renders immediately) -->
-    <PageSection
+    <!-- Hero Section with ethereal decorations -->
+    <HeroSection
       :title="brand.name"
       description="Astranova connects you with transformative experiences guided by modern astrology and ancient intuition."
-      centered
-      spacing="lg"
-    >
-      <template #default>
-        <div class="flex flex-col items-center gap-6 md:flex-row md:items-start md:text-left">
-          <div class="flex-1 space-y-4">
-            <p class="text-brand-base/60">
-              Discover curated sessions, workshops, and celestial events designed to help you
-              realign with your inner rhythm.
-            </p>
-            <div class="flex flex-wrap justify-center gap-3 md:justify-start">
-              <BaseButton to="/book">Book your session</BaseButton>
-              <BaseButton
-                variant="ghost"
-                to="/about"
-              >
-                Learn more
-              </BaseButton>
-            </div>
-          </div>
-          <div class="flex-1">
-            <BaseCard
-              variant="outline"
-              padding="lg"
-            >
-              <div class="text-brand-base/40 grid aspect-video place-items-center">
-                Media placeholder
-              </div>
-            </BaseCard>
-          </div>
-        </div>
-      </template>
-    </PageSection>
+      cta-text="Book your session"
+      cta-link="/book"
+      secondary-cta-text="Learn more"
+      secondary-cta-link="/about"
+    />
 
     <!-- Why Astranova (static, renders immediately) -->
     <PageSection

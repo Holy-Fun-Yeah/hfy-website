@@ -16,8 +16,9 @@
  *   <p>Content here...</p>
  * </PageSection>
  *
- * <!-- Disable animation for hero sections -->
- * <PageSection title="Hero" :animate="false">...</PageSection>
+ * <!-- Hero sections with decorations -->
+ * <PageSection title="Hero" decorations="hero" :animate="false">...</PageSection>
+ * <PageSection title="Page" decorations="subtle">...</PageSection>
  * ```
  */
 
@@ -25,8 +26,9 @@ import { Motion } from 'motion-v'
 
 export type SectionWidth = 'sm' | 'md' | 'lg' | 'xl' | 'full'
 export type SectionSpacing = 'sm' | 'md' | 'lg'
+export type SectionDecorations = 'none' | 'subtle' | 'hero'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     eyebrow?: string
     title?: string
@@ -36,6 +38,7 @@ withDefaults(
     centered?: boolean
     divider?: boolean
     animate?: boolean
+    decorations?: SectionDecorations
   }>(),
   {
     eyebrow: undefined,
@@ -46,6 +49,7 @@ withDefaults(
     centered: false,
     divider: false,
     animate: true,
+    decorations: 'none',
   }
 )
 
@@ -73,8 +77,34 @@ const transitionConfig = {
 </script>
 
 <template>
-  <section :class="[spacingClasses[spacing], { 'border-brand-base/10 border-b': divider }]">
-    <div :class="['mx-auto px-4 sm:px-6', widthClasses[width], { 'text-center': centered }]">
+  <section
+    :class="[
+      spacingClasses[spacing],
+      { 'border-brand-base/10 border-b': divider },
+      decorations !== 'none' ? 'relative overflow-hidden' : '',
+    ]"
+  >
+    <!-- Decorative elements for hero/subtle modes -->
+    <template v-if="decorations === 'hero'">
+      <!-- Radial sunburst effect - centered glow -->
+      <RadialBurst :rays="24" color="rainbow" :intensity="0.15" :pulse="true" :size="150" />
+
+      <!-- Local sacred geometry for this section -->
+      <SacredGeometry
+        pattern="mandala"
+        position="center"
+        :size="400"
+        :opacity="0.04"
+        :rotate="true"
+      />
+    </template>
+
+    <template v-else-if="decorations === 'subtle'">
+      <!-- Subtle radial glow only -->
+      <RadialBurst :rays="12" color="gold" :intensity="0.08" :pulse="true" :size="100" />
+    </template>
+
+    <div :class="['relative z-10 mx-auto px-4 sm:px-6', widthClasses[width], { 'text-center': centered }]">
       <!-- Header with scroll-reveal animation -->
       <Motion
         v-if="eyebrow || title || description"

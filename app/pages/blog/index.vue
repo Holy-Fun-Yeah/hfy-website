@@ -136,6 +136,7 @@ const regularPosts = computed(() => {
     <PageSection
       spacing="lg"
       centered
+      decorations="hero"
     >
       <div class="mx-auto max-w-2xl">
         <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">Blog</p>
