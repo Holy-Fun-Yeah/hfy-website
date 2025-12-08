@@ -80,7 +80,6 @@ const transitionConfig = {
   <section
     :class="[
       spacingClasses[spacing],
-      { 'border-brand-base/10 border-b': divider },
       decorations !== 'none' ? 'relative overflow-hidden' : '',
     ]"
   >
@@ -160,6 +159,12 @@ const transitionConfig = {
 
       <!-- Content -->
       <slot />
+
+      <!-- Divider - inside content area so it doesn't cross energy threads -->
+      <div
+        v-if="divider"
+        class="border-brand-base/10 mt-8 border-b md:mt-12"
+      />
     </div>
   </section>
 </template>

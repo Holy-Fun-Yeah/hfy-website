@@ -4,6 +4,8 @@
  *
  * Creates smooth, organic light beams that flow along the edges of the viewport.
  * Inspired by aurora borealis and energy currents - subtle, elegant, not confetti.
+ *
+ * LAZY LOADED: Renders after initial layout for better performance
  */
 
 interface Props {
@@ -18,6 +20,23 @@ const props = withDefaults(defineProps<Props>(), {
   threads: 3,
   intensity: 'medium',
   animated: true,
+})
+
+// Lazy load - render after layout
+const isLoaded = ref(false)
+const isMobile = ref(false)
+
+onMounted(() => {
+  isMobile.value = window.innerWidth < 768
+  // Skip on mobile for performance
+  if (isMobile.value) return
+
+  // Delay rendering for faster initial paint
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      isLoaded.value = true
+    })
+  })
 })
 
 const opacityMap = {
@@ -121,7 +140,9 @@ const instanceId = Math.random().toString(36).substring(7)
 </script>
 
 <template>
+  <!-- Lazy loaded, skipped on mobile -->
   <div
+    v-if="isLoaded && !isMobile"
     class="pointer-events-none fixed inset-0 z-[1]"
     :style="{ opacity: opacityMap[intensity] }"
   >

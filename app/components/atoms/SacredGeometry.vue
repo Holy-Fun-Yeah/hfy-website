@@ -5,17 +5,13 @@
  * Subtle geometric patterns that float at corners/edges.
  * Adds mystical depth without overwhelming content.
  *
- * @example
- * ```vue
- * <SacredGeometry pattern="flowerOfLife" position="top-right" />
- * <SacredGeometry pattern="mandala" position="bottom-left" :rotate="true" />
- * ```
+ * LAZY LOADED: Renders after initial layout for better performance
  */
 
 interface Props {
   pattern?: 'flowerOfLife' | 'mandala' | 'metatron' | 'spiral'
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center'
-  size?: number // px
+  size?: number
   opacity?: number
   rotate?: boolean
   color?: 'gradient' | 'brand' | 'gold'
@@ -28,6 +24,16 @@ const props = withDefaults(defineProps<Props>(), {
   opacity: 0.08,
   rotate: true,
   color: 'gradient',
+})
+
+// Lazy load
+const isLoaded = ref(false)
+
+onMounted(() => {
+  // Delay rendering for faster initial paint
+  setTimeout(() => {
+    isLoaded.value = true
+  }, 100)
 })
 
 const positionClasses = {
@@ -126,7 +132,8 @@ const spiralPath = computed(() => {
 
 <template>
   <div
-    class="pointer-events-none absolute"
+    v-if="isLoaded"
+    class="pointer-events-none absolute will-change-transform"
     :class="[positionClasses[position], { 'animate-spin-very-slow': rotate }]"
     :style="{ width: `${size}px`, height: `${size}px`, opacity }"
   >
@@ -208,7 +215,7 @@ const spiralPath = computed(() => {
         />
       </g>
 
-      <!-- Metatron's Cube (simplified) -->
+      <!-- Metatron's Cube -->
       <g v-if="pattern === 'metatron'">
         <!-- Central hexagon -->
         <polygon
@@ -266,6 +273,7 @@ const spiralPath = computed(() => {
 <style scoped>
 .animate-spin-very-slow {
   animation: spin 120s linear infinite;
+  transform: translateZ(0);
 }
 
 @keyframes spin {
