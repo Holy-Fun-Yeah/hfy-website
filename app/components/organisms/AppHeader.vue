@@ -14,6 +14,7 @@ import { AnimatePresence, Motion } from 'motion-v'
 
 const { brand } = useBrand()
 const { isDark, toggleTheme } = useTheme()
+const fontSizeStore = useFontSizeStore()
 
 const mobileMenuOpen = ref(false)
 
@@ -139,6 +140,29 @@ const itemInitial = { opacity: 0, x: -10 }
               d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
             />
           </svg>
+        </button>
+
+        <!-- Font Size Toggle -->
+        <button
+          type="button"
+          class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/10 flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-medium transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
+          :title="`Font size: ${fontSizeStore.label} (click to cycle)`"
+          @click="fontSizeStore.cycleSize()"
+        >
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+          <span class="hidden sm:inline">{{ fontSizeStore.size.toUpperCase() }}</span>
         </button>
 
         <!-- Mobile Menu Button -->

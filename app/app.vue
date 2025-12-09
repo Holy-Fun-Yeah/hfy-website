@@ -3,6 +3,12 @@
 // This must be called at app root to ensure all components have access
 const { brand } = useBrand()
 
+// Initialize font size from localStorage
+const fontSizeStore = useFontSizeStore()
+onMounted(() => {
+  fontSizeStore.loadFromStorage()
+})
+
 useHead({
   titleTemplate: (title) => (title ? `${title} | HFY!` : brand.value.name),
   htmlAttrs: { lang: 'en' },
