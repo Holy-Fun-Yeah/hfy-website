@@ -75,6 +75,9 @@ const pageTransition = {
 
     <AppHeader />
 
+    <!-- Spacer for fixed header -->
+    <div class="h-14" />
+
     <main class="relative z-10 flex-1">
       <AnimatePresence mode="wait">
         <Motion

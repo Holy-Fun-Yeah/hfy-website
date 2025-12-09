@@ -25,6 +25,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Theme-aware visual colors
 const { rainbowStops, getShiftedRainbowValues } = useVisuals()
+const { isDark } = useTheme()
+
+// Neon glow intensity - brighter in light mode
+const glowIntensity = computed(() => (isDark.value ? 1 : 1.5))
 
 // Lazy load - render after layout
 const isLoaded = ref(false)
@@ -180,7 +184,7 @@ const instanceId = Math.random().toString(36).substring(7)
           </stop>
         </linearGradient>
 
-        <!-- Soft glow filter for light effect -->
+        <!-- Soft glow filter for light effect - neon-enhanced in light mode -->
         <filter
           :id="`softGlow-${instanceId}`"
           x="-100%"
@@ -190,12 +194,12 @@ const instanceId = Math.random().toString(36).substring(7)
         >
           <feGaussianBlur
             in="SourceGraphic"
-            stdDeviation="0.3"
+            :stdDeviation="0.3 * glowIntensity"
             result="blur1"
           />
           <feGaussianBlur
             in="SourceGraphic"
-            stdDeviation="0.6"
+            :stdDeviation="0.6 * glowIntensity"
             result="blur2"
           />
           <feMerge>
@@ -205,7 +209,7 @@ const instanceId = Math.random().toString(36).substring(7)
           </feMerge>
         </filter>
 
-        <!-- Outer aura for ethereal depth -->
+        <!-- Outer aura for ethereal depth - enhanced in light mode -->
         <filter
           :id="`aura-${instanceId}`"
           x="-200%"
@@ -215,16 +219,16 @@ const instanceId = Math.random().toString(36).substring(7)
         >
           <feGaussianBlur
             in="SourceGraphic"
-            stdDeviation="1.2"
+            :stdDeviation="1.2 * glowIntensity"
             result="blur"
           />
           <feColorMatrix
             in="blur"
             type="matrix"
-            values="1 0 0 0 0
-                    0 1 0 0 0
-                    0 0 1 0 0
-                    0 0 0 0.4 0"
+            :values="`1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 ${0.4 * glowIntensity} 0`"
           />
         </filter>
       </defs>

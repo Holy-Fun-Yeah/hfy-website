@@ -29,6 +29,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Theme-aware visual colors
 const { goldStops } = useVisuals()
+const { isDark } = useTheme()
+
+// Compute effective opacity - slightly higher in light mode
+const effectiveOpacity = computed(() => {
+  const multiplier = isDark.value ? 1 : 2
+  return Math.min(props.opacity * multiplier, 0.25)
+})
+
+// Add glow filter in light mode for better visibility with iridescence
+const glowFilter = computed(() => {
+  if (isDark.value) return 'none'
+  // Golden/warm glow with rainbow hints for mystical iridescence on light backgrounds
+  return 'drop-shadow(0 0 6px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 12px rgba(255, 170, 0, 0.4)) drop-shadow(0 0 20px rgba(236, 72, 153, 0.25))'
+})
 
 // Lazy load
 const isLoaded = ref(false)
@@ -141,7 +155,7 @@ const spiralPath = computed(() => {
     v-if="isLoaded"
     class="pointer-events-none fixed will-change-transform"
     :class="[positionClasses[position], { 'animate-spin-very-slow': rotate }]"
-    :style="{ width: `${size}px`, height: `${size}px`, opacity }"
+    :style="{ width: `${size}px`, height: `${size}px`, opacity: effectiveOpacity, filter: glowFilter }"
   >
     <svg
       viewBox="0 0 100 100"

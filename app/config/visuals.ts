@@ -45,13 +45,13 @@ export interface VisualConfig {
 /**
  * Visual colors configuration with light/dark theme support.
  *
- * Light mode: Vibrant, saturated colors
- * Dark mode: Slightly brighter/more luminous for visibility
+ * Light mode: Deeper, more saturated colors for visibility on light backgrounds
+ * Dark mode: Slightly brighter/more luminous for visibility on dark backgrounds
  */
 export const visualConfig: VisualConfig = {
   light: {
     rainbow: {
-      red: '#ef4444', // Tailwind red-500
+      red: '#ef4444', // Tailwind red-500 - vibrant pride red
       orange: '#f97316', // Tailwind orange-500
       yellow: '#eab308', // Tailwind yellow-500
       green: '#22c55e', // Tailwind green-500
@@ -65,7 +65,7 @@ export const visualConfig: VisualConfig = {
       dark: '#ff8c00', // Dark orange gold
     },
     accents: {
-      violet: '#7c3aed', // Tailwind violet-600 - deeper purple
+      violet: '#7c3aed', // Tailwind violet-600
       pink: '#ec4899', // Tailwind pink-500
     },
   },

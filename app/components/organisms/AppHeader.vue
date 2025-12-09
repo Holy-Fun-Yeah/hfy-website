@@ -7,6 +7,7 @@
  * - Gradient underline for active nav links
  * - Motion-animated mobile menu with AnimatePresence
  * - Theme toggle with smooth icon transitions
+ * - Scroll-aware transparency
  */
 
 import { AnimatePresence, Motion } from 'motion-v'
@@ -15,6 +16,21 @@ const { brand } = useBrand()
 const { isDark, toggleTheme } = useTheme()
 
 const mobileMenuOpen = ref(false)
+
+// Scroll-aware header transparency
+const isScrolled = ref(false)
+
+onMounted(() => {
+  const handleScroll = () => {
+    isScrolled.value = window.scrollY > 20
+  }
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  handleScroll() // Check initial state
+
+  onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+  })
+})
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -43,7 +59,20 @@ const itemInitial = { opacity: 0, x: -10 }
 </script>
 
 <template>
-  <header class="bg-brand-background/70 sticky top-0 z-50 backdrop-blur-lg">
+  <header
+    class="fixed inset-x-0 top-0 z-50 backdrop-blur-lg transition-all duration-300"
+    :class="[
+      isScrolled
+        ? 'bg-brand-background/50 shadow-sm shadow-brand-base/5'
+        : 'bg-brand-background/80',
+    ]"
+  >
+    <!-- Content fade gradient - fades content as it scrolls under header -->
+    <div
+      class="from-brand-background pointer-events-none absolute inset-x-0 top-full h-8 bg-gradient-to-b to-transparent transition-opacity duration-300"
+      :class="isScrolled ? 'opacity-100' : 'opacity-0'"
+    />
+
     <nav class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
       <!-- Logo with gradient hover -->
       <NuxtLink
