@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'en' },
       title: 'Holy Fuck Yeah! — Awaken Your Cosmic Power',
-      titleTemplate: '%s | Holy Fuck Yeah!',
+      titleTemplate: '%s | HFY!',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },

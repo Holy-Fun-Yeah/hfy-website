@@ -4,14 +4,14 @@
 const { brand } = useBrand()
 
 useHead({
-  titleTemplate: (title) => (title ? `${title} - ${brand.value.name}` : brand.value.name),
+  titleTemplate: (title) => (title ? `${title} | HFY!` : brand.value.name),
   htmlAttrs: { lang: 'en' },
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { name: 'description', content: 'A Nuxt site template with brand system' },
   ],
-  link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+  link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
 })
 </script>
 
