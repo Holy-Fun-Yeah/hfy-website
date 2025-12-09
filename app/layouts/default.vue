@@ -23,7 +23,7 @@ const pageTransition = {
 
 <template>
   <div
-    class="bg-brand-background relative flex min-h-screen flex-col transition-colors duration-200"
+    class="bg-brand-background relative flex min-h-screen flex-col overflow-x-hidden transition-colors duration-200"
   >
     <!-- Ethereal ambient background with rainbow orbs and stars -->
     <AmbientBackground

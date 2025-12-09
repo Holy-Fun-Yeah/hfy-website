@@ -139,7 +139,7 @@ const spiralPath = computed(() => {
 <template>
   <div
     v-if="isLoaded"
-    class="pointer-events-none absolute will-change-transform"
+    class="pointer-events-none fixed will-change-transform"
     :class="[positionClasses[position], { 'animate-spin-very-slow': rotate }]"
     :style="{ width: `${size}px`, height: `${size}px`, opacity }"
   >
