@@ -155,7 +155,12 @@ const spiralPath = computed(() => {
     v-if="isLoaded"
     class="pointer-events-none fixed will-change-transform"
     :class="[positionClasses[position], { 'animate-spin-very-slow': rotate }]"
-    :style="{ width: `${size}px`, height: `${size}px`, opacity: effectiveOpacity, filter: glowFilter }"
+    :style="{
+      width: `${size}px`,
+      height: `${size}px`,
+      opacity: effectiveOpacity,
+      filter: glowFilter,
+    }"
   >
     <svg
       viewBox="0 0 100 100"

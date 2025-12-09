@@ -63,7 +63,7 @@ const itemInitial = { opacity: 0, x: -10 }
     class="fixed inset-x-0 top-0 z-50 backdrop-blur-lg transition-all duration-300"
     :class="[
       isScrolled
-        ? 'bg-brand-background/50 shadow-sm shadow-brand-base/5'
+        ? 'bg-brand-background/50 shadow-brand-base/5 shadow-sm'
         : 'bg-brand-background/80',
     ]"
   >
