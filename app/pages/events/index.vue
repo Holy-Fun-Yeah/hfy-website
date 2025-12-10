@@ -163,7 +163,7 @@ const pastCount = computed(() => (activeFilter.value === 'past' ? filteredEvents
           <NuxtLink
             v-for="event in filteredEvents"
             :key="event.id"
-            :to="`/events/${event.id}`"
+            :to="`/events/${event.slug}`"
             class="group block"
           >
             <BaseCard

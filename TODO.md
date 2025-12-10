@@ -163,8 +163,8 @@ Content management for blog posts (multilingual support).
 
 ### Frontend Pages
 
-- [ ] `app/pages/blog/index.vue` - Blog listing with cards
-- [ ] `app/pages/blog/[slug].vue` - Single post with markdown rendering
+- [x] `app/pages/blog/index.vue` - Blog listing with cards
+- [x] `app/pages/blog/[slug].vue` - Single post with markdown rendering
 - [ ] Create `PostCard` molecule component
 - [ ] Implement category/tag filtering
 
@@ -196,7 +196,7 @@ Event management and display (multilingual support).
 ### Frontend Pages
 
 - [x] `app/pages/events/index.vue` - Events listing with date grouping
-- [x] `app/pages/events/[id].vue` - Single event detail page
+- [x] `app/pages/events/[slug].vue` - Single event detail page
 - [x] Create `EventCard` molecule component
 - [x] Upcoming vs past events filtering
 

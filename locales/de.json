@@ -124,6 +124,27 @@
       "title": "Möchtest du ein Event veranstalten?",
       "description": "Wir arbeiten mit Praktikern, Räumen und Gemeinschaften zusammen, um kosmische Erfahrungen zum Leben zu erwecken.",
       "button": "Kontaktiere uns"
+    },
+    "detail": {
+      "price": "Preis",
+      "free": "Kostenlos",
+      "duration": "Dauer",
+      "hours": "Stunden",
+      "hour": "Stunde",
+      "minutes": "Min",
+      "capacity": "Kapazität",
+      "spaces": "Plätze",
+      "host": "Gastgeber",
+      "registerNow": "Jetzt Anmelden",
+      "eventEnded": "Diese Veranstaltung ist beendet",
+      "questions": "Fragen?",
+      "contactUs": "Kontaktiere uns",
+      "onlineEvent": "Online-Event",
+      "inPersonEvent": "Vor-Ort-Event",
+      "viewOnGoogleMaps": "In Google Maps ansehen",
+      "exploreMore": "Weitere Events entdecken",
+      "viewAllEvents": "Alle Events ansehen",
+      "showingInEnglish": "Wird auf Englisch angezeigt"
     }
   },
   "blog": {

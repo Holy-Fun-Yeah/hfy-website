@@ -124,6 +124,27 @@
       "title": "Want to host an event?",
       "description": "We collaborate with practitioners, spaces, and communities to bring cosmic experiences to life.",
       "button": "Get in touch"
+    },
+    "detail": {
+      "price": "Price",
+      "free": "Free",
+      "duration": "Duration",
+      "hours": "hours",
+      "hour": "hour",
+      "minutes": "min",
+      "capacity": "Capacity",
+      "spaces": "spaces",
+      "host": "Host",
+      "registerNow": "Register Now",
+      "eventEnded": "This event has ended",
+      "questions": "Questions?",
+      "contactUs": "Contact us",
+      "onlineEvent": "Online Event",
+      "inPersonEvent": "In-Person Event",
+      "viewOnGoogleMaps": "View on Google Maps",
+      "exploreMore": "Explore more events",
+      "viewAllEvents": "View all events",
+      "showingInEnglish": "Showing in English"
     }
   },
   "blog": {

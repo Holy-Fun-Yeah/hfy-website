@@ -155,6 +155,28 @@ export const localeSchema = z.object({
       description: z.string(),
       button: z.string(),
     }),
+    // Event detail page
+    detail: z.object({
+      price: z.string(),
+      free: z.string(),
+      duration: z.string(),
+      hours: z.string(),
+      hour: z.string(),
+      minutes: z.string(),
+      capacity: z.string(),
+      spaces: z.string(),
+      host: z.string(),
+      registerNow: z.string(),
+      eventEnded: z.string(),
+      questions: z.string(),
+      contactUs: z.string(),
+      onlineEvent: z.string(),
+      inPersonEvent: z.string(),
+      viewOnGoogleMaps: z.string(),
+      exploreMore: z.string(),
+      viewAllEvents: z.string(),
+      showingInEnglish: z.string(),
+    }),
   }),
 
   // Blog page

@@ -124,6 +124,27 @@
       "title": "¿Quieres organizar un evento?",
       "description": "Colaboramos con practicantes, espacios y comunidades para dar vida a experiencias cósmicas.",
       "button": "Ponte en contacto"
+    },
+    "detail": {
+      "price": "Precio",
+      "free": "Gratis",
+      "duration": "Duración",
+      "hours": "horas",
+      "hour": "hora",
+      "minutes": "min",
+      "capacity": "Capacidad",
+      "spaces": "lugares",
+      "host": "Anfitrión",
+      "registerNow": "Registrarse Ahora",
+      "eventEnded": "Este evento ha terminado",
+      "questions": "¿Preguntas?",
+      "contactUs": "Contáctanos",
+      "onlineEvent": "Evento en Línea",
+      "inPersonEvent": "Evento Presencial",
+      "viewOnGoogleMaps": "Ver en Google Maps",
+      "exploreMore": "Explorar más eventos",
+      "viewAllEvents": "Ver todos los eventos",
+      "showingInEnglish": "Mostrando en inglés"
     }
   },
   "blog": {
