@@ -28,14 +28,15 @@ Reference: `docs/STYLE_GUIDELINE.md`
 - [ ] Update `app/types/brand.ts` with new interface
 - [ ] Update `app/assets/css/main.css` with new CSS variables
 
-#### Motion Integration (`motion-v`)
+#### Motion & Animations (Pure CSS/Tailwind/JS)
 
-- [ ] Install `motion-v` and add Nuxt module
-- [ ] **AppHeader**: AnimatePresence for mobile menu slide
-- [ ] **Hero Section**: Staggered text reveal + floating orbs with `useScroll`
-- [ ] **Card Grids**: `whileInView` scroll reveal for FeatureCard, EventCard, PostCard
-- [ ] **PageSection**: `whileInView` fade-up entrance
-- [ ] **BaseButton**: `whileHover`/`whilePress` for primary/contrast variants
+> Note: Using pure CSS/Tailwind/JS for animations instead of `motion-v` for better performance.
+
+- [ ] **AppHeader**: CSS transition for mobile menu slide
+- [ ] **Hero Section**: CSS keyframes for staggered text reveal + floating orbs
+- [ ] **Card Grids**: Intersection Observer + CSS for scroll reveal
+- [ ] **PageSection**: CSS fade-up entrance with Intersection Observer
+- [ ] **BaseButton**: Tailwind hover/active states
 
 #### Component Styling Updates
 
@@ -50,14 +51,62 @@ Reference: `docs/STYLE_GUIDELINE.md`
 
 ### Database & Auth Setup
 
-- [ ] Configure Supabase connection in `server/env.ts`
-- [ ] Create Drizzle schema for core entities (`server/database/schema.ts`):
-  - [ ] `posts` table (blog)
-  - [ ] `events` table
-  - [ ] `appointments` table
-  - [ ] `services` table
-- [ ] Set up Supabase Auth integration
-- [ ] Create auth middleware for protected routes
+- [x] Configure Supabase connection in `server/env.ts`
+- [x] Create Drizzle schema for core entities (`server/database/schema/`):
+  - [x] `profiles` table (linked to auth.users, with soft-delete)
+  - [x] `posts` + `post_content` tables (multilingual blog)
+  - [x] `events` + `event_content` tables (multilingual events)
+  - [x] `appointments` table
+  - [x] `services` table
+  - [x] `about_settings` + `about_content` tables (CMS-managed about page)
+- [x] Set up Supabase Auth integration (`@nuxtjs/supabase`)
+- [x] Create auth middleware for protected routes (`app/middleware/admin.ts`)
+- [x] Create server-side auth utilities (`server/utils/auth.ts`):
+  - [x] `requireAuth()` - Require authentication
+  - [x] `requireAdmin()` - Require admin access
+  - [x] `requireOwnerOrAdmin()` - Require owner or admin access
+
+### Auth API Endpoints
+
+- [x] `POST /api/auth/register` - Create user + profile atomically
+- [x] `POST /api/auth/sync-profile` - Sync/create profile for existing auth users
+- [x] `GET /api/auth/me` - Get current user's auth info + profile
+
+### Email Confirmation Flow
+
+- [x] `app/pages/auth/confirm.vue` - Email confirmation callback page
+  - Handles success → redirect to `/account?confirmed=true`
+  - Handles error → show message with resend option
+  - Handles no session → redirect to `/login?message=email_confirmed`
+- [x] Success toast on `/account` page when redirected from confirmation
+- [x] Success banner on `/login` page when redirected from confirmation
+- [x] Configured `nuxt.config.ts` callback URL to `/auth/confirm`
+- [ ] Configure custom SMTP (Resend) in Supabase Dashboard for branded emails
+
+### Profile Management API
+
+- [x] `GET /api/profiles/[id]` - Get profile (owner or admin)
+- [x] `PATCH /api/profiles/[id]` - Update profile (displayName, phone, bio, newsletterSubscribed)
+- [x] `DELETE /api/profiles/[id]` - Soft-delete account (ban auth user + set deletedAt)
+
+### File Upload API
+
+- [x] `POST /api/admin/upload` - Upload images to Supabase Storage (admin-only)
+  - Supports `blog` type → stored in `blog/img/`
+  - Supports `events` type → stored in `events/banner/`
+  - Returns public URL for use in upsert requests
+  - Validates MIME type (JPEG, PNG, WebP, GIF, AVIF)
+  - Max file size: 5MB
+
+### About Page CMS API
+
+- [x] `GET /api/about` - Get about page content (public, multilingual with fallback)
+  - Returns settings (adminName, visionImageUrl) + translated content
+  - Supports `lang` query param with English fallback
+  - Returns `isFallback` and `availableLanguages` for UI
+- [x] `PUT /api/admin/about` - Update about page (admin-only)
+  - Upserts settings + content for all 4 languages atomically
+  - Fields: title, description, hero, vision, values (v0-v2), quote
 
 ### Component Foundation
 
@@ -98,14 +147,18 @@ Core marketing pages with HFY visual identity.
 
 ## Milestone 3: Blog System
 
-Content management for blog posts.
+Content management for blog posts (multilingual support).
+
+### Database Schema (Completed)
+
+- [x] `posts` table - Language-agnostic fields (slug, published, authorId, bannerUrl)
+- [x] `post_content` table - Translatable fields (title, excerpt, content) with unique (post_id, lang)
 
 ### API Routes
 
-- [ ] `GET /api/posts` - List posts (paginated)
-- [ ] `GET /api/posts/[slug]` - Get single post
-- [ ] `POST /api/admin/posts` - Create post (protected)
-- [ ] `PUT /api/admin/posts/[id]` - Update post (protected)
+- [x] `GET /api/posts?lang=en` - List posts (paginated, multilingual, with English fallback)
+- [x] `GET /api/posts/[slug]?lang=en` - Get single post (with `availableLanguages` for lang switcher)
+- [x] `POST /api/admin/posts` - Create/update post (upsert, all 4 languages required)
 - [ ] `DELETE /api/admin/posts/[id]` - Delete post (protected)
 
 ### Frontend Pages
@@ -126,14 +179,18 @@ Content management for blog posts.
 
 ## Milestone 4: Events System
 
-Event management and display.
+Event management and display (multilingual support).
+
+### Database Schema (Completed)
+
+- [x] `events` table - Language-agnostic fields (slug, type, status, dates, location, price, etc.)
+- [x] `event_content` table - Translatable fields (title, description, detail) with unique (event_id, lang)
 
 ### API Routes
 
-- [ ] `GET /api/events` - List events (paginated, with date filtering)
-- [ ] `GET /api/events/[id]` - Get single event
-- [ ] `POST /api/admin/events` - Create event (protected)
-- [ ] `PUT /api/admin/events/[id]` - Update event (protected)
+- [x] `GET /api/events?lang=en&filter=upcoming` - List events (paginated, multilingual, with English fallback)
+- [x] `GET /api/events/[id]?lang=en` - Get single event (with `availableLanguages` for lang switcher)
+- [x] `POST /api/admin/events` - Create/update event (upsert, all 4 languages required)
 - [ ] `DELETE /api/admin/events/[id]` - Delete event (protected)
 
 ### Frontend Pages
@@ -151,9 +208,10 @@ Admin interface for content management.
 
 ### Auth & Protection
 
-- [ ] Admin login page (`app/pages/admin/login.vue`)
-- [ ] Auth guard middleware for `/admin/*` routes
-- [ ] Session management with Supabase
+- [x] Admin login page (`app/pages/login.vue` - shared login with admin redirect)
+- [x] Auth guard middleware for `/admin/*` routes (`app/middleware/admin.ts`)
+- [x] Session management with Supabase (`@nuxtjs/supabase`)
+- [x] Admin email allowlist (`app/config/admin.ts`, `server/utils/auth.ts`)
 
 ### Dashboard
 

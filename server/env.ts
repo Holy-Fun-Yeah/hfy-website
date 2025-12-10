@@ -26,8 +26,8 @@ const envSchema = z.object({
 
   // Supabase (Auth + Realtime)
   SUPABASE_URL: z.string().url().optional(),
-  SUPABASE_ANON_KEY: z.string().optional(),
-  SUPABASE_SERVICE_KEY: z.string().optional(), // Server-side only, admin access
+  SUPABASE_PUBLIC_KEY: z.string().optional(), // Client-side publishable key
+  SUPABASE_SECRET_KEY: z.string().optional(), // Server-side only, admin access
 
   // Stripe (Payments)
   STRIPE_SECRET_KEY: z.string().startsWith('sk_').optional(),
@@ -57,8 +57,8 @@ export const env = result.success
       APP_ENV: 'development' as const,
       DATABASE_URL: undefined,
       SUPABASE_URL: undefined,
-      SUPABASE_ANON_KEY: undefined,
-      SUPABASE_SERVICE_KEY: undefined,
+      SUPABASE_PUBLIC_KEY: undefined,
+      SUPABASE_SECRET_KEY: undefined,
       STRIPE_SECRET_KEY: undefined,
       STRIPE_WEBHOOK_SECRET: undefined,
     }

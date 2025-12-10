@@ -190,5 +190,60 @@
     "description": "Transformative experiences guided by modern astrology and ancient intuition. Book sessions, attend celestial events, and awaken your cosmic power.",
     "ogTitle": "Holy Fuck Yeah! — Awaken Your Cosmic Power",
     "ogDescription": "Transformative experiences guided by modern astrology and ancient intuition."
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "createAccount": "Create Account",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Your full name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Phone number",
+    "phoneOptional": "Optional - for appointment reminders",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "accessDenied": "Access Denied",
+    "adminOnly": "This area is restricted to administrators.",
+    "adminAccess": "Administrator access required",
+    "loggedInAs": "Logged in as",
+    "passwordMismatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "unknownError": "An unexpected error occurred",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordDescription": "Enter your email and we'll send you a link to reset your password.",
+    "sendResetLink": "Send Reset Link",
+    "backToSignIn": "Back to Sign In",
+    "checkEmail": "Check Your Email",
+    "confirmEmailSent": "We've sent you a confirmation email. Please check your inbox and click the link to verify your account.",
+    "resetEmailSent": "We've sent you an email with a link to reset your password. Please check your inbox.",
+    "resetPassword": "Reset Password",
+    "resetPasswordDescription": "Enter your new password below.",
+    "updatePassword": "Update Password",
+    "passwordUpdated": "Password Updated",
+    "passwordUpdatedDescription": "Your password has been successfully updated. You can now sign in with your new password."
+  },
+  "admin": {
+    "editButton": "Edit Page",
+    "backToWebsite": "Back to Website",
+    "editor": {
+      "title": "Content Editor",
+      "placeholder": "Editor workspace",
+      "comingSoon": "Coming soon"
+    }
+  },
+  "userMenu": {
+    "logIn": "Log In",
+    "account": "Account",
+    "courses": "Courses",
+    "content": "Content",
+    "editor": "Editor"
   }
 }

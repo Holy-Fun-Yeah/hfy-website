@@ -17,19 +17,34 @@ const { brand } = useBrand()
 const { isDark, toggleTheme } = useTheme()
 const fontSizeStore = useFontSizeStore()
 const { currentLocaleInfo, availableLocales, switchLocale, t } = useLocale()
+const { isLoggedIn, isAdmin, signOut } = useAuth()
 
 const mobileMenuOpen = ref(false)
 const langMenuOpen = ref(false)
+const userMenuOpen = ref(false)
 
-// Close language menu when clicking outside
-function closeLangMenu() {
+// Close menus when clicking outside
+function closeMenus() {
   langMenuOpen.value = false
+  userMenuOpen.value = false
 }
 
 // Handle locale selection (switch locale and close menu)
 function selectLocale(code: string) {
-  switchLocale(code)
+  switchLocale(code as 'en' | 'es' | 'de' | 'fr')
   langMenuOpen.value = false
+}
+
+// Handle sign out from user menu dropdown
+function handleUserMenuSignOut() {
+  signOut()
+  userMenuOpen.value = false
+}
+
+// Handle sign out from mobile menu
+function handleMobileSignOut() {
+  signOut()
+  mobileMenuOpen.value = false
 }
 
 // Scroll-aware header transparency
@@ -40,12 +55,12 @@ onMounted(() => {
     isScrolled.value = window.scrollY > 20
   }
   window.addEventListener('scroll', handleScroll, { passive: true })
-  window.addEventListener('click', closeLangMenu)
+  window.addEventListener('click', closeMenus)
   handleScroll() // Check initial state
 
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
-    window.removeEventListener('click', closeLangMenu)
+    window.removeEventListener('click', closeMenus)
   })
 })
 
@@ -245,6 +260,185 @@ const itemInitial = { opacity: 0, x: -10 }
           </AnimatePresence>
         </div>
 
+        <!-- User Menu / Login Button -->
+        <div class="relative hidden sm:block">
+          <!-- Login Button (not logged in) -->
+          <NuxtLink
+            v-if="!isLoggedIn"
+            to="/login"
+            class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/10 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
+          >
+            {{ t('userMenu.logIn') }}
+          </NuxtLink>
+
+          <!-- User Icon with Dropdown (logged in) -->
+          <button
+            v-else
+            type="button"
+            class="hover:bg-brand-accent/10 flex h-9 w-9 items-center justify-center rounded-full border-2 transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
+            :class="
+              isAdmin
+                ? 'border-brand-accent text-brand-accent'
+                : 'border-brand-muted text-brand-muted hover:border-brand-accent hover:text-brand-accent'
+            "
+            :title="t('userMenu.account')"
+            @click.stop="userMenuOpen = !userMenuOpen"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+          </button>
+
+          <!-- User Dropdown Menu -->
+          <AnimatePresence>
+            <Motion
+              v-if="userMenuOpen && isLoggedIn"
+              as="div"
+              :initial="{ opacity: 0, y: -8, scale: 0.95 }"
+              :animate="{ opacity: 1, y: 0, scale: 1 }"
+              :exit="{ opacity: 0, y: -8, scale: 0.95 }"
+              :transition="{ duration: 0.15 }"
+              class="bg-brand-background/95 border-brand-base/10 absolute top-full right-0 mt-1 min-w-[160px] overflow-hidden rounded-lg border shadow-lg backdrop-blur-lg"
+              @click.stop
+            >
+              <ul class="py-1">
+                <!-- Account -->
+                <li>
+                  <NuxtLink
+                    to="/account"
+                    class="text-brand-muted hover:bg-brand-accent/5 hover:text-brand-accent flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors"
+                    @click="userMenuOpen = false"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    {{ t('userMenu.account') }}
+                  </NuxtLink>
+                </li>
+
+                <!-- Admin: Editor -->
+                <li v-if="isAdmin">
+                  <NuxtLink
+                    to="/admin/editor"
+                    class="text-brand-accent hover:bg-brand-accent/5 flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-medium transition-colors"
+                    @click="userMenuOpen = false"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                    {{ t('userMenu.editor') }}
+                  </NuxtLink>
+                </li>
+
+                <!-- Non-Admin: Courses & Content -->
+                <template v-else>
+                  <li>
+                    <NuxtLink
+                      to="/courses"
+                      class="text-brand-muted hover:bg-brand-accent/5 hover:text-brand-accent flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors"
+                      @click="userMenuOpen = false"
+                    >
+                      <svg
+                        class="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                        />
+                      </svg>
+                      {{ t('userMenu.courses') }}
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink
+                      to="/content"
+                      class="text-brand-muted hover:bg-brand-accent/5 hover:text-brand-accent flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors"
+                      @click="userMenuOpen = false"
+                    >
+                      <svg
+                        class="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                        />
+                      </svg>
+                      {{ t('userMenu.content') }}
+                    </NuxtLink>
+                  </li>
+                </template>
+
+                <!-- Divider -->
+                <li class="border-brand-base/10 my-1 border-t" />
+
+                <!-- Sign Out -->
+                <li>
+                  <button
+                    type="button"
+                    class="text-brand-muted hover:bg-brand-accent/5 hover:text-brand-accent flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors"
+                    @click="handleUserMenuSignOut"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      />
+                    </svg>
+                    {{ t('auth.signOut') }}
+                  </button>
+                </li>
+              </ul>
+            </Motion>
+          </AnimatePresence>
+        </div>
+
         <!-- Mobile Menu Button -->
         <button
           class="text-brand-muted hover:text-brand-accent p-2 transition-colors md:hidden"
@@ -304,6 +498,151 @@ const itemInitial = { opacity: 0, x: -10 }
             >
               {{ link.label }}
             </NuxtLink>
+          </Motion>
+
+          <!-- Mobile User Menu -->
+          <Motion
+            as="li"
+            :initial="itemInitial"
+            :animate="getItemDelay(navLinks.length)"
+            class="border-brand-base/10 mt-2 border-t pt-2"
+          >
+            <!-- Login Button (not logged in) -->
+            <NuxtLink
+              v-if="!isLoggedIn"
+              to="/login"
+              class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/5 flex items-center gap-2 rounded-lg px-3 py-2.5 text-lg transition-all duration-200"
+              @click="mobileMenuOpen = false"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              {{ t('userMenu.logIn') }}
+            </NuxtLink>
+
+            <!-- User Menu (logged in) -->
+            <template v-else>
+              <!-- Account -->
+              <NuxtLink
+                to="/account"
+                class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/5 flex items-center gap-2 rounded-lg px-3 py-2.5 text-lg transition-all duration-200"
+                @click="mobileMenuOpen = false"
+              >
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                {{ t('userMenu.account') }}
+              </NuxtLink>
+
+              <!-- Admin: Editor -->
+              <NuxtLink
+                v-if="isAdmin"
+                to="/admin/editor"
+                class="text-brand-accent hover:bg-brand-accent/5 flex items-center gap-2 rounded-lg px-3 py-2.5 text-lg font-medium transition-all duration-200"
+                @click="mobileMenuOpen = false"
+              >
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                {{ t('userMenu.editor') }}
+              </NuxtLink>
+
+              <!-- Non-Admin: Courses & Content -->
+              <template v-else>
+                <NuxtLink
+                  to="/courses"
+                  class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/5 flex items-center gap-2 rounded-lg px-3 py-2.5 text-lg transition-all duration-200"
+                  @click="mobileMenuOpen = false"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    />
+                  </svg>
+                  {{ t('userMenu.courses') }}
+                </NuxtLink>
+                <NuxtLink
+                  to="/content"
+                  class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/5 flex items-center gap-2 rounded-lg px-3 py-2.5 text-lg transition-all duration-200"
+                  @click="mobileMenuOpen = false"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
+                  </svg>
+                  {{ t('userMenu.content') }}
+                </NuxtLink>
+              </template>
+
+              <!-- Sign Out -->
+              <button
+                type="button"
+                class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/5 mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-lg transition-all duration-200"
+                @click="handleMobileSignOut"
+              >
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
+                </svg>
+                {{ t('auth.signOut') }}
+              </button>
+            </template>
           </Motion>
         </ul>
       </Motion>

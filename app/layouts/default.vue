@@ -94,5 +94,8 @@ const pageTransition = {
     </main>
 
     <AppFooter />
+
+    <!-- Admin edit button (only shows for admins on content pages) -->
+    <AdminEditButton />
   </div>
 </template>

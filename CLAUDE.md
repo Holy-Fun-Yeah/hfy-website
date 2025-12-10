@@ -58,6 +58,9 @@ All server-side env vars loaded via `server/env.ts`. Validated with Zod at start
 const envSchema = z.object({
   APP_ENV: z.enum(['development', 'staging', 'production']),
   DATABASE_URL: z.string().optional(),
+  SUPABASE_URL: z.string().url().optional(),
+  SUPABASE_PUBLIC_KEY: z.string().optional(), // Client-side publishable key
+  SUPABASE_SECRET_KEY: z.string().optional(), // Server-side admin key
   // Add more as needed
 })
 
@@ -65,6 +68,26 @@ const envSchema = z.object({
 import { env, isDev, isProd } from '../env'
 console.log(env.APP_ENV)
 if (isDev) console.log('Development mode')
+```
+
+### Supabase Key Naming Convention
+
+**IMPORTANT:** Use the recommended Supabase key names (not legacy `anon_key`/`service_key`):
+
+| Env Variable          | Purpose                                | Usage                             |
+| --------------------- | -------------------------------------- | --------------------------------- |
+| `SUPABASE_URL`        | Project URL                            | Both client and server            |
+| `SUPABASE_PUBLIC_KEY` | Publishable key (`sb_publishable_...`) | Client-side auth                  |
+| `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_...`)           | Server-side admin operations only |
+
+The `@nuxtjs/supabase` module reads these from `nuxt.config.ts`:
+
+```ts
+supabase: {
+  url: process.env.SUPABASE_URL,
+  key: process.env.SUPABASE_PUBLIC_KEY,
+  serviceKey: process.env.SUPABASE_SECRET_KEY,
+}
 ```
 
 Required vars throw on startup if missing. See `.env.example` for reference.
@@ -482,6 +505,127 @@ import { validateLocale } from '~/types/locale'
 validateLocale(jsonData, 'en') // Throws if invalid
 ```
 
+## Vue Template Best Practices
+
+### Event Handlers - IMPORTANT
+
+**NEVER use multi-statement inline JavaScript in Vue event handlers.** Prettier will reformat them to multiple lines without semicolons, causing build failures.
+
+```vue
+<!-- WRONG - Will break on build after prettier runs -->
+<button
+  @click="
+    doSomething()
+    closeMenu = false
+  "
+>Click</button>
+
+<!-- WRONG - Prettier reformats this to invalid syntax -->
+<button
+  @click="
+    doSomething()
+    closeMenu = false
+  "
+>Click</button>
+
+<!-- CORRECT - Use a handler method -->
+<script setup>
+function handleClick() {
+  doSomething()
+  closeMenu.value = false
+}
+</script>
+
+<template>
+  <button @click="handleClick">Click</button>
+</template>
+```
+
+**Rule:** If your `@click` (or any event handler) needs more than one statement, create a named function in `<script setup>` and reference it.
+
+### Other Template Guidelines
+
+- Use method references for complex handlers: `@click="handleSubmit"` not `@click="submitForm(); resetState()"`
+- Keep inline handlers simple: `@click="isOpen = !isOpen"` is fine (single statement)
+- Avoid arrow functions in templates: `@click="() => { ... }"` - define in script instead
+
+## Supabase Authentication
+
+This project uses `@nuxtjs/supabase` for authentication. Configuration is in `nuxt.config.ts`.
+
+### Public vs Protected Routes
+
+The `supabase.redirectOptions.exclude` array defines which routes are **public** (no auth required). Any route NOT in this list is treated as protected by Supabase middleware.
+
+```ts
+// nuxt.config.ts
+supabase: {
+  redirectOptions: {
+    login: '/login',           // Where to redirect unauthenticated users
+    callback: '/auth/confirm', // Email confirmation callback URL
+    exclude: [
+      '/',
+      '/about',
+      '/blog',
+      '/blog/*',
+      '/events',
+      '/events/*',
+      '/book',
+      '/login',          // MUST be excluded or navigation breaks!
+      '/reset-password', // MUST be excluded or navigation breaks!
+      '/auth/confirm',   // MUST be excluded for email confirmation flow!
+    ],
+  },
+},
+```
+
+### CRITICAL: When Adding New Public Pages
+
+**Always add new public pages to the `exclude` list in `nuxt.config.ts`**, especially auth-related pages like `/login`, `/register`, `/reset-password`, etc.
+
+If you forget to exclude a public page:
+
+- Navigation to that page will fail or redirect unexpectedly
+- The page may not render (stuck on loading screen)
+- Supabase middleware intercepts the request before the page loads
+
+### Auth Composable
+
+```ts
+const { user, isLoggedIn, isAdmin, signIn, signUp, signOut } = useAuth()
+```
+
+- `isAdmin` checks if user email is in allowlist (`app/config/admin.ts`)
+- Admin emails: `hfy.world@outlook.com`, `danyiel5978@gmail.com`
+
+### Admin Middleware
+
+Protected admin routes use the `admin` middleware:
+
+```vue
+<script setup>
+definePageMeta({
+  middleware: 'admin',
+})
+</script>
+```
+
+This redirects non-authenticated users to `/login` and lets the page handle showing "Access Denied" for non-admin users.
+
+## E2E Testing (Playwright)
+
+Run E2E tests with:
+
+```bash
+yarn test:e2e          # Run all tests
+yarn test:e2e:ui       # Interactive UI mode
+yarn test:e2e:debug    # Debug mode with inspector
+```
+
+Tests are in `tests/e2e/`. The test suite covers navigation, login flow, and header functionality.
+
+**Note:** Start the dev server (`yarn dev`) before running tests locally. CI runs the server automatically.
+
 ## Debugging
 
 When in doubt about whether components are rendering correctly or styles are loading, use the **Puppeteer MCP** to inspect the running app:
@@ -494,3 +638,5 @@ When in doubt about whether components are rendering correctly or styles are loa
 ```
 
 This is especially useful for verifying brand colors, component styling, and layout issues.
+
+- for admin sections we only use English, no multilingual features

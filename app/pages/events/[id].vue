@@ -368,8 +368,9 @@ useSeoMeta({
                   <NuxtLink
                     to="/book"
                     class="text-brand-accent hover:underline"
-                    >Contact us</NuxtLink
                   >
+                    Contact us
+                  </NuxtLink>
                 </p>
               </BaseCard>
             </div>

@@ -1,0 +1,64 @@
+/**
+ * POST /api/auth/sync-profile
+ *
+ * Ensures the authenticated user has a profile in our database.
+ * Creates one if it doesn't exist (useful for OAuth users or migration).
+ *
+ * This endpoint requires authentication and uses the user's auth data
+ * to create/update their profile.
+ */
+
+import { eq } from 'drizzle-orm'
+
+import { db } from '../../database'
+import { profiles } from '../../database/schema'
+import { defineApiHandler, Errors } from '../../lib'
+import { requireAuth } from '../../utils/auth'
+
+export default defineApiHandler(async (event) => {
+  // Get authenticated user
+  const user = await requireAuth(event)
+
+  if (!db) {
+    throw Errors.serviceUnavailable('Database not available')
+  }
+
+  // Check if profile already exists
+  const existingProfile = await db.select().from(profiles).where(eq(profiles.id, user.id)).limit(1)
+
+  if (existingProfile.length > 0) {
+    // Profile exists, return it
+    return {
+      message: 'Profile already exists',
+      profile: existingProfile[0],
+      created: false,
+    }
+  }
+
+  // Extract display name from user metadata or email
+  const userMetadata = user.user_metadata || {}
+  const displayName =
+    userMetadata.display_name ||
+    userMetadata.full_name ||
+    userMetadata.name ||
+    user.email?.split('@')[0] ||
+    'User'
+
+  // Create new profile
+  const [newProfile] = await db
+    .insert(profiles)
+    .values({
+      id: user.id,
+      email: user.email?.toLowerCase() || '',
+      displayName,
+      bio: null,
+      avatarUrl: userMetadata.avatar_url || null,
+    })
+    .returning()
+
+  return {
+    message: 'Profile created successfully',
+    profile: newProfile,
+    created: true,
+  }
+})

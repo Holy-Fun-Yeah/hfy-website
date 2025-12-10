@@ -2,132 +2,73 @@
 /**
  * Blog Listing Page
  *
- * Displays blog posts with category filtering.
+ * Displays blog posts fetched from the API.
  * Uses async loading with skeleton states.
  */
-const { t } = useLocale()
+const { t, currentLocale } = useLocale()
 
 useSeoMeta({
   title: () => t('blog.sectionLabel'),
   description: () => t('blog.hero.subtitle'),
 })
 
-// Types
+// Types (matching API response)
 interface Post {
+  id: number
   slug: string
+  bannerUrl: string | null
+  publishedAt: string
+  author: {
+    id: string
+    displayName: string | null
+    avatarUrl: string | null
+  } | null
   title: string
   excerpt: string
-  category: string
-  author: string
-  date: string
-  readTime: string
-  featured?: boolean
+  lang: string
+  isFallback: boolean
 }
 
-// Filter state
-const activeCategory = ref<string>('all')
-
-// Simulated async data (replace with real API)
+// Fetch posts from API
 const {
-  data: allPosts,
+  data: apiResponse,
   pending,
   error,
-} = useLazyAsyncData<Post[]>(
+} = useLazyAsyncData(
   'blog-posts',
-  async () => {
-    await new Promise((resolve) => setTimeout(resolve, 600))
-    return [
-      {
-        slug: 'planetary-retrogrades',
-        title: 'How planetary retrogrades actually help you grow',
-        excerpt:
-          'Retrograde seasons get a bad rap, but they offer profound opportunities for reflection and realignment. Learn to work with these cosmic pauses.',
-        category: 'Astrology',
-        author: 'AstraNova KaLeKa',
-        date: 'Dec 1, 2025',
-        readTime: '5 min read',
-        featured: true,
-      },
-      {
-        slug: 'mars-season-rituals',
-        title: 'Your daily rituals for Mars season',
-        excerpt:
-          'Mars brings fire, ambition, and drive. Here are practical rituals to channel this intense energy without burning out.',
-        category: 'Rituals',
-        author: 'Luna Reyes',
-        date: 'Nov 28, 2025',
-        readTime: '4 min read',
-      },
-      {
-        slug: 'venus-libra-connection',
-        title: 'Why Venus in Libra inspires connection',
-        excerpt:
-          'When Venus dances through Libra, relationships bloom. Discover how to harness this harmonious transit for deeper bonds.',
-        category: 'Transits',
-        author: 'AstraNova KaLeKa',
-        date: 'Nov 20, 2025',
-        readTime: '6 min read',
-      },
-      {
-        slug: 'moon-phases-guide',
-        title: 'A complete guide to working with moon phases',
-        excerpt:
-          'From new moon intentions to full moon releases, learn the art of lunar living and how to sync your life with cosmic rhythms.',
-        category: 'Astrology',
-        author: 'Celestia Moon',
-        date: 'Nov 15, 2025',
-        readTime: '8 min read',
-        featured: true,
-      },
-      {
-        slug: 'morning-ritual-routine',
-        title: 'Creating a sacred morning ritual',
-        excerpt:
-          'How the first hour of your day sets the tone for everything. Simple practices to start each morning with intention.',
-        category: 'Rituals',
-        author: 'Luna Reyes',
-        date: 'Nov 10, 2025',
-        readTime: '5 min read',
-      },
-      {
-        slug: 'saturn-return-survival',
-        title: 'Surviving (and thriving) through your Saturn Return',
-        excerpt:
-          "The Saturn Return is a cosmic rite of passage. Here's how to navigate this transformative period with grace.",
-        category: 'Transits',
-        author: 'AstraNova KaLeKa',
-        date: 'Nov 5, 2025',
-        readTime: '7 min read',
-      },
-    ]
-  },
-  { server: false }
+  () =>
+    $fetch('/api/posts', {
+      query: { lang: currentLocale.value, limit: 20 },
+    }),
+  { server: true, watch: [currentLocale] }
 )
 
-// Get unique categories
-const categories = computed(() => {
-  if (!allPosts.value) return []
-  const cats = [...new Set(allPosts.value.map((p) => p.category))]
-  return ['all', ...cats]
+// Extract posts from API response (handle error case)
+const allPosts = computed<Post[]>(() => {
+  if (!apiResponse.value || !('data' in apiResponse.value)) return []
+  return apiResponse.value.data as Post[]
 })
 
-// Filtered posts
-const filteredPosts = computed(() => {
-  if (!allPosts.value) return []
-  if (activeCategory.value === 'all') return allPosts.value
-  return allPosts.value.filter((p) => p.category === activeCategory.value)
-})
+// Format date for display
+function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  return date.toLocaleDateString(currentLocale.value, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
 
-// Featured post (first featured or first post)
+// Featured post (first post)
 const featuredPost = computed(() => {
-  if (!allPosts.value) return null
-  return allPosts.value.find((p) => p.featured) || allPosts.value[0]
+  if (!allPosts.value || allPosts.value.length === 0) return null
+  return allPosts.value[0]
 })
 
 // Regular posts (excluding featured)
 const regularPosts = computed(() => {
-  if (!filteredPosts.value || !featuredPost.value) return filteredPosts.value
-  return filteredPosts.value.filter((p) => p.slug !== featuredPost.value?.slug)
+  if (!allPosts.value || allPosts.value.length <= 1) return []
+  return allPosts.value.slice(1)
 })
 </script>
 
@@ -152,32 +93,16 @@ const regularPosts = computed(() => {
       </div>
     </PageSection>
 
-    <!-- Category Filter -->
+    <!-- Posts Section -->
     <PageSection spacing="sm">
-      <div class="mb-8 flex flex-wrap gap-2">
-        <button
-          v-for="category in categories"
-          :key="category"
-          :class="[
-            'rounded-full px-4 py-1.5 text-sm font-medium transition',
-            activeCategory === category
-              ? 'bg-brand-accent text-brand-neutral'
-              : 'bg-brand-base/5 text-brand-base/70 hover:bg-brand-base/10',
-          ]"
-          @click="activeCategory = category"
-        >
-          {{ category === 'all' ? t('blog.allPosts') : category }}
-        </button>
-      </div>
-
       <AsyncContent
         :loading="pending"
         :error="error"
-        :empty="filteredPosts.length === 0"
+        :empty="allPosts.length === 0"
       >
-        <!-- Featured Post (only show when viewing all) -->
+        <!-- Featured Post -->
         <NuxtLink
-          v-if="featuredPost && activeCategory === 'all'"
+          v-if="featuredPost"
           :to="`/blog/${featuredPost.slug}`"
           class="group mb-8 block"
         >
@@ -189,7 +114,16 @@ const regularPosts = computed(() => {
             <div class="grid md:grid-cols-2">
               <!-- Image placeholder -->
               <div class="bg-brand-base/5 relative aspect-[16/9] md:aspect-auto">
-                <div class="absolute inset-0 flex items-center justify-center">
+                <img
+                  v-if="featuredPost.bannerUrl"
+                  :src="featuredPost.bannerUrl"
+                  :alt="featuredPost.title"
+                  class="h-full w-full object-cover"
+                />
+                <div
+                  v-else
+                  class="absolute inset-0 flex items-center justify-center"
+                >
                   <span class="text-brand-base/20 text-6xl">✧</span>
                 </div>
                 <span
@@ -201,9 +135,6 @@ const regularPosts = computed(() => {
 
               <!-- Content -->
               <div class="flex flex-col justify-center p-6 md:p-8">
-                <p class="text-brand-secondary mb-2 text-xs font-medium tracking-wide uppercase">
-                  {{ featuredPost.category }}
-                </p>
                 <h2
                   class="font-headers text-brand-base group-hover:text-brand-accent mb-3 text-2xl font-bold transition md:text-3xl"
                 >
@@ -213,11 +144,9 @@ const regularPosts = computed(() => {
                   {{ featuredPost.excerpt }}
                 </p>
                 <div class="text-brand-base/40 flex items-center gap-3 text-sm">
-                  <span>{{ featuredPost.author }}</span>
+                  <span>{{ featuredPost.author?.displayName || 'HFY Team' }}</span>
                   <span>·</span>
-                  <span>{{ featuredPost.date }}</span>
-                  <span>·</span>
-                  <span>{{ featuredPost.readTime }}</span>
+                  <span>{{ formatDate(featuredPost.publishedAt) }}</span>
                 </div>
               </div>
             </div>
@@ -239,16 +168,22 @@ const regularPosts = computed(() => {
             >
               <!-- Image placeholder -->
               <div class="bg-brand-base/5 relative aspect-[16/10]">
-                <div class="absolute inset-0 flex items-center justify-center">
+                <img
+                  v-if="post.bannerUrl"
+                  :src="post.bannerUrl"
+                  :alt="post.title"
+                  class="h-full w-full object-cover"
+                />
+                <div
+                  v-else
+                  class="absolute inset-0 flex items-center justify-center"
+                >
                   <span class="text-brand-base/20 text-4xl">✧</span>
                 </div>
               </div>
 
               <!-- Content -->
               <div class="p-4">
-                <p class="text-brand-secondary mb-1 text-xs font-medium tracking-wide uppercase">
-                  {{ post.category }}
-                </p>
                 <h3
                   class="font-headers text-brand-base group-hover:text-brand-accent mb-2 leading-snug font-semibold transition"
                 >
@@ -258,9 +193,7 @@ const regularPosts = computed(() => {
                   {{ post.excerpt }}
                 </p>
                 <div class="text-brand-base/40 flex items-center gap-2 text-xs">
-                  <span>{{ post.date }}</span>
-                  <span>·</span>
-                  <span>{{ post.readTime }}</span>
+                  <span>{{ formatDate(post.publishedAt) }}</span>
                 </div>
               </div>
             </BaseCard>
@@ -364,7 +297,7 @@ const regularPosts = computed(() => {
         <input
           type="email"
           :placeholder="t('newsletter.placeholder')"
-          class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
+          class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-muted focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
           required
         />
         <BaseButton type="submit">{{ t('common.subscribe') }}</BaseButton>

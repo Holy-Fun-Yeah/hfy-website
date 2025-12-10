@@ -254,10 +254,10 @@ const features = computed(() => [
           <input
             type="email"
             :placeholder="t('newsletter.placeholder')"
-            class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
+            class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-muted focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
             required
           />
-          <BaseButton type="submit"> {{ t('newsletter.button') }} </BaseButton>
+          <BaseButton type="submit">{{ t('newsletter.button') }}</BaseButton>
         </form>
         <p class="text-brand-base/50 text-xs">{{ t('newsletter.privacy') }}</p>
       </div>

@@ -10,7 +10,38 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxt/devtools', 'motion-v/nuxt', 'nuxt-i18n-micro'],
+  modules: [
+    '@nuxt/eslint',
+    '@pinia/nuxt',
+    '@nuxt/devtools',
+    'motion-v/nuxt',
+    'nuxt-i18n-micro',
+    '@nuxtjs/supabase',
+  ],
+
+  // Supabase configuration
+  supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_PUBLIC_KEY,
+    serviceKey: process.env.SUPABASE_SECRET_KEY,
+    redirectOptions: {
+      login: '/login',
+      callback: '/auth/confirm',
+      exclude: [
+        '/',
+        '/about',
+        '/blog',
+        '/blog/*',
+        '/events',
+        '/events/*',
+        '/book',
+        '/login',
+        '/reset-password',
+        '/auth/confirm',
+      ],
+      cookieRedirect: false,
+    },
+  },
 
   // i18n configuration
   i18n: {
@@ -96,12 +127,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     databaseUrl: process.env.DATABASE_URL || '',
     supabaseUrl: process.env.SUPABASE_URL || '',
-    supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
-    supabaseServiceKey: process.env.SUPABASE_SERVICE_KEY || '',
+    supabasePublicKey: process.env.SUPABASE_PUBLIC_KEY || '',
+    supabaseSecretKey: process.env.SUPABASE_SECRET_KEY || '',
     public: {
       appName: process.env.NUXT_PUBLIC_APP_NAME || 'Holy Fuck Yeah!',
       supabaseUrl: process.env.SUPABASE_URL || '',
-      supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
+      supabasePublicKey: process.env.SUPABASE_PUBLIC_KEY || '',
     },
   },
 

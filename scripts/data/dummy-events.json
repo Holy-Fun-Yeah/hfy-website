@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "dummy-winter-solstice-sound-bath",
+    "type": "in_person",
+    "status": "published",
+    "startsAt": "2025-12-21T19:00:00.000Z",
+    "endsAt": "2025-12-21T21:00:00.000Z",
+    "host": "AstraNova KaLeKa",
+    "location": "Mexico City",
+    "address": "Centro Holístico Luna, Colonia Roma",
+    "usdPrice": "45",
+    "capacity": 30,
+    "bannerUrl": null,
+    "content": {
+      "en": {
+        "title": "Winter Solstice Sound Bath",
+        "description": "A transformative sound healing experience to mark the longest night.",
+        "detail": "# Winter Solstice Sound Bath\n\nJoin us for a transformative sound healing experience to mark the longest night of the year.\n\n## What to Expect\n\nImmerse yourself in the healing vibrations of crystal singing bowls, gongs, and sacred instruments as we honor the turning of the wheel.\n\n## Benefits\n\n- Deep relaxation and stress release\n- Energetic clearing and balancing\n- Connection with the solstice energies\n- Community and shared intention\n\n## What to Bring\n\n- Yoga mat or blanket\n- Comfortable clothing\n- Water bottle\n- Open heart and mind"
+      }
+    }
+  },
+  {
+    "slug": "dummy-venus-creativity-session",
+    "type": "online",
+    "status": "published",
+    "startsAt": "2026-01-10T18:00:00.000Z",
+    "endsAt": "2026-01-10T20:00:00.000Z",
+    "host": "Luna Reyes",
+    "location": "Online",
+    "address": null,
+    "usdPrice": "25",
+    "capacity": null,
+    "bannerUrl": null,
+    "content": {
+      "en": {
+        "title": "Venus & Creativity Session",
+        "description": "Explore how Venus transits enhance creativity and self-expression.",
+        "detail": "# Venus & Creativity Session\n\nExplore how Venus transits enhance creativity and self-expression in this interactive online workshop.\n\n## Workshop Overview\n\nVenus governs our sense of beauty, pleasure, and creative expression. Learn to harness Venus transits to unlock your artistic potential.\n\n## Topics Covered\n\n- Understanding Venus in your birth chart\n- Current Venus transits and their influence\n- Creative exercises aligned with Venus energy\n- Building a Venus-inspired creative practice\n\n## Requirements\n\n- Stable internet connection\n- Zoom installed\n- Journal and creative supplies (optional)"
+      }
+    }
+  },
+  {
+    "slug": "dummy-full-moon-reflection-circle",
+    "type": "in_person",
+    "status": "published",
+    "startsAt": "2026-01-25T20:00:00.000Z",
+    "endsAt": "2026-01-25T22:00:00.000Z",
+    "host": "AstraNova KaLeKa",
+    "location": "Guadalajara",
+    "address": "Jardín de la Luz, Tlaquepaque",
+    "usdPrice": "35",
+    "capacity": 20,
+    "bannerUrl": null,
+    "content": {
+      "en": {
+        "title": "Full Moon Reflection Circle",
+        "description": "A guided reflection practice under the light of the full moon.",
+        "detail": "# Full Moon Reflection Circle\n\nGather under the full moon for a guided reflection practice that honors lunar wisdom.\n\n## Circle Format\n\nWe'll create sacred space together, share intentions, and engage in guided meditation under the moonlight.\n\n## What We'll Do\n\n- Opening ceremony and grounding\n- Full moon meditation\n- Journaling prompts\n- Sharing circle (optional)\n- Closing ritual\n\n## Bring With You\n\n- Journal and pen\n- Warm layers\n- Something to sit on\n- An open heart"
+      }
+    }
+  },
+  {
+    "slug": "dummy-new-year-intention-setting",
+    "type": "online",
+    "status": "published",
+    "startsAt": "2026-03-20T10:00:00.000Z",
+    "endsAt": "2026-03-20T12:00:00.000Z",
+    "host": "AstraNova KaLeKa",
+    "location": "Online",
+    "address": null,
+    "usdPrice": "0",
+    "capacity": null,
+    "bannerUrl": null,
+    "content": {
+      "en": {
+        "title": "New Year Intention Setting",
+        "description": "Set powerful intentions aligned with the cosmic new year.",
+        "detail": "# New Year Intention Setting\n\nThe astrological new year begins at the Spring Equinox. Join us to set powerful intentions aligned with this cosmic fresh start.\n\n## Why the Equinox?\n\nWhen the Sun enters Aries at the equinox, we experience a burst of initiating energy. This is the true cosmic new year - a potent time for new beginnings.\n\n## Workshop Flow\n\n1. Releasing the old year\n2. Equinox meditation\n3. Vision crafting\n4. Intention setting ritual\n5. Creating accountability structures\n\n## This Event is Free\n\nAs a gift to our community, this workshop is offered freely. Donations welcome but not required."
+      }
+    }
+  },
+  {
+    "slug": "dummy-autumn-equinox-gathering",
+    "type": "in_person",
+    "status": "completed",
+    "startsAt": "2025-09-22T18:00:00.000Z",
+    "endsAt": "2025-09-22T20:00:00.000Z",
+    "host": "AstraNova KaLeKa",
+    "location": "Mexico City",
+    "address": "Parque México, Condesa",
+    "usdPrice": "30",
+    "capacity": 25,
+    "bannerUrl": null,
+    "content": {
+      "en": {
+        "title": "Autumn Equinox Gathering",
+        "description": "Celebrated the balance of light and dark with community.",
+        "detail": "# Autumn Equinox Gathering\n\nWe gathered to celebrate the balance of light and dark, honoring the harvest season.\n\n## Event Highlights\n\nThis past event brought together 25 seekers to mark the turning of the seasons.\n\n## What We Did\n\n- Gratitude ceremony\n- Equinox meditation\n- Community sharing\n- Seasonal treats and connection\n\n## Thank You\n\nTo all who joined us - your presence made this gathering magical."
+      }
+    }
+  },
+  {
+    "slug": "dummy-mercury-retrograde-workshop",
+    "type": "online",
+    "status": "completed",
+    "startsAt": "2025-08-15T17:00:00.000Z",
+    "endsAt": "2025-08-15T19:00:00.000Z",
+    "host": "Luna Reyes",
+    "location": "Online",
+    "address": null,
+    "usdPrice": "20",
+    "capacity": null,
+    "bannerUrl": null,
+    "content": {
+      "en": {
+        "title": "Mercury Retrograde Workshop",
+        "description": "Learned to navigate and thrive during retrograde seasons.",
+        "detail": "# Mercury Retrograde Workshop\n\nWe learned to navigate and thrive during Mercury retrograde seasons in this empowering workshop.\n\n## Topics We Covered\n\n- Mercury retrograde myths vs reality\n- Practical strategies for communication\n- Tech backup best practices\n- Using retrograde for reflection\n\n## Recording Available\n\nIf you missed this workshop, a recording is available for purchase."
+      }
+    }
+  }
+]

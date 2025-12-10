@@ -2,204 +2,69 @@
 /**
  * Blog Post Detail Page
  *
- * Displays full blog post with markdown content from DB.
+ * Displays full blog post with markdown content from API.
  * Uses BaseMarkdown component for rendering.
  */
 const route = useRoute()
 const slug = route.params.slug as string
+const { t, currentLocale } = useLocale()
 
-// Types
+// Types matching API response
 interface PostDetail {
+  id: number
   slug: string
+  bannerUrl: string | null
+  publishedAt: string
+  updatedAt: string
+  author: {
+    id: string
+    displayName: string | null
+    avatarUrl: string | null
+  } | null
   title: string
   excerpt: string
-  content: string // Markdown content from DB
-  category: string
-  author: string
-  authorBio?: string
-  date: string
-  readTime: string
-  tags?: string[]
+  content: string
+  lang: string
+  isFallback: boolean
+  availableLanguages: string[]
 }
 
-interface RelatedPost {
-  slug: string
-  title: string
-  category: string
-  date: string
-}
-
-// Simulated async data (replace with real API: $fetch(`/api/posts/${slug}`))
+// Fetch post from API
 const {
-  data: post,
+  data: apiResponse,
   pending,
   error,
-} = useLazyAsyncData<PostDetail | null>(
-  `post-${slug}`,
-  async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    // Mock post data with markdown content
-    const posts: Record<string, PostDetail> = {
-      'planetary-retrogrades': {
-        slug: 'planetary-retrogrades',
-        title: 'How planetary retrogrades actually help you grow',
-        excerpt:
-          'Retrograde seasons get a bad rap, but they offer profound opportunities for reflection and realignment.',
-        content: `
-Retrograde seasons are often met with dread. We blame Mercury retrograde for missed emails, tech glitches, and communication mishaps. But what if these cosmic pauses are actually invitations to slow down and look inward?
-
-## What is a retrograde, really?
-
-From our perspective on Earth, a planet appears to move backward in its orbit. It's an optical illusion, but astrology teaches us that these periods carry symbolic weight.
-
-When a planet goes retrograde, its themes turn inward:
-
-- **Mercury** retrograde asks us to review our communications and thought patterns
-- **Venus** retrograde invites us to reassess our relationships and values
-- **Mars** retrograde challenges us to examine how we assert ourselves
-
-## The gift of the retrograde
-
-Instead of fighting against retrograde energy, consider these practices:
-
-### 1. Review, don't initiate
-
-Retrograde periods are perfect for:
-- Revisiting old projects
-- Reconnecting with old friends
-- Reflecting on past decisions
-
-### 2. Embrace the slowdown
-
-Our culture glorifies constant forward motion. Retrogrades remind us that rest and reflection are essential parts of any growth cycle.
-
-> "The retrograde is not a punishment. It's a cosmic permission slip to pause."
-
-### 3. Trust the timing
-
-If things feel stuck during a retrograde, trust that the delay serves a purpose. What needs your attention right now?
-
-## Working with the current energy
-
-Here's a simple ritual for any retrograde season:
-
-1. **Identify** what area of life the planet rules
-2. **Reflect** on what needs revisiting in that area
-3. **Release** what no longer serves you
-4. **Realign** with your true intentions
-
----
-
-Retrogrades are not cosmic punishments—they're opportunities. The next time a planet appears to move backward, ask yourself: *What is being brought back to my attention?*
-
-The stars don't control us. They remind us of the rhythms we've forgotten.
-        `.trim(),
-        category: 'Astrology',
-        author: 'AstraNova KaLeKa',
-        authorBio:
-          'Astrologer, energy healer, and founder of Holy Fuck Yeah! Guiding seekers through cosmic wisdom and sacred technology.',
-        date: 'December 1, 2025',
-        readTime: '5 min read',
-        tags: ['Retrogrades', 'Mercury', 'Growth', 'Reflection'],
-      },
-      'mars-season-rituals': {
-        slug: 'mars-season-rituals',
-        title: 'Your daily rituals for Mars season',
-        excerpt:
-          'Mars brings fire, ambition, and drive. Here are practical rituals to channel this intense energy.',
-        content: `
-Mars season brings a surge of energy, motivation, and sometimes aggression. Rather than letting this fiery planet overwhelm you, here are daily rituals to harness its power.
-
-## Morning: Ignite Your Intentions
-
-Start each day during Mars season with movement. This doesn't have to be intense—even a 10-minute walk or stretch sequence activates Mars energy in a healthy way.
-
-**Try this morning ritual:**
-1. Upon waking, take three deep breaths
-2. Set one clear intention for the day
-3. Move your body for at least 10 minutes
-4. Speak your intention aloud: "Today, I will..."
-
-## Afternoon: Channel the Fire
-
-The middle of the day is when Mars energy peaks. Use this time for:
-
-- Tackling challenging tasks
-- Having difficult conversations
-- Making bold decisions
-- Physical exercise
-
-> "Mars doesn't ask us to be passive. It asks us to act with purpose."
-
-## Evening: Cool the Flames
-
-As the day winds down, Mars energy needs grounding. Without this, you may experience:
-- Difficulty sleeping
-- Irritability
-- Racing thoughts
-
-**Evening practices:**
-- Take a cool shower or bath
-- Practice legs-up-the-wall pose
-- Write down what you accomplished
-- Release any lingering frustration through journaling
-
-## Weekly Mars Ritual
-
-Once a week during Mars season, dedicate time to:
-
-1. **Assess your progress** on current goals
-2. **Adjust your approach** if something isn't working
-3. **Celebrate your wins**, no matter how small
-4. **Plan your next moves** with clarity
-
----
-
-Mars season is not about burning out—it's about burning bright with intention. Use these rituals to stay energized without losing yourself in the fire.
-        `.trim(),
-        category: 'Rituals',
-        author: 'Luna Reyes',
-        authorBio: 'Ritual designer and ceremonial guide specializing in planetary alignments.',
-        date: 'November 28, 2025',
-        readTime: '4 min read',
-        tags: ['Mars', 'Rituals', 'Daily Practice', 'Energy'],
-      },
-    }
-
-    return posts[slug] || null
-  },
-  { server: false }
+} = useLazyAsyncData<PostDetail | { error: unknown } | null>(
+  `post-${slug}-${currentLocale.value}`,
+  () =>
+    $fetch(`/api/posts/${slug}`, {
+      query: { lang: currentLocale.value },
+    }),
+  { server: true, watch: [currentLocale] }
 )
 
-// Related posts (simulated)
-const { data: relatedPosts } = useLazyAsyncData<RelatedPost[]>(
-  `related-${slug}`,
-  async () => {
-    await new Promise((resolve) => setTimeout(resolve, 300))
-    return [
-      {
-        slug: 'moon-phases-guide',
-        title: 'A complete guide to working with moon phases',
-        category: 'Astrology',
-        date: 'Nov 15',
-      },
-      {
-        slug: 'saturn-return-survival',
-        title: 'Surviving your Saturn Return',
-        category: 'Transits',
-        date: 'Nov 5',
-      },
-      {
-        slug: 'morning-ritual-routine',
-        title: 'Creating a sacred morning ritual',
-        category: 'Rituals',
-        date: 'Nov 10',
-      },
-    ]
-  },
-  { server: false }
-)
+// Extract post from API response
+const post = computed<PostDetail | null>(() => {
+  if (!apiResponse.value || 'error' in apiResponse.value) return null
+  return apiResponse.value
+})
+
+// Calculate read time (rough estimate: 200 words per minute)
+function calculateReadTime(content: string): string {
+  const words = content.split(/\s+/).length
+  const minutes = Math.ceil(words / 200)
+  return `${minutes} min read`
+}
+
+// Format date for display
+function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  return date.toLocaleDateString(currentLocale.value, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
 
 // Dynamic SEO
 useSeoMeta({
@@ -286,7 +151,7 @@ useSeoMeta({
               Blog
             </NuxtLink>
             <span class="text-brand-base/30 mx-2">/</span>
-            <span class="text-brand-base/70">{{ post.category }}</span>
+            <span class="text-brand-base/70">{{ post.title }}</span>
           </nav>
         </div>
       </div>
@@ -298,8 +163,12 @@ useSeoMeta({
       >
         <article class="mx-auto max-w-3xl">
           <header class="mb-8 text-center">
-            <p class="text-brand-secondary mb-3 text-sm font-medium tracking-wide uppercase">
-              {{ post.category }}
+            <!-- Fallback language notice -->
+            <p
+              v-if="post.isFallback"
+              class="bg-brand-accent/10 text-brand-accent mx-auto mb-4 inline-block rounded-full px-3 py-1 text-xs"
+            >
+              {{ t('common.showingInEnglish') || 'Showing in English' }}
             </p>
             <h1
               class="font-headers text-brand-base mb-4 text-3xl leading-tight font-bold md:text-4xl lg:text-5xl"
@@ -312,13 +181,25 @@ useSeoMeta({
             <div
               class="text-brand-base/50 flex flex-wrap items-center justify-center gap-3 text-sm"
             >
-              <span class="font-medium">{{ post.author }}</span>
+              <span class="font-medium">{{ post.author?.displayName || 'HFY Team' }}</span>
               <span>·</span>
-              <span>{{ post.date }}</span>
+              <span>{{ formatDate(post.publishedAt) }}</span>
               <span>·</span>
-              <span>{{ post.readTime }}</span>
+              <span>{{ calculateReadTime(post.content) }}</span>
             </div>
           </header>
+
+          <!-- Banner Image -->
+          <div
+            v-if="post.bannerUrl"
+            class="mb-8 overflow-hidden rounded-lg"
+          >
+            <img
+              :src="post.bannerUrl"
+              :alt="post.title"
+              class="h-auto w-full object-cover"
+            />
+          </div>
 
           <!-- Article Body - Markdown rendered -->
           <div class="border-brand-base/10 border-t pt-8">
@@ -328,76 +209,41 @@ useSeoMeta({
             />
           </div>
 
-          <!-- Tags -->
-          <div
-            v-if="post.tags?.length"
-            class="border-brand-base/10 mt-8 border-t pt-6"
-          >
-            <div class="flex flex-wrap gap-2">
-              <span
-                v-for="tag in post.tags"
-                :key="tag"
-                class="bg-brand-base/5 text-brand-base/60 rounded-full px-3 py-1 text-sm"
-              >
-                {{ tag }}
-              </span>
-            </div>
-          </div>
-
           <!-- Author Bio -->
           <div
-            v-if="post.authorBio"
+            v-if="post.author"
             class="border-brand-base/10 mt-8 border-t pt-6"
           >
             <BaseCard padding="lg">
               <div class="flex items-start gap-4">
                 <div
+                  v-if="post.author.avatarUrl"
+                  class="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full"
+                >
+                  <img
+                    :src="post.author.avatarUrl"
+                    :alt="post.author.displayName || 'Author'"
+                    class="h-full w-full object-cover"
+                  />
+                </div>
+                <div
+                  v-else
                   class="bg-brand-accent/10 text-brand-accent flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-lg font-bold"
                 >
-                  {{ post.author.charAt(0) }}
+                  {{ (post.author.displayName || 'H').charAt(0) }}
                 </div>
                 <div>
-                  <p class="text-brand-base font-medium">{{ post.author }}</p>
+                  <p class="text-brand-base font-medium">
+                    {{ post.author.displayName || 'HFY Team' }}
+                  </p>
                   <p class="text-brand-base/60 mt-1 text-sm">
-                    {{ post.authorBio }}
+                    Author at Holy Fuck Yeah!
                   </p>
                 </div>
               </div>
             </BaseCard>
           </div>
         </article>
-      </PageSection>
-
-      <!-- Related Posts -->
-      <PageSection
-        v-if="relatedPosts?.length"
-        eyebrow="Keep reading"
-        title="Related articles"
-        divider
-      >
-        <div class="grid gap-4 md:grid-cols-3">
-          <NuxtLink
-            v-for="related in relatedPosts"
-            :key="related.slug"
-            :to="`/blog/${related.slug}`"
-            class="group block"
-          >
-            <BaseCard
-              hoverable
-              padding="md"
-            >
-              <p class="text-brand-secondary mb-1 text-xs font-medium tracking-wide uppercase">
-                {{ related.category }}
-              </p>
-              <h3
-                class="font-headers text-brand-base group-hover:text-brand-accent font-semibold transition"
-              >
-                {{ related.title }}
-              </h3>
-              <p class="text-brand-base/40 mt-2 text-xs">{{ related.date }}</p>
-            </BaseCard>
-          </NuxtLink>
-        </div>
       </PageSection>
 
       <!-- Back to Blog -->

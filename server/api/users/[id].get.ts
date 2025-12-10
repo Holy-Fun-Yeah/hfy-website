@@ -1,19 +1,24 @@
 import { eq } from 'drizzle-orm'
+import { z } from 'zod'
 
 import { db } from '../../database'
-import { users } from '../../database/schema'
+import { profiles } from '../../database/schema'
 import { defineApiHandler, Errors } from '../../lib'
 
+// UUID validation schema
+const uuidSchema = z.string().uuid()
+
 export default defineApiHandler(async (event) => {
-  // Validate first (can test without DB)
-  const id = Number(getRouterParam(event, 'id'))
-  if (isNaN(id) || id <= 0) throw Errors.badRequest('Invalid user ID')
+  // Validate UUID format
+  const id = getRouterParam(event, 'id')
+  const parsed = uuidSchema.safeParse(id)
+  if (!parsed.success) throw Errors.badRequest('Invalid profile ID (must be UUID)')
 
   // Then check DB
   if (!db) throw Errors.serviceUnavailable('Database not available')
 
-  const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1)
-  if (!user) throw Errors.notFound('User not found')
+  const [profile] = await db.select().from(profiles).where(eq(profiles.id, parsed.data)).limit(1)
+  if (!profile) throw Errors.notFound('Profile not found')
 
-  return user
+  return profile
 })

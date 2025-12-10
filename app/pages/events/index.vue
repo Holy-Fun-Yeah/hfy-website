@@ -2,115 +2,79 @@
 /**
  * Events Listing Page
  *
- * Displays upcoming and past events with filtering and date grouping.
+ * Displays upcoming and past events fetched from the API.
  * Uses async loading with skeleton states.
  */
-const { t } = useLocale()
+const { t, currentLocale } = useLocale()
 
 useSeoMeta({
   title: () => t('events.sectionLabel'),
   description: () => t('events.hero.subtitle'),
 })
 
-// Types
+// Types (matching API response)
 interface Event {
   id: string
+  slug: string
+  type: 'online' | 'in_person'
+  startsAt: string
+  endsAt: string
+  host: string
+  location: string
+  bannerUrl: string | null
+  usdPrice: string
+  capacity: number | null
   title: string
   description: string
-  date: string
-  time: string
-  location: string
-  type: 'online' | 'in-person'
-  isPast: boolean
+  lang: string
+  isFallback: boolean
 }
 
 // Filter state
 const activeFilter = ref<'upcoming' | 'past'>('upcoming')
 
-// Simulated async data (replace with real API)
+// Fetch events from API based on filter
 const {
-  data: allEvents,
+  data: apiResponse,
   pending,
   error,
-} = useLazyAsyncData<Event[]>(
-  'events-list',
-  async () => {
-    await new Promise((resolve) => setTimeout(resolve, 600))
-    return [
-      {
-        id: '1',
-        title: 'Winter Solstice Sound Bath',
-        description: 'A transformative sound healing experience to mark the longest night.',
-        date: 'Dec 21, 2025',
-        time: '7:00 PM',
-        location: 'Mexico City',
-        type: 'in-person',
-        isPast: false,
-      },
-      {
-        id: '2',
-        title: 'Venus & Creativity Session',
-        description: 'Explore how Venus transits enhance creativity and self-expression.',
-        date: 'Jan 10, 2026',
-        time: '6:00 PM CST',
-        location: 'Online',
-        type: 'online',
-        isPast: false,
-      },
-      {
-        id: '3',
-        title: 'Full Moon Reflection Circle',
-        description: 'A guided reflection practice under the light of the full moon.',
-        date: 'Jan 25, 2026',
-        time: '8:00 PM',
-        location: 'Guadalajara',
-        type: 'in-person',
-        isPast: false,
-      },
-      {
-        id: '4',
-        title: 'New Year Intention Setting',
-        description: 'Set powerful intentions aligned with the cosmic new year.',
-        date: 'Mar 20, 2026',
-        time: '10:00 AM CST',
-        location: 'Online',
-        type: 'online',
-        isPast: false,
-      },
-      {
-        id: '5',
-        title: 'Autumn Equinox Gathering',
-        description: 'Celebrated the balance of light and dark with community.',
-        date: 'Sep 22, 2025',
-        time: '6:00 PM',
-        location: 'Mexico City',
-        type: 'in-person',
-        isPast: true,
-      },
-      {
-        id: '6',
-        title: 'Mercury Retrograde Workshop',
-        description: 'Learned to navigate and thrive during retrograde seasons.',
-        date: 'Aug 15, 2025',
-        time: '5:00 PM CST',
-        location: 'Online',
-        type: 'online',
-        isPast: true,
-      },
-    ]
-  },
-  { server: false }
+} = useLazyAsyncData(
+  () => `events-${activeFilter.value}`,
+  () =>
+    $fetch('/api/events', {
+      query: { lang: currentLocale.value, filter: activeFilter.value, limit: 20 },
+    }),
+  { server: true, watch: [currentLocale, activeFilter] }
 )
 
-// Filtered events based on active filter
-const filteredEvents = computed(() => {
-  if (!allEvents.value) return []
-  return allEvents.value.filter((e) => (activeFilter.value === 'upcoming' ? !e.isPast : e.isPast))
+// Extract events from API response (handle error case)
+const filteredEvents = computed<Event[]>(() => {
+  if (!apiResponse.value || !('data' in apiResponse.value)) return []
+  return apiResponse.value.data as Event[]
 })
 
-// Count for tabs
-const upcomingCount = computed(() => allEvents.value?.filter((e) => !e.isPast).length ?? 0)
-const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length ?? 0)
+// Format date for display
+function formatDateTime(dateString: string): { date: string; time: string } {
+  const date = new Date(dateString)
+  return {
+    date: date.toLocaleDateString(currentLocale.value, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    }),
+    time: date.toLocaleTimeString(currentLocale.value, {
+      hour: 'numeric',
+      minute: '2-digit',
+    }),
+  }
+}
+
+// We can't easily get counts for both filters from one API call,
+// so we'll just show counts as the number of items in current view
+const upcomingCount = computed(() =>
+  activeFilter.value === 'upcoming' ? filteredEvents.value.length : 0
+)
+const pastCount = computed(() => (activeFilter.value === 'past' ? filteredEvents.value.length : 0))
 </script>
 
 <template>
@@ -201,7 +165,16 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
             >
               <!-- Event image placeholder -->
               <div class="bg-brand-base/5 relative aspect-[16/9]">
-                <div class="absolute inset-0 flex items-center justify-center">
+                <img
+                  v-if="event.bannerUrl"
+                  :src="event.bannerUrl"
+                  :alt="event.title"
+                  class="h-full w-full object-cover"
+                />
+                <div
+                  v-else
+                  class="absolute inset-0 flex items-center justify-center"
+                >
                   <span class="text-brand-base/20 text-4xl">✧</span>
                 </div>
                 <!-- Event type badge -->
@@ -220,7 +193,8 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
               <!-- Event details -->
               <div class="p-4">
                 <p class="text-brand-accent mb-1 text-xs font-medium tracking-wide uppercase">
-                  {{ event.date }} · {{ event.time }}
+                  {{ formatDateTime(event.startsAt).date }} ·
+                  {{ formatDateTime(event.startsAt).time }}
                 </p>
                 <h3
                   class="font-headers text-brand-base group-hover:text-brand-accent mb-2 text-lg font-semibold transition"
