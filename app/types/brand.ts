@@ -133,6 +133,16 @@ export interface BrandPalette {
    * Usage: `shadow-[0_0_30px_var(--color-brand-glow)]`
    */
   glow: string
+
+  /**
+   * **Earth Gradient** - Grounding natural tones
+   *
+   * Browns and greens for collaboration/co-creation themed elements.
+   * Represents growth, grounding, nature, and partnership.
+   *
+   * Usage: For outline variant buttons and co-creation themed elements
+   */
+  earthGradient?: BrandGradient
 }
 
 /**

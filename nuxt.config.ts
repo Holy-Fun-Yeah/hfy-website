@@ -10,7 +10,24 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxt/devtools', 'motion-v/nuxt'],
+  modules: ['@nuxt/eslint', '@pinia/nuxt', '@nuxt/devtools', 'motion-v/nuxt', 'nuxt-i18n-micro'],
+
+  // i18n configuration
+  i18n: {
+    locales: [
+      { code: 'en', iso: 'en-US', dir: 'ltr' },
+      { code: 'es', iso: 'es-ES', dir: 'ltr' },
+      { code: 'de', iso: 'de-DE', dir: 'ltr' },
+      { code: 'fr', iso: 'fr-FR', dir: 'ltr' },
+    ],
+    defaultLocale: 'en',
+    fallbackLocale: 'en',
+    strategy: 'no_prefix',
+    translationDir: 'locales',
+    meta: true,
+    autoDetectLanguage: false,
+    disablePageLocales: true, // Use only global translations from locales/*.json
+  },
 
   // SEO defaults
   app: {

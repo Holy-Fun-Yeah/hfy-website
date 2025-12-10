@@ -7,7 +7,9 @@ Project-specific guidelines for Claude Code when working on this Nuxt template.
 ```
 app/
 ├── config/brand.ts      # Single source of truth for colors/fonts
-├── types/brand.ts       # Brand type definitions
+├── types/
+│   ├── brand.ts         # Brand type definitions
+│   └── locale.ts        # i18n Zod schema (MUST update for new translations)
 ├── components/          # Atomic Design (auto-imported, no prefix)
 │   ├── atoms/           # Indivisible: BaseButton, EnergyThreads, SacredGeometry
 │   ├── molecules/       # Atom groups: FeatureCard, PageSection
@@ -15,6 +17,7 @@ app/
 ├── composables/
 │   ├── useBrand.ts      # Brand colors/fonts (theme-aware)
 │   ├── useTheme.ts      # Light/dark mode
+│   ├── useLocale.ts     # i18n translation helpers
 │   ├── useMarkdown.ts   # Load markdown files
 │   ├── useScrollGradient.ts  # Scroll-based color transitions
 │   └── useApi.ts        # API fetch helpers
@@ -22,6 +25,12 @@ app/
 ├── layouts/default.vue  # Main layout (with ethereal decorations)
 ├── pages/               # File-based routing
 └── assets/css/main.css  # Tailwind @theme + prose + animations
+
+locales/                 # Translation files (ALL must be updated together)
+├── en.json              # English (default)
+├── es.json              # Spanish
+├── de.json              # German
+└── fr.json              # French
 
 server/
 ├── env.ts               # Centralized env vars (Zod validated)
@@ -279,6 +288,198 @@ throw createError({ statusCode: 404, message: 'Not found' })
 
 // WRONG - Plain Error (no metadata)
 throw new Error('Failed')
+```
+
+## Internationalization (i18n)
+
+This project uses `nuxt-i18n-micro` with Zod-validated translation files. **All user-facing text MUST be translated.**
+
+### Architecture
+
+```
+app/
+├── types/locale.ts      # Zod schema for translations (SINGLE SOURCE OF TRUTH)
+├── composables/useLocale.ts  # Translation helpers
+
+locales/
+├── en.json              # English (default/fallback)
+├── es.json              # Spanish
+├── de.json              # German
+└── fr.json              # French
+```
+
+### Supported Locales
+
+| Code | Language | Flag |
+|------|----------|------|
+| `en` | English  | 🇺🇸  |
+| `es` | Español  | 🇪🇸  |
+| `de` | Deutsch  | 🇩🇪  |
+| `fr` | Français | 🇫🇷  |
+
+### Usage in Components
+
+```vue
+<script setup>
+const { t } = useLocale()
+</script>
+
+<template>
+  <h1>{{ t('hero.title') }}</h1>
+  <p>{{ t('hero.subtitle') }}</p>
+  <BaseButton>{{ t('hero.cta') }}</BaseButton>
+</template>
+```
+
+### Adding New Translations (REQUIRED STEPS)
+
+When adding new pages, components, or features with user-facing text:
+
+#### Step 1: Update the Zod Schema
+
+Edit `app/types/locale.ts` to add new keys:
+
+```ts
+// app/types/locale.ts
+export const localeSchema = z.object({
+  // ... existing keys ...
+
+  // Add new section for your feature
+  myFeature: z.object({
+    title: z.string(),
+    description: z.string(),
+    cta: z.string(),
+  }),
+})
+```
+
+#### Step 2: Add Translations to ALL Locale Files
+
+You MUST add the new keys to ALL 4 locale files:
+
+```json
+// locales/en.json
+{
+  "myFeature": {
+    "title": "My Feature",
+    "description": "Description in English",
+    "cta": "Get Started"
+  }
+}
+
+// locales/es.json
+{
+  "myFeature": {
+    "title": "Mi Función",
+    "description": "Descripción en español",
+    "cta": "Comenzar"
+  }
+}
+
+// locales/de.json
+{
+  "myFeature": {
+    "title": "Meine Funktion",
+    "description": "Beschreibung auf Deutsch",
+    "cta": "Loslegen"
+  }
+}
+
+// locales/fr.json
+{
+  "myFeature": {
+    "title": "Ma Fonctionnalité",
+    "description": "Description en français",
+    "cta": "Commencer"
+  }
+}
+```
+
+#### Step 3: Use in Component
+
+```vue
+<template>
+  <PageSection
+    :eyebrow="t('myFeature.sectionLabel')"
+    :title="t('myFeature.title')"
+    :description="t('myFeature.description')"
+  >
+    <BaseButton>{{ t('myFeature.cta') }}</BaseButton>
+  </PageSection>
+</template>
+```
+
+### Translation Key Conventions
+
+| Pattern | Example | Use Case |
+|---------|---------|----------|
+| `{page}.hero.title` | `about.hero.title` | Page hero sections |
+| `{page}.{section}.title` | `events.cta.title` | Page subsections |
+| `{feature}.title` | `newsletter.title` | Reusable features |
+| `common.{action}` | `common.learnMore` | Shared actions |
+| `nav.{page}` | `nav.home` | Navigation labels |
+| `a11y.{action}` | `a11y.openMenu` | Accessibility labels |
+| `meta.{field}` | `meta.description` | SEO metadata |
+
+### Common Translation Keys
+
+Already available for reuse:
+
+```ts
+// Navigation
+t('nav.home')      t('nav.about')     t('nav.blog')
+t('nav.events')    t('nav.book')
+
+// Common actions
+t('common.readMore')    t('common.learnMore')
+t('common.bookNow')     t('common.subscribe')
+t('common.loading')     t('common.error')
+t('common.back')        t('common.next')
+
+// Accessibility
+t('a11y.skipToContent')   t('a11y.openMenu')
+t('a11y.closeMenu')       t('a11y.toggleTheme')
+```
+
+### Arrays in Translations
+
+For content that's a list (like paragraphs):
+
+```ts
+// In schema (app/types/locale.ts)
+vision: z.object({
+  paragraphs: z.array(z.string()),
+})
+
+// In component
+const paragraphs = computed(() => {
+  const p = t('about.vision.paragraphs')
+  return Array.isArray(p) ? p : []
+})
+```
+
+### Do NOT
+
+```vue
+<!-- WRONG - Hardcoded text -->
+<h1>Welcome to our site</h1>
+<button>Click here</button>
+
+<!-- WRONG - Missing from schema/locale files -->
+<p>{{ t('nonexistent.key') }}</p>
+
+<!-- WRONG - Only adding to one locale file -->
+// Only updated en.json, forgot es.json, de.json, fr.json
+```
+
+### Validation
+
+The Zod schema validates all locale files at build time. If a key is missing or has the wrong type, the build will fail with a descriptive error.
+
+```ts
+// Validate programmatically
+import { validateLocale } from '~/types/locale'
+validateLocale(jsonData, 'en') // Throws if invalid
 ```
 
 ## Debugging

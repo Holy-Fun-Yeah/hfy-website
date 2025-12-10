@@ -22,6 +22,11 @@ function injectBrandCSS(palette: BrandPalette, typography: BrandTypography) {
       Object.entries(value).forEach(([gradientKey, gradientValue]) => {
         root.style.setProperty(`--brand-gradient-${gradientKey}`, gradientValue as string)
       })
+    } else if (key === 'earthGradient' && typeof value === 'object') {
+      // Flatten earth gradient object: earthGradient.start → --brand-earth-gradient-start
+      Object.entries(value).forEach(([gradientKey, gradientValue]) => {
+        root.style.setProperty(`--brand-earth-gradient-${gradientKey}`, gradientValue as string)
+      })
     } else {
       root.style.setProperty(`--brand-${key}`, value as string)
     }

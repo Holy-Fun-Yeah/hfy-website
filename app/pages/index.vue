@@ -5,10 +5,11 @@
  * Landing page with hero, features, events preview, and blog preview.
  * Uses async loading patterns to ensure fast initial render.
  */
+const { t } = useLocale()
+
 useSeoMeta({
-  title: 'Home',
-  description:
-    'Awaken your cosmic power with transformative experiences guided by modern astrology.',
+  title: t('nav.home'),
+  description: t('meta.description'),
 })
 
 const { brand } = useBrand()
@@ -81,21 +82,21 @@ const {
   { server: false }
 )
 
-// Static features data (no loading needed)
-const features = [
+// Static features data with translations
+const features = computed(() => [
   {
-    title: 'Personalized Insights',
-    description: 'Get clear direction through your unique birth chart and energy patterns.',
+    title: t('features.items.insights.title'),
+    description: t('features.items.insights.description'),
   },
   {
-    title: 'Curated Experiences',
-    description: 'Attend themed events that align with lunar and planetary cycles.',
+    title: t('features.items.experiences.title'),
+    description: t('features.items.experiences.description'),
   },
   {
-    title: 'Holistic Balance',
-    description: 'Combine astrology, movement, and reflection to recharge your creative energy.',
+    title: t('features.items.balance.title'),
+    description: t('features.items.balance.description'),
   },
-]
+])
 </script>
 
 <template>
@@ -103,18 +104,20 @@ const features = [
     <!-- Hero Section with ethereal decorations -->
     <HeroSection
       :title="brand.name"
-      description="Astranova connects you with transformative experiences guided by modern astrology and ancient intuition."
-      cta-text="Book your session"
+      :description="t('hero.subtitle')"
+      :cta-text="t('hero.cta')"
       cta-link="/book"
-      secondary-cta-text="Learn more"
+      :tertiary-cta-text="t('hero.coCreate')"
+      tertiary-cta-link="/book?type=collaborate"
+      :secondary-cta-text="t('common.learnMore')"
       secondary-cta-link="/about"
     />
 
     <!-- Why Astranova (static, renders immediately) -->
     <PageSection
-      eyebrow="Why Astranova"
-      title="Guidance for the modern seeker"
-      description="Each experience blends mindful science, astrology, and art to bring balance to your everyday life."
+      :eyebrow="t('features.sectionLabel')"
+      :title="t('features.title')"
+      :description="t('features.description')"
       divider
     >
       <div class="grid gap-4 md:grid-cols-3">
@@ -132,8 +135,8 @@ const features = [
 
     <!-- Upcoming Events (async with loading state) -->
     <PageSection
-      eyebrow="Upcoming events"
-      title="Moments aligned with the cosmos"
+      :eyebrow="t('events.sectionLabel')"
+      :title="t('events.title')"
       divider
     >
       <AsyncContent
@@ -177,15 +180,15 @@ const features = [
           to="/events"
           class="text-brand-accent hover:text-brand-accent/80 text-sm font-medium transition"
         >
-          View all events →
+          {{ t('events.viewAll') }} →
         </NuxtLink>
       </div>
     </PageSection>
 
     <!-- From the Blog (async with loading state) -->
     <PageSection
-      eyebrow="From the blog"
-      title="Stories written in the sky"
+      :eyebrow="t('blog.sectionLabel')"
+      :title="t('blog.title')"
       divider
     >
       <AsyncContent
@@ -229,18 +232,18 @@ const features = [
           to="/blog"
           class="text-brand-accent hover:text-brand-accent/80 text-sm font-medium transition"
         >
-          Read more articles →
+          {{ t('blog.viewAll') }} →
         </NuxtLink>
       </div>
     </PageSection>
 
     <!-- CTA with Newsletter (static) -->
     <PageSection
-      eyebrow="Stay connected"
-      title="Begin your cosmic journey"
-      description="Book a session or join our newsletter for celestial insights, exclusive events, and sacred wisdom delivered to your inbox."
+      :title="t('newsletter.title')"
+      :description="t('newsletter.subtitle')"
       width="md"
       centered
+      gradient-title
     >
       <div class="flex flex-col items-center gap-6">
         <!-- Newsletter signup -->
@@ -250,25 +253,13 @@ const features = [
         >
           <input
             type="email"
-            placeholder="Enter your email"
+            :placeholder="t('newsletter.placeholder')"
             class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
             required
           />
-          <BaseButton type="submit"> Subscribe </BaseButton>
+          <BaseButton type="submit"> {{ t('newsletter.button') }} </BaseButton>
         </form>
-        <p class="text-brand-base/50 text-xs">We respect your privacy. Unsubscribe anytime.</p>
-
-        <!-- Or book CTA -->
-        <div class="flex items-center gap-4">
-          <span class="text-brand-base/30 text-sm">or</span>
-        </div>
-        <BaseButton
-          variant="contrast"
-          size="lg"
-          to="/book"
-        >
-          Book your session
-        </BaseButton>
+        <p class="text-brand-base/50 text-xs">{{ t('newsletter.privacy') }}</p>
       </div>
     </PageSection>
   </div>

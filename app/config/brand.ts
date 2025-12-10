@@ -99,6 +99,17 @@ export const brandConfig: BrandConfig = {
      * - Creates "breathing" ambient effect
      */
     glow: 'rgba(216, 27, 96, 0.2)',
+
+    /**
+     * Earth Gradient: Grounding natural tones
+     * - Browns and greens for collaboration/co-creation
+     * - Represents: Growth, grounding, nature, partnership
+     */
+    earthGradient: {
+      start: '#8b5a2b', // Saddle brown - warm earth
+      middle: '#4a7c59', // Forest green - growth
+      end: '#c4a35a', // Golden harvest - abundance
+    },
   },
 
   /**
@@ -173,6 +184,17 @@ export const brandConfig: BrandConfig = {
      * - Creates ethereal floating effect
      */
     glow: 'rgba(244, 143, 177, 0.25)',
+
+    /**
+     * Earth Gradient: Grounding natural tones (dark mode)
+     * - Brighter for dark backgrounds
+     * - Luminous earth energy
+     */
+    earthGradient: {
+      start: '#a67c52', // Light saddle brown
+      middle: '#5d9b71', // Bright forest green
+      end: '#d4b86a', // Bright golden harvest
+    },
   },
 
   /**

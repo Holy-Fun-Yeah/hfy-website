@@ -9,8 +9,8 @@ const handleError = () => clearError({ redirect: '/' })
 </script>
 
 <template>
-  <div class="bg-brand-background flex min-h-screen flex-col">
-    <div class="flex flex-1 flex-col items-center justify-center px-4 py-16">
+  <NuxtLayout>
+    <div class="flex min-h-[60vh] flex-col items-center justify-center px-4 py-16">
       <h1 class="text-brand-base/30 text-8xl font-bold">{{ error.statusCode }}</h1>
 
       <p class="text-brand-base/70 mt-4 text-xl">
@@ -33,5 +33,5 @@ const handleError = () => clearError({ redirect: '/' })
         Go Home
       </BaseButton>
     </div>
-  </div>
+  </NuxtLayout>
 </template>

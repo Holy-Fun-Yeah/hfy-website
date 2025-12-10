@@ -8,6 +8,7 @@
  * - Motion-animated mobile menu with AnimatePresence
  * - Theme toggle with smooth icon transitions
  * - Scroll-aware transparency
+ * - Language switcher with flags
  */
 
 import { AnimatePresence, Motion } from 'motion-v'
@@ -15,8 +16,21 @@ import { AnimatePresence, Motion } from 'motion-v'
 const { brand } = useBrand()
 const { isDark, toggleTheme } = useTheme()
 const fontSizeStore = useFontSizeStore()
+const { currentLocaleInfo, availableLocales, switchLocale, t } = useLocale()
 
 const mobileMenuOpen = ref(false)
+const langMenuOpen = ref(false)
+
+// Close language menu when clicking outside
+function closeLangMenu() {
+  langMenuOpen.value = false
+}
+
+// Handle locale selection (switch locale and close menu)
+function selectLocale(code: string) {
+  switchLocale(code)
+  langMenuOpen.value = false
+}
 
 // Scroll-aware header transparency
 const isScrolled = ref(false)
@@ -26,20 +40,23 @@ onMounted(() => {
     isScrolled.value = window.scrollY > 20
   }
   window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('click', closeLangMenu)
   handleScroll() // Check initial state
 
   onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
+    window.removeEventListener('click', closeLangMenu)
   })
 })
 
-const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
-  { to: '/blog', label: 'Blog' },
-  { to: '/events', label: 'Events' },
-  { to: '/book', label: 'Book' },
-]
+// Navigation links with translation keys
+const navLinks = computed(() => [
+  { to: '/', label: t('nav.home') },
+  { to: '/about', label: t('nav.about') },
+  { to: '/blog', label: t('nav.blog') },
+  { to: '/events', label: t('nav.events') },
+  { to: '/book', label: t('nav.book') },
+])
 
 // Motion configs for mobile menu
 const menuAnimation = { opacity: 1, height: 'auto', y: 0 }
@@ -164,6 +181,69 @@ const itemInitial = { opacity: 0, x: -10 }
           </svg>
           <span class="hidden sm:inline">{{ fontSizeStore.size.toUpperCase() }}</span>
         </button>
+
+        <!-- Language Switcher -->
+        <div class="relative">
+          <button
+            type="button"
+            class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/10 flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-medium transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
+            title="Change language"
+            @click.stop="langMenuOpen = !langMenuOpen"
+          >
+            <span class="text-sm">{{ currentLocaleInfo.flag }}</span>
+            <span class="hidden sm:inline">{{ currentLocaleInfo.code.toUpperCase() }}</span>
+            <svg
+              class="h-3 w-3 transition-transform duration-200"
+              :class="{ 'rotate-180': langMenuOpen }"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          <!-- Language Dropdown -->
+          <AnimatePresence>
+            <Motion
+              v-if="langMenuOpen"
+              as="div"
+              :initial="{ opacity: 0, y: -8, scale: 0.95 }"
+              :animate="{ opacity: 1, y: 0, scale: 1 }"
+              :exit="{ opacity: 0, y: -8, scale: 0.95 }"
+              :transition="{ duration: 0.15 }"
+              class="bg-brand-background/95 border-brand-base/10 absolute top-full right-0 mt-1 min-w-[140px] overflow-hidden rounded-lg border shadow-lg backdrop-blur-lg"
+              @click.stop
+            >
+              <ul class="py-1">
+                <li
+                  v-for="locale in availableLocales"
+                  :key="locale.code"
+                >
+                  <button
+                    type="button"
+                    class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors"
+                    :class="[
+                      locale.code === currentLocaleInfo.code
+                        ? 'bg-brand-accent/10 text-brand-accent'
+                        : 'text-brand-muted hover:bg-brand-accent/5 hover:text-brand-accent',
+                    ]"
+                    @click="selectLocale(locale.code)"
+                  >
+                    <span class="text-base">{{ locale.flag }}</span>
+                    <span class="font-medium">{{ locale.code.toUpperCase() }}</span>
+                    <span class="text-brand-muted/70 text-xs">{{ locale.name }}</span>
+                  </button>
+                </li>
+              </ul>
+            </Motion>
+          </AnimatePresence>
+        </div>
 
         <!-- Mobile Menu Button -->
         <button

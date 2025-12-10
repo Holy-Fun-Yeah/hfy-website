@@ -39,6 +39,7 @@ const props = withDefaults(
     divider?: boolean
     animate?: boolean
     decorations?: SectionDecorations
+    gradientTitle?: boolean
   }>(),
   {
     eyebrow: undefined,
@@ -50,6 +51,7 @@ const props = withDefaults(
     divider: false,
     animate: true,
     decorations: 'none',
+    gradientTitle: false,
   }
 )
 
@@ -142,7 +144,12 @@ const transitionConfig = {
         </p>
         <h2
           v-if="title"
-          class="font-headers text-brand-base mb-3 text-3xl font-bold md:text-4xl"
+          :class="[
+            'font-headers mb-3 text-3xl font-bold md:text-4xl',
+            gradientTitle
+              ? 'from-brand-gradient-start via-brand-gradient-middle to-brand-gradient-end bg-gradient-to-r bg-clip-text text-transparent'
+              : 'text-brand-base',
+          ]"
         >
           {{ title }}
         </h2>

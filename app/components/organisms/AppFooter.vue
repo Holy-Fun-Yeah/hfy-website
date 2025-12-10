@@ -7,8 +7,10 @@
  * - Holographic brand logo
  * - Glow effect on social icon hover
  * - Uses brand color tokens
+ * - i18n translations
  */
 const { brand } = useBrand()
+const { t } = useLocale()
 const year = new Date().getFullYear()
 
 const socialLinks = [
@@ -17,17 +19,17 @@ const socialLinks = [
   { name: 'YouTube', href: '#', icon: 'youtube' },
 ]
 
-const quickLinks = [
-  { label: 'About', to: '/about' },
-  { label: 'Blog', to: '/blog' },
-  { label: 'Events', to: '/events' },
-  { label: 'Book a Session', to: '/book' },
-]
+const quickLinks = computed(() => [
+  { label: t('nav.about'), to: '/about' },
+  { label: t('nav.blog'), to: '/blog' },
+  { label: t('nav.events'), to: '/events' },
+  { label: t('common.bookNow'), to: '/book' },
+])
 
-const legalLinks = [
-  { label: 'Privacy Policy', to: '/privacy' },
-  { label: 'Terms of Service', to: '/terms' },
-]
+const legalLinks = computed(() => [
+  { label: t('footer.privacy'), to: '/privacy' },
+  { label: t('footer.terms'), to: '/terms' },
+])
 </script>
 
 <template>
@@ -49,7 +51,7 @@ const legalLinks = [
             </span>
           </NuxtLink>
           <p class="text-brand-muted mt-3 text-sm">
-            Awaken your cosmic power through transformative experiences guided by modern astrology.
+            {{ t('footer.description') }}
           </p>
 
           <!-- Social links with glow hover -->
@@ -104,7 +106,7 @@ const legalLinks = [
 
         <!-- Quick links column -->
         <div>
-          <h3 class="font-headers text-brand-base mb-3 font-semibold">Explore</h3>
+          <h3 class="font-headers text-brand-base mb-3 font-semibold">{{ t('footer.explore') }}</h3>
           <ul class="space-y-2">
             <li
               v-for="link in quickLinks"
@@ -122,7 +124,7 @@ const legalLinks = [
 
         <!-- Legal column -->
         <div>
-          <h3 class="font-headers text-brand-base mb-3 font-semibold">Legal</h3>
+          <h3 class="font-headers text-brand-base mb-3 font-semibold">{{ t('footer.legal') }}</h3>
           <ul class="space-y-2">
             <li
               v-for="link in legalLinks"
@@ -142,7 +144,7 @@ const legalLinks = [
       <!-- Bottom section: Copyright with gradient accent -->
       <div class="border-brand-base/10 mt-8 border-t pt-6">
         <p class="text-brand-muted/60 text-center text-sm">
-          &copy; {{ year }} {{ brand.name }}. All rights reserved.
+          &copy; {{ year }} {{ brand.name }}. {{ t('footer.copyright') }}
         </p>
       </div>
     </div>

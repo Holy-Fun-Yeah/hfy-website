@@ -5,10 +5,11 @@
  * Displays blog posts with category filtering.
  * Uses async loading with skeleton states.
  */
+const { t } = useLocale()
+
 useSeoMeta({
-  title: 'Blog',
-  description:
-    'Fresh articles and reflections on astrology, self-development, and cosmic alignment.',
+  title: () => t('blog.sectionLabel'),
+  description: () => t('blog.hero.subtitle'),
 })
 
 // Types
@@ -139,13 +140,14 @@ const regularPosts = computed(() => {
       decorations="hero"
     >
       <div class="mx-auto max-w-2xl">
-        <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">Blog</p>
+        <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">
+          {{ t('blog.hero.eyebrow') }}
+        </p>
         <h1 class="font-headers text-brand-base mb-4 text-4xl font-bold md:text-5xl">
-          Cosmic perspectives
+          {{ t('blog.hero.title') }}
         </h1>
         <p class="text-brand-base/70 text-lg">
-          Fresh articles and reflections on astrology, self-development, and cosmic alignment.
-          Stories written in the stars, for seekers like you.
+          {{ t('blog.hero.subtitle') }}
         </p>
       </div>
     </PageSection>
@@ -164,7 +166,7 @@ const regularPosts = computed(() => {
           ]"
           @click="activeCategory = category"
         >
-          {{ category === 'all' ? 'All Posts' : category }}
+          {{ category === 'all' ? t('blog.allPosts') : category }}
         </button>
       </div>
 
@@ -193,7 +195,7 @@ const regularPosts = computed(() => {
                 <span
                   class="bg-brand-contrast text-brand-base absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-semibold"
                 >
-                  Featured
+                  {{ t('blog.featured') }}
                 </span>
               </div>
 
@@ -340,8 +342,8 @@ const regularPosts = computed(() => {
         <template #empty>
           <EmptyState
             icon="✍️"
-            title="No posts in this category"
-            description="Try selecting a different category or check back soon for new content."
+            :title="t('blog.noPostsCategory.title')"
+            :description="t('blog.noPostsCategory.description')"
           />
         </template>
       </AsyncContent>
@@ -349,9 +351,9 @@ const regularPosts = computed(() => {
 
     <!-- Newsletter CTA -->
     <PageSection
-      eyebrow="Stay updated"
-      title="Get cosmic insights in your inbox"
-      description="Subscribe to receive new articles, event announcements, and exclusive content."
+      :eyebrow="t('blog.newsletterCta.eyebrow')"
+      :title="t('blog.newsletterCta.title')"
+      :description="t('blog.newsletterCta.description')"
       width="sm"
       centered
     >
@@ -361,11 +363,11 @@ const regularPosts = computed(() => {
       >
         <input
           type="email"
-          placeholder="Enter your email"
+          :placeholder="t('newsletter.placeholder')"
           class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-base/40 focus:border-brand-accent focus:ring-brand-accent/20 flex-1 rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
           required
         />
-        <BaseButton type="submit">Subscribe</BaseButton>
+        <BaseButton type="submit">{{ t('common.subscribe') }}</BaseButton>
       </form>
     </PageSection>
   </div>

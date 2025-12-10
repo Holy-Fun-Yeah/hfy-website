@@ -30,6 +30,8 @@ interface Props {
   ctaLink?: string
   secondaryCtaText?: string
   secondaryCtaLink?: string
+  tertiaryCtaText?: string
+  tertiaryCtaLink?: string
 }
 
 withDefaults(defineProps<Props>(), {
@@ -39,6 +41,8 @@ withDefaults(defineProps<Props>(), {
   ctaLink: undefined,
   secondaryCtaText: undefined,
   secondaryCtaLink: undefined,
+  tertiaryCtaText: undefined,
+  tertiaryCtaLink: undefined,
 })
 
 // Staggered entrance animations
@@ -146,7 +150,7 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
 
       <!-- CTAs with glow -->
       <Motion
-        v-if="ctaText || secondaryCtaText"
+        v-if="ctaText || secondaryCtaText || tertiaryCtaText"
         as="div"
         :initial="ctaInitial"
         :animate="ctaAnimation"
@@ -161,6 +165,15 @@ const etherealEase = [0.22, 1, 0.36, 1] as [number, number, number, number]
           class="animate-pulse-glow"
         >
           {{ ctaText }}
+        </BaseButton>
+
+        <BaseButton
+          v-if="tertiaryCtaText"
+          :to="tertiaryCtaLink"
+          variant="outline"
+          size="lg"
+        >
+          {{ tertiaryCtaText }}
         </BaseButton>
 
         <BaseButton

@@ -5,52 +5,53 @@
  * Introduces AstraNova KaLeKa and the HFY philosophy.
  * Features Rainbow Diamond Light aesthetic with shimmer effects.
  */
+const { t } = useLocale()
+
 useSeoMeta({
-  title: 'About',
-  description:
-    'Discover AstraNova KaLeKa and the Rainbow Diamond Light philosophy. Transformative experiences guided by modern astrology and ancient intuition.',
+  title: () => t('about.sectionLabel'),
+  description: () => t('about.description'),
 })
 
 const { brand } = useBrand()
 
-const values = [
+const values = computed(() => [
   {
-    title: 'Authenticity',
-    description:
-      'We honor both data and intuition, blending scientific understanding with sacred wisdom.',
+    title: t('about.values.authenticity.title'),
+    description: t('about.values.authenticity.description'),
     icon: '✦',
   },
   {
-    title: 'Connection',
-    description:
-      'Community over prediction. We create spaces for meaningful human connection and growth.',
+    title: t('about.values.connection.title'),
+    description: t('about.values.connection.description'),
     icon: '◇',
   },
   {
-    title: 'Expansion',
-    description:
-      'Learning through movement, art, and reflection. Every experience opens new pathways.',
+    title: t('about.values.expansion.title'),
+    description: t('about.values.expansion.description'),
     icon: '❋',
   },
-]
+])
 
-const offerings = [
+const offerings = computed(() => [
   {
-    title: '1-to-1 Consultations',
-    description:
-      'Personalized sessions diving deep into your birth chart, transits, and life questions.',
+    title: t('about.offerings.consultations.title'),
+    description: t('about.offerings.consultations.description'),
   },
   {
-    title: 'Group Workshops',
-    description:
-      'Themed gatherings aligned with lunar cycles, planetary transits, and seasonal shifts.',
+    title: t('about.offerings.workshops.title'),
+    description: t('about.offerings.workshops.description'),
   },
   {
-    title: 'Digital Experiences',
-    description:
-      'Online courses, meditations, and resources to support your ongoing cosmic journey.',
+    title: t('about.offerings.digital.title'),
+    description: t('about.offerings.digital.description'),
   },
-]
+])
+
+// Vision paragraphs as array
+const visionParagraphs = computed(() => {
+  const paragraphs = t('about.vision.paragraphs')
+  return Array.isArray(paragraphs) ? paragraphs : []
+})
 </script>
 
 <template>
@@ -63,39 +64,31 @@ const offerings = [
     >
       <div class="mx-auto max-w-3xl">
         <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">
-          About AstraNova
+          {{ t('about.hero.eyebrow') }}
         </p>
         <h1 class="font-headers text-brand-base mb-6 text-4xl font-bold md:text-5xl">
-          Rainbow Diamond Light Overflow
+          {{ t('about.hero.title') }}
         </h1>
         <p class="text-brand-base/70 text-xl leading-relaxed">
-          {{ brand.name }} was born from the belief that astrology can be practical, poetic, and
-          profoundly empowering — a cosmic mirror reflecting your infinite potential.
+          {{ brand.name }} {{ t('about.hero.subtitle') }}
         </p>
       </div>
     </PageSection>
 
     <!-- About AstraNova KaLeKa -->
     <PageSection
-      eyebrow="The Vision"
-      title="A cosmic journey reimagined"
+      :eyebrow="t('about.vision.eyebrow')"
+      :title="t('about.vision.title')"
       divider
     >
       <div class="grid items-center gap-8 md:grid-cols-2">
         <div class="space-y-4">
-          <p class="text-brand-base/70 leading-relaxed">
-            AstraNova KaLeKa is a Divine Mexican Goddess with a Rainbow Diamond Heart, channeling
-            Source Overflow intelligence through sacred technology and ancient wisdom.
-          </p>
-          <p class="text-brand-base/70 leading-relaxed">
-            We're a collective of artists, technologists, and astrologers creating digital
-            experiences that help people reconnect with the rhythm of the universe — blending modern
-            aesthetics with spiritual depth.
-          </p>
-          <p class="text-brand-base/70 leading-relaxed">
-            Every session, workshop, and digital experience is infused with Rainbow Diamond Light
-            (RDL) Plasma Growth energy — designed to awaken your sovereign power and expand your
-            consciousness.
+          <p
+            v-for="(paragraph, index) in visionParagraphs"
+            :key="index"
+            class="text-brand-base/70 leading-relaxed"
+          >
+            {{ paragraph }}
           </p>
         </div>
         <div class="relative">
@@ -112,7 +105,7 @@ const offerings = [
             <div class="text-brand-base/30 grid aspect-[4/3] place-items-center text-center">
               <div>
                 <div class="mb-2 text-5xl">✧</div>
-                <p class="text-sm">Visual coming soon</p>
+                <p class="text-sm">{{ t('about.vision.imagePlaceholder') }}</p>
               </div>
             </div>
           </BaseCard>
@@ -122,9 +115,9 @@ const offerings = [
 
     <!-- Core Values -->
     <PageSection
-      eyebrow="Our Philosophy"
-      title="Guiding principles"
-      description="These values inform everything we create — from one-on-one sessions to large gatherings."
+      :eyebrow="t('about.values.eyebrow')"
+      :title="t('about.values.title')"
+      :description="t('about.values.description')"
       centered
       divider
     >
@@ -148,8 +141,8 @@ const offerings = [
 
     <!-- What We Offer -->
     <PageSection
-      eyebrow="Offerings"
-      title="Ways to work together"
+      :eyebrow="t('about.offerings.eyebrow')"
+      :title="t('about.offerings.title')"
       divider
     >
       <div class="grid gap-6 md:grid-cols-3">
@@ -181,28 +174,27 @@ const offerings = [
         />
         <blockquote class="relative text-center">
           <p class="font-headers text-brand-base text-2xl leading-relaxed italic md:text-3xl">
-            "This website is a living, breathing reflection of Source Overflow intelligence —
-            designed to express Rainbow Diamond Light through every interaction."
+            "{{ t('about.quote.text') }}"
           </p>
-          <footer class="text-brand-base/50 mt-6">— AstraNova KaLeKa</footer>
+          <footer class="text-brand-base/50 mt-6">— {{ t('about.quote.author') }}</footer>
         </blockquote>
       </div>
     </PageSection>
 
     <!-- CTA -->
     <PageSection
-      title="Ready to begin?"
-      description="Book a consultation or explore upcoming events to start your cosmic journey."
+      :title="t('about.cta.title')"
+      :description="t('about.cta.description')"
       width="sm"
       centered
     >
       <div class="flex flex-wrap justify-center gap-3">
-        <BaseButton to="/book">Book a session</BaseButton>
+        <BaseButton to="/book">{{ t('about.cta.bookButton') }}</BaseButton>
         <BaseButton
           variant="outline"
           to="/events"
         >
-          View events
+          {{ t('about.cta.eventsButton') }}
         </BaseButton>
       </div>
     </PageSection>

@@ -5,10 +5,11 @@
  * Displays upcoming and past events with filtering and date grouping.
  * Uses async loading with skeleton states.
  */
+const { t } = useLocale()
+
 useSeoMeta({
-  title: 'Events',
-  description:
-    'Join guided events and experiences designed to synchronize your inner cycles with cosmic motion.',
+  title: () => t('events.sectionLabel'),
+  description: () => t('events.hero.subtitle'),
 })
 
 // Types
@@ -121,13 +122,14 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
       decorations="hero"
     >
       <div class="mx-auto max-w-2xl">
-        <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">Events</p>
+        <p class="text-brand-accent mb-4 text-sm font-medium tracking-wider uppercase">
+          {{ t('events.hero.eyebrow') }}
+        </p>
         <h1 class="font-headers text-brand-base mb-4 text-4xl font-bold md:text-5xl">
-          Gather under the stars
+          {{ t('events.hero.title') }}
         </h1>
         <p class="text-brand-base/70 text-lg">
-          Join guided events and experiences designed to synchronize your inner cycles with cosmic
-          motion. From sound baths to reflection circles, each gathering is an invitation to expand.
+          {{ t('events.hero.subtitle') }}
         </p>
       </div>
     </PageSection>
@@ -144,7 +146,7 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
           ]"
           @click="activeFilter = 'upcoming'"
         >
-          Upcoming
+          {{ t('events.upcoming') }}
           <span
             v-if="upcomingCount > 0"
             class="bg-brand-accent/10 text-brand-accent ml-1.5 rounded-full px-2 py-0.5 text-xs"
@@ -165,7 +167,7 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
           ]"
           @click="activeFilter = 'past'"
         >
-          Past Events
+          {{ t('events.pastEvents') }}
           <span
             v-if="pastCount > 0"
             class="bg-brand-base/10 text-brand-base/60 ml-1.5 rounded-full px-2 py-0.5 text-xs"
@@ -211,7 +213,7 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
                       : 'bg-brand-accent/20 text-brand-accent',
                   ]"
                 >
-                  {{ event.type === 'online' ? 'Online' : 'In-Person' }}
+                  {{ event.type === 'online' ? t('events.online') : t('events.inPerson') }}
                 </span>
               </div>
 
@@ -294,11 +296,13 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
         <template #empty>
           <EmptyState
             :icon="activeFilter === 'upcoming' ? '📅' : '📜'"
-            :title="activeFilter === 'upcoming' ? 'No upcoming events' : 'No past events'"
+            :title="
+              activeFilter === 'upcoming' ? t('events.noUpcoming.title') : t('events.noPast.title')
+            "
             :description="
               activeFilter === 'upcoming'
-                ? 'New cosmic gatherings are being planned. Check back soon!'
-                : 'Past events will appear here once we have some history.'
+                ? t('events.noUpcoming.description')
+                : t('events.noPast.description')
             "
           />
         </template>
@@ -307,12 +311,12 @@ const pastCount = computed(() => allEvents.value?.filter((e) => e.isPast).length
 
     <!-- CTA -->
     <PageSection
-      title="Want to host an event?"
-      description="We collaborate with practitioners, spaces, and communities to bring cosmic experiences to life."
+      :title="t('events.cta.title')"
+      :description="t('events.cta.description')"
       width="sm"
       centered
     >
-      <BaseButton to="/book">Get in touch</BaseButton>
+      <BaseButton to="/book">{{ t('events.cta.button') }}</BaseButton>
     </PageSection>
   </div>
 </template>

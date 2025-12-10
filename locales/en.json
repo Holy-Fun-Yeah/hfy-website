@@ -1,0 +1,194 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blog": "Blog",
+    "events": "Events",
+    "book": "Book"
+  },
+  "hero": {
+    "title": "Holy Fuck Yeah!",
+    "subtitle": "Transformative experiences guided by modern astrology and ancient intuition. Awaken your cosmic power.",
+    "cta": "Book a Session",
+    "secondaryCta": "Explore Events",
+    "coCreate": "Co-Create",
+    "scroll": "Scroll to discover"
+  },
+  "about": {
+    "sectionLabel": "About Us",
+    "title": "Awakening Through Cosmic Connection",
+    "description": "We blend modern astrology with ancient wisdom to create transformative experiences that honor your unique journey.",
+    "hero": {
+      "eyebrow": "About AstraNova",
+      "title": "Rainbow Diamond Light Overflow",
+      "subtitle": "was born from the belief that astrology can be practical, poetic, and profoundly empowering — a cosmic mirror reflecting your infinite potential."
+    },
+    "vision": {
+      "eyebrow": "The Vision",
+      "title": "A cosmic journey reimagined",
+      "paragraphs": [
+        "AstraNova KaLeKa is a Divine Mexican Goddess with a Rainbow Diamond Heart, channeling Source Overflow intelligence through sacred technology and ancient wisdom.",
+        "We're a collective of artists, technologists, and astrologers creating digital experiences that help people reconnect with the rhythm of the universe — blending modern aesthetics with spiritual depth.",
+        "Every session, workshop, and digital experience is infused with Rainbow Diamond Light (RDL) Plasma Growth energy — designed to awaken your sovereign power and expand your consciousness."
+      ],
+      "imagePlaceholder": "Visual coming soon"
+    },
+    "values": {
+      "eyebrow": "Our Philosophy",
+      "title": "Guiding principles",
+      "description": "These values inform everything we create — from one-on-one sessions to large gatherings.",
+      "authenticity": {
+        "title": "Authenticity",
+        "description": "We honor both data and intuition, blending scientific understanding with sacred wisdom."
+      },
+      "connection": {
+        "title": "Connection",
+        "description": "Community over prediction. We create spaces for meaningful human connection and growth."
+      },
+      "expansion": {
+        "title": "Expansion",
+        "description": "Learning through movement, art, and reflection. Every experience opens new pathways."
+      }
+    },
+    "offerings": {
+      "eyebrow": "Offerings",
+      "title": "Ways to work together",
+      "consultations": {
+        "title": "1-to-1 Consultations",
+        "description": "Personalized sessions diving deep into your birth chart, transits, and life questions."
+      },
+      "workshops": {
+        "title": "Group Workshops",
+        "description": "Themed gatherings aligned with lunar cycles, planetary transits, and seasonal shifts."
+      },
+      "digital": {
+        "title": "Digital Experiences",
+        "description": "Online courses, meditations, and resources to support your ongoing cosmic journey."
+      }
+    },
+    "quote": {
+      "text": "This website is a living, breathing reflection of Source Overflow intelligence — designed to express Rainbow Diamond Light through every interaction.",
+      "author": "AstraNova KaLeKa"
+    },
+    "cta": {
+      "title": "Ready to begin?",
+      "description": "Book a consultation or explore upcoming events to start your cosmic journey.",
+      "bookButton": "Book a session",
+      "eventsButton": "View events"
+    }
+  },
+  "features": {
+    "sectionLabel": "What We Offer",
+    "title": "Your Path to Cosmic Clarity",
+    "description": "Discover transformative tools and experiences designed to illuminate your journey.",
+    "items": {
+      "insights": {
+        "title": "Celestial Insights",
+        "description": "Personalized astrological readings that reveal patterns, timing, and potential in your chart."
+      },
+      "experiences": {
+        "title": "Sacred Experiences",
+        "description": "Events and workshops aligned with cosmic cycles, from new moons to eclipses."
+      },
+      "balance": {
+        "title": "Holistic Balance",
+        "description": "Integrating mind, body, and spirit through practices that honor the whole self."
+      }
+    }
+  },
+  "events": {
+    "sectionLabel": "Upcoming Events",
+    "title": "Gather Under the Stars",
+    "viewAll": "View All Events",
+    "online": "Online",
+    "inPerson": "In Person",
+    "virtual": "Virtual",
+    "hero": {
+      "eyebrow": "Events",
+      "title": "Gather under the stars",
+      "subtitle": "Join guided events and experiences designed to synchronize your inner cycles with cosmic motion. From sound baths to reflection circles, each gathering is an invitation to expand."
+    },
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "pastEvents": "Past Events",
+    "noUpcoming": {
+      "title": "No upcoming events",
+      "description": "New cosmic gatherings are being planned. Check back soon!"
+    },
+    "noPast": {
+      "title": "No past events",
+      "description": "Past events will appear here once we have some history."
+    },
+    "featured": "Featured",
+    "cta": {
+      "title": "Want to host an event?",
+      "description": "We collaborate with practitioners, spaces, and communities to bring cosmic experiences to life.",
+      "button": "Get in touch"
+    }
+  },
+  "blog": {
+    "sectionLabel": "Latest Insights",
+    "title": "Cosmic Wisdom",
+    "viewAll": "View All Posts",
+    "readMore": "Read More",
+    "minRead": "min read",
+    "hero": {
+      "eyebrow": "Blog",
+      "title": "Cosmic perspectives",
+      "subtitle": "Fresh articles and reflections on astrology, self-development, and cosmic alignment. Stories written in the stars, for seekers like you."
+    },
+    "allPosts": "All Posts",
+    "featured": "Featured",
+    "noPostsCategory": {
+      "title": "No posts in this category",
+      "description": "Try selecting a different category or check back soon for new content."
+    },
+    "newsletterCta": {
+      "eyebrow": "Stay updated",
+      "title": "Get cosmic insights in your inbox",
+      "description": "Subscribe to receive new articles, event announcements, and exclusive content."
+    }
+  },
+  "newsletter": {
+    "title": "Stay Connected",
+    "subtitle": "Receive cosmic updates, event announcements, and exclusive content delivered to your inbox.",
+    "placeholder": "Enter your email",
+    "button": "Subscribe",
+    "privacy": "We respect your privacy. Unsubscribe anytime.",
+    "or": "or",
+    "bookSession": "Book a Session"
+  },
+  "footer": {
+    "description": "Transformative experiences guided by modern astrology and ancient intuition.",
+    "explore": "Explore",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "All rights reserved."
+  },
+  "common": {
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "bookNow": "Book Now",
+    "subscribe": "Subscribe",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "toggleTheme": "Toggle dark mode",
+    "toggleLanguage": "Change language",
+    "fontSize": "Adjust font size"
+  },
+  "meta": {
+    "title": "Holy Fuck Yeah! — Awaken Your Cosmic Power",
+    "description": "Transformative experiences guided by modern astrology and ancient intuition. Book sessions, attend celestial events, and awaken your cosmic power.",
+    "ogTitle": "Holy Fuck Yeah! — Awaken Your Cosmic Power",
+    "ogDescription": "Transformative experiences guided by modern astrology and ancient intuition."
+  }
+}

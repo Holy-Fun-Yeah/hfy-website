@@ -28,6 +28,7 @@
     "marked": "^17.0.1",
     "motion-v": "^1.7.4",
     "nuxt": "^4.2.1",
+    "nuxt-i18n-micro": "^2.15.2",
     "pinia": "^3.0.4",
     "postgres": "^3.4.7",
     "stripe": "^20.0.0",
