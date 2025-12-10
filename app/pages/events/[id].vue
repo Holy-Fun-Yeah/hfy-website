@@ -7,107 +7,106 @@
  */
 const route = useRoute()
 const eventId = route.params.id as string
+const { currentLocale } = useLocale()
 
-// Types
+// Types matching API response
 interface EventDetail {
   id: string
+  slug: string
+  type: 'online' | 'in_person'
+  status: string
+  startsAt: string
+  endsAt: string
+  host: string
+  location: string
+  address: string | null
+  googleMapsUrl: string | null
+  capacity: number | null
+  usdPrice: string | null
+  bannerUrl: string | null
+  createdAt: string
+  updatedAt: string
+  // Content
   title: string
   description: string
-  longDescription: string
-  date: string
-  time: string
-  duration: string
-  location: string
-  address?: string
-  type: 'online' | 'in-person'
-  price: string
-  capacity: string
-  host: string
-  isPast: boolean
-  includes: string[]
+  detail: string
+  // Language info
+  lang: string
+  isFallback: boolean
+  availableLanguages: string[]
 }
 
-// Simulated async data (replace with real API)
+// API response wrapper type
+interface ApiResponse {
+  success: boolean
+  data?: EventDetail
+  error?: unknown
+}
+
+// Fetch event from API
 const {
-  data: event,
+  data: apiResponse,
   pending,
   error,
-} = useLazyAsyncData<EventDetail | null>(
-  `event-${eventId}`,
+} = useLazyAsyncData<ApiResponse | null>(
+  `event-${eventId}-${currentLocale.value}`,
   async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    // Mock event data
-    const events: Record<string, EventDetail> = {
-      '1': {
-        id: '1',
-        title: 'Winter Solstice Sound Bath',
-        description: 'A transformative sound healing experience to mark the longest night.',
-        longDescription: `Join us for a profound evening of sonic immersion as we honor the Winter Solstice — the longest night of the year and a powerful portal for inner transformation.
-
-This ceremonial sound bath weaves together crystal singing bowls, chimes, drums, and voice to guide you into deep states of relaxation and receptivity. As the external world enters its darkest moment, we turn inward to plant seeds of intention for the returning light.
-
-The experience includes:
-- Opening ceremony and intention setting
-- 75-minute immersive sound journey
-- Guided visualization for the Solstice portal
-- Closing integration and group sharing
-- Warm herbal tea and light refreshments`,
-        date: 'December 21, 2025',
-        time: '7:00 PM - 9:30 PM',
-        duration: '2.5 hours',
-        location: 'Mexico City',
-        address: 'Casa Corazón, Roma Norte',
-        type: 'in-person',
-        price: '$850 MXN',
-        capacity: '25 spaces',
-        host: 'AstraNova KaLeKa',
-        isPast: false,
-        includes: [
-          'Sound healing session',
-          'Guided meditation',
-          'Intention-setting ceremony',
-          'Herbal tea & refreshments',
-          'Take-home Solstice ritual guide',
-        ],
-      },
-      '2': {
-        id: '2',
-        title: 'Venus & Creativity Session',
-        description: 'Explore how Venus transits enhance creativity and self-expression.',
-        longDescription: `Venus, the planet of beauty, pleasure, and creative flow, offers us a cosmic invitation to reconnect with our artistic essence.
-
-In this online workshop, we'll explore:
-- How Venus influences your natal chart and current transits
-- Practical exercises to activate Venusian creativity
-- Guided journaling prompts for self-expression
-- A collective art-making meditation
-- Ways to honor Venus in your daily life
-
-This is perfect for artists, creatives, or anyone seeking to invite more beauty and pleasure into their life. No artistic experience required — only an open heart.`,
-        date: 'January 10, 2026',
-        time: '6:00 PM - 8:00 PM CST',
-        duration: '2 hours',
-        location: 'Online via Zoom',
-        type: 'online',
-        price: '$45 USD',
-        capacity: '50 spaces',
-        host: 'AstraNova KaLeKa',
-        isPast: false,
-        includes: [
-          'Live Zoom session',
-          'Recording access for 30 days',
-          'PDF workbook',
-          'Personalized Venus insights',
-          'Private community access',
-        ],
-      },
-    }
-
-    return events[eventId] || null
+    const result = await $fetch<ApiResponse>(`/api/events/${eventId}`, {
+      query: { lang: currentLocale.value },
+    })
+    return result
   },
-  { server: false }
+  { server: true, watch: [currentLocale] }
 )
+
+// Extract event from API response
+const event = computed<EventDetail | null>(() => {
+  if (!apiResponse.value || !apiResponse.value.success || !apiResponse.value.data) return null
+  return apiResponse.value.data
+})
+
+// Check if event is past
+const isPast = computed(() => {
+  if (!event.value) return false
+  return new Date(event.value.startsAt) < new Date()
+})
+
+// Format date for display
+function formatDate(dateString: string): string {
+  const date = new Date(dateString)
+  return date.toLocaleDateString(currentLocale.value, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+// Format time for display
+function formatTime(startsAt: string, endsAt: string): string {
+  const start = new Date(startsAt)
+  const end = new Date(endsAt)
+  const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit' }
+  return `${start.toLocaleTimeString(currentLocale.value, options)} - ${end.toLocaleTimeString(currentLocale.value, options)}`
+}
+
+// Calculate duration
+function calculateDuration(startsAt: string, endsAt: string): string {
+  const start = new Date(startsAt)
+  const end = new Date(endsAt)
+  const diffMs = end.getTime() - start.getTime()
+  const hours = Math.floor(diffMs / (1000 * 60 * 60))
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))
+  if (hours === 0) return `${minutes} min`
+  if (minutes === 0) return `${hours} hour${hours > 1 ? 's' : ''}`
+  return `${hours}h ${minutes}m`
+}
+
+// Format price
+function formatPrice(usdPrice: string | null): string {
+  if (!usdPrice || usdPrice === '0' || usdPrice === '0.00') return 'Free'
+  return `$${parseFloat(usdPrice).toFixed(0)} USD`
+}
 
 // Dynamic SEO
 useSeoMeta({
@@ -206,6 +205,14 @@ useSeoMeta({
         decorations="subtle"
       >
         <div class="mx-auto max-w-5xl">
+          <!-- Fallback language notice -->
+          <p
+            v-if="event.isFallback"
+            class="bg-brand-accent/10 text-brand-accent mb-4 inline-block rounded-full px-3 py-1 text-xs"
+          >
+            Showing in English
+          </p>
+
           <div class="grid items-start gap-8 lg:grid-cols-3">
             <!-- Main Content -->
             <div class="lg:col-span-2">
@@ -229,6 +236,18 @@ useSeoMeta({
                 {{ event.description }}
               </p>
 
+              <!-- Banner Image -->
+              <div
+                v-if="event.bannerUrl"
+                class="mb-8 overflow-hidden rounded-lg"
+              >
+                <img
+                  :src="event.bannerUrl"
+                  :alt="event.title"
+                  class="h-auto w-full object-cover"
+                />
+              </div>
+
               <!-- Event meta -->
               <div class="border-brand-base/10 mb-8 grid gap-4 border-y py-6 sm:grid-cols-2">
                 <div class="flex items-start gap-3">
@@ -248,8 +267,10 @@ useSeoMeta({
                     </svg>
                   </div>
                   <div>
-                    <p class="text-brand-base font-medium">{{ event.date }}</p>
-                    <p class="text-brand-base/50 text-sm">{{ event.time }}</p>
+                    <p class="text-brand-base font-medium">{{ formatDate(event.startsAt) }}</p>
+                    <p class="text-brand-base/50 text-sm">
+                      {{ formatTime(event.startsAt, event.endsAt) }}
+                    </p>
                   </div>
                 </div>
                 <div class="flex items-start gap-3">
@@ -282,42 +303,28 @@ useSeoMeta({
                     >
                       {{ event.address }}
                     </p>
+                    <a
+                      v-if="event.googleMapsUrl"
+                      :href="event.googleMapsUrl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-brand-accent text-sm hover:underline"
+                    >
+                      View on Google Maps →
+                    </a>
                   </div>
                 </div>
               </div>
 
-              <!-- Long description -->
-              <div class="prose prose-lg text-brand-base/80 mb-8 max-w-none whitespace-pre-line">
-                {{ event.longDescription }}
-              </div>
-
-              <!-- What's included -->
-              <div class="mb-8">
-                <h2 class="font-headers text-brand-base mb-4 text-xl font-semibold">
-                  What's Included
-                </h2>
-                <ul class="space-y-2">
-                  <li
-                    v-for="item in event.includes"
-                    :key="item"
-                    class="text-brand-base/70 flex items-center gap-2"
-                  >
-                    <svg
-                      class="text-brand-accent h-5 w-5 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    {{ item }}
-                  </li>
-                </ul>
+              <!-- Detail content (markdown) -->
+              <div
+                v-if="event.detail"
+                class="mb-8"
+              >
+                <BaseMarkdown
+                  :content="event.detail"
+                  size="lg"
+                />
               </div>
             </div>
 
@@ -330,18 +337,23 @@ useSeoMeta({
                 <div class="mb-4">
                   <p class="text-brand-base/50 text-sm">Price</p>
                   <p class="font-headers text-brand-base text-2xl font-bold">
-                    {{ event.price }}
+                    {{ formatPrice(event.usdPrice) }}
                   </p>
                 </div>
 
                 <div class="border-brand-base/10 mb-4 space-y-3 border-t pt-4">
                   <div class="flex justify-between text-sm">
                     <span class="text-brand-base/50">Duration</span>
-                    <span class="text-brand-base">{{ event.duration }}</span>
+                    <span class="text-brand-base">{{
+                      calculateDuration(event.startsAt, event.endsAt)
+                    }}</span>
                   </div>
-                  <div class="flex justify-between text-sm">
+                  <div
+                    v-if="event.capacity"
+                    class="flex justify-between text-sm"
+                  >
                     <span class="text-brand-base/50">Capacity</span>
-                    <span class="text-brand-base">{{ event.capacity }}</span>
+                    <span class="text-brand-base">{{ event.capacity }} spaces</span>
                   </div>
                   <div class="flex justify-between text-sm">
                     <span class="text-brand-base/50">Host</span>
@@ -350,7 +362,7 @@ useSeoMeta({
                 </div>
 
                 <BaseButton
-                  v-if="!event.isPast"
+                  v-if="!isPast"
                   class="w-full"
                   size="lg"
                 >

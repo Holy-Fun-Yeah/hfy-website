@@ -30,6 +30,12 @@ interface Event {
   isFallback: boolean
 }
 
+// API response type
+interface ApiResponse {
+  success: boolean
+  data: Event[]
+}
+
 // Filter state
 const activeFilter = ref<'upcoming' | 'past'>('upcoming')
 
@@ -38,12 +44,14 @@ const {
   data: apiResponse,
   pending,
   error,
-} = useLazyAsyncData(
+} = useLazyAsyncData<ApiResponse | null>(
   () => `events-${activeFilter.value}`,
-  () =>
-    $fetch('/api/events', {
+  async () => {
+    const result = await $fetch<ApiResponse>('/api/events', {
       query: { lang: currentLocale.value, filter: activeFilter.value, limit: 20 },
-    }),
+    })
+    return result
+  },
   { server: true, watch: [currentLocale, activeFilter] }
 )
 

@@ -29,17 +29,25 @@ interface Post {
   isFallback: boolean
 }
 
+// API response type
+interface ApiResponse {
+  success: boolean
+  data: Post[]
+}
+
 // Fetch posts from API
 const {
   data: apiResponse,
   pending,
   error,
-} = useLazyAsyncData(
+} = useLazyAsyncData<ApiResponse | null>(
   'blog-posts',
-  () =>
-    $fetch('/api/posts', {
+  async () => {
+    const result = await $fetch<ApiResponse>('/api/posts', {
       query: { lang: currentLocale.value, limit: 20 },
-    }),
+    })
+    return result
+  },
   { server: true, watch: [currentLocale] }
 )
 

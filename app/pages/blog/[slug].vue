@@ -29,24 +29,33 @@ interface PostDetail {
   availableLanguages: string[]
 }
 
+// API response wrapper type
+interface ApiResponse {
+  success: boolean
+  data?: PostDetail
+  error?: unknown
+}
+
 // Fetch post from API
 const {
   data: apiResponse,
   pending,
   error,
-} = useLazyAsyncData<PostDetail | { error: unknown } | null>(
+} = useLazyAsyncData<ApiResponse | null>(
   `post-${slug}-${currentLocale.value}`,
-  () =>
-    $fetch(`/api/posts/${slug}`, {
+  async () => {
+    const result = await $fetch<ApiResponse>(`/api/posts/${slug}`, {
       query: { lang: currentLocale.value },
-    }),
+    })
+    return result
+  },
   { server: true, watch: [currentLocale] }
 )
 
 // Extract post from API response
 const post = computed<PostDetail | null>(() => {
-  if (!apiResponse.value || 'error' in apiResponse.value) return null
-  return apiResponse.value
+  if (!apiResponse.value || !apiResponse.value.success || !apiResponse.value.data) return null
+  return apiResponse.value.data
 })
 
 // Calculate read time (rough estimate: 200 words per minute)
