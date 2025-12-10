@@ -311,11 +311,11 @@ locales/
 ### Supported Locales
 
 | Code | Language | Flag |
-|------|----------|------|
-| `en` | English  | 🇺🇸  |
-| `es` | Español  | 🇪🇸  |
-| `de` | Deutsch  | 🇩🇪  |
-| `fr` | Français | 🇫🇷  |
+| ---- | -------- | ---- |
+| `en` | English  | 🇺🇸   |
+| `es` | Español  | 🇪🇸   |
+| `de` | Deutsch  | 🇩🇪   |
+| `fr` | Français | 🇫🇷   |
 
 ### Usage in Components
 
@@ -411,15 +411,15 @@ You MUST add the new keys to ALL 4 locale files:
 
 ### Translation Key Conventions
 
-| Pattern | Example | Use Case |
-|---------|---------|----------|
-| `{page}.hero.title` | `about.hero.title` | Page hero sections |
-| `{page}.{section}.title` | `events.cta.title` | Page subsections |
-| `{feature}.title` | `newsletter.title` | Reusable features |
-| `common.{action}` | `common.learnMore` | Shared actions |
-| `nav.{page}` | `nav.home` | Navigation labels |
-| `a11y.{action}` | `a11y.openMenu` | Accessibility labels |
-| `meta.{field}` | `meta.description` | SEO metadata |
+| Pattern                  | Example            | Use Case             |
+| ------------------------ | ------------------ | -------------------- |
+| `{page}.hero.title`      | `about.hero.title` | Page hero sections   |
+| `{page}.{section}.title` | `events.cta.title` | Page subsections     |
+| `{feature}.title`        | `newsletter.title` | Reusable features    |
+| `common.{action}`        | `common.learnMore` | Shared actions       |
+| `nav.{page}`             | `nav.home`         | Navigation labels    |
+| `a11y.{action}`          | `a11y.openMenu`    | Accessibility labels |
+| `meta.{field}`           | `meta.description` | SEO metadata         |
 
 ### Common Translation Keys
 
