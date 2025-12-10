@@ -236,9 +236,7 @@ useSeoMeta({
                   <p class="text-brand-base font-medium">
                     {{ post.author.displayName || 'HFY Team' }}
                   </p>
-                  <p class="text-brand-base/60 mt-1 text-sm">
-                    Author at Holy Fuck Yeah!
-                  </p>
+                  <p class="text-brand-base/60 mt-1 text-sm">Author at Holy Fuck Yeah!</p>
                 </div>
               </div>
             </BaseCard>

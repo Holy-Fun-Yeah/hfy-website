@@ -234,7 +234,7 @@ describe('About API', async () => {
           valuesV1Message: 'Message de la valeur 1',
           valuesV2Title: 'Valeur 2',
           valuesV2Message: 'Message de la valeur 2',
-          quoteText: "Ceci est une citation de test",
+          quoteText: 'Ceci est une citation de test',
         },
       },
     }

@@ -84,7 +84,10 @@ export default defineApiHandler(async (event) => {
   // Execute upsert in a transaction
   const result = await db.transaction(async (tx) => {
     // Upsert settings
-    const [existingSettings] = await tx.select({ id: aboutSettings.id }).from(aboutSettings).limit(1)
+    const [existingSettings] = await tx
+      .select({ id: aboutSettings.id })
+      .from(aboutSettings)
+      .limit(1)
 
     let settingsId: number
 
