@@ -1,46 +1,41 @@
-# Nuxt dev/build outputs
-.output
-.data
-.nuxt
-.nitro
+
 .cache
+.claude/
+# Claude Code local settings
+.data
 dist
-
-# Node dependencies
-node_modules
-
-# Logs
-logs
-*.log
-
-# Misc
 .DS_Store
-.fleet
-.idea
-
-# Local env files
 .env
 .env.*
 !.env.example
-
-# VS Code
+.fleet
+.idea
+# Local env files
+*.log
+logs
+# Logs
+# Misc
+.nitro
+# Node dependencies
+node_modules
+.nuxt
+# Nuxt dev/build outputs
+.output
+playwright-report/
+.pnp.*
+test-results/
+tests/e2e/.auth/
+*.tsbuildinfo
+# TypeScript
 .vscode/*
-!.vscode/settings.json
+# VS Code
 !.vscode/extensions.json
-
-# Yarn
+!.vscode/settings.json
+.worktrees/
 .yarn/*
+# Yarn
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-.pnp.*
-
-# TypeScript
-*.tsbuildinfo
-
-# Claude Code local settings
-.claude/
-playwright-report/
-test-results/
