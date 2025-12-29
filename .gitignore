@@ -39,3 +39,9 @@ tests/e2e/.auth/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Octopus dev workflow
+.octopus/
+
+# Generated locale assets
+server/assets/
