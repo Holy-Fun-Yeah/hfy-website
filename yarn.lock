@@ -49,6 +49,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@axe-core/playwright@npm:^4.11.0":
+  version: 4.11.0
+  resolution: "@axe-core/playwright@npm:4.11.0"
+  dependencies:
+    axe-core: "npm:~4.11.0"
+  peerDependencies:
+    playwright-core: ">= 1.0.0"
+  checksum: 10c0/73f93cbe510b2399986aa14e4b07bff79fb757b7205240a6ed59b39f3c252014beeb6e6ce0850c1d392fe1f3f3f04c4e5ff860cbcdeaaf7b6dc1598c3209e539
+  languageName: node
+  linkType: hard
+
 "@babel/code-frame@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/code-frame@npm:7.27.1"
@@ -1147,6 +1158,17 @@ __metadata:
     "@eslint/core": "npm:^0.17.0"
     levn: "npm:^0.4.1"
   checksum: 10c0/51600f78b798f172a9915dffb295e2ffb44840d583427bc732baf12ecb963eb841b253300e657da91d890f4b323d10a1bd12934bf293e3018d8bb66fdce5217b
+  languageName: node
+  linkType: hard
+
+"@fast-check/vitest@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "@fast-check/vitest@npm:0.2.4"
+  dependencies:
+    fast-check: "npm:^3.0.0 || ^4.0.0"
+  peerDependencies:
+    vitest: ^1 || ^2 || ^3 || ^4
+  checksum: 10c0/51dd152cd316a6817ef3829fbfdbe94e5d0f837f257ef8e6cb04963165614db06c4f681d271944e258af0ce38e022aa0853919fef62575242feb55a848852171
   languageName: node
   linkType: hard
 
@@ -3077,6 +3099,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@trpc/client@npm:^11.8.1":
+  version: 11.8.1
+  resolution: "@trpc/client@npm:11.8.1"
+  peerDependencies:
+    "@trpc/server": 11.8.1
+    typescript: ">=5.7.2"
+  checksum: 10c0/2b015230e7f289fac98a2d146fe67bcfe60f3392871f967fa15afb56f8da898f8f6bc4d81672b60dfe414a5007fecd09547e1a8e878d2fd76e6eba6241d63bad
+  languageName: node
+  linkType: hard
+
+"@trpc/server@npm:^11.8.1":
+  version: 11.8.1
+  resolution: "@trpc/server@npm:11.8.1"
+  peerDependencies:
+    typescript: ">=5.7.2"
+  checksum: 10c0/82099e2230f25ea9253c3d54f1c216930d688db47c73a4141b7ec4f439e1fd53c3e8e5e47684c0bfa4e576c7b1df0820f28a85f48797d8cee7b570dc46035402
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.10.0, @tybys/wasm-util@npm:^0.10.1":
   version: 0.10.1
   resolution: "@tybys/wasm-util@npm:0.10.1"
@@ -4199,6 +4240,13 @@ __metadata:
   bin:
     autoprefixer: bin/autoprefixer
   checksum: 10c0/2ae8d135af2deaaa5065a3a466c877787373c0ed766b8a8e8259d7871db79c1a7e1d9f6c9541c54fa95647511d3c2066bb08a30160e58c9bfa75506f9c18f3aa
+  languageName: node
+  linkType: hard
+
+"axe-core@npm:~4.11.0":
+  version: 4.11.0
+  resolution: "axe-core@npm:4.11.0"
+  checksum: 10c0/7d7020a568a824c303711858c2fcfe56d001d27e46c0c2ff75dc31b436cfddfd4857a301e70536cc9e64829d25338f7fb782102d23497ebdc66801e9900fc895
   languageName: node
   linkType: hard
 
@@ -6206,6 +6254,15 @@ __metadata:
   version: 6.2.5
   resolution: "fake-indexeddb@npm:6.2.5"
   checksum: 10c0/6c5e2fe84a61daa06d7ad63699d1041fe61847f15f92db12415634b3db94f363a64be9e08a3c3c4434af9c3c0132086b85c4d5dc5e8e06edae1e7daf70ce1f3c
+  languageName: node
+  linkType: hard
+
+"fast-check@npm:^3.0.0 || ^4.0.0, fast-check@npm:^4.5.2":
+  version: 4.5.2
+  resolution: "fast-check@npm:4.5.2"
+  dependencies:
+    pure-rand: "npm:^7.0.0"
+  checksum: 10c0/8ae9d5b376b6a3b61c6dadc8dd3e3ab330905c05b2100503807b4f4efb32655d82d8517a05d699e877d950b71487cceee87656a7cd415d4e72ea7e0801447418
   languageName: node
   linkType: hard
 
@@ -8336,6 +8393,8 @@ __metadata:
   resolution: "nuxt-site@workspace:."
   dependencies:
     "@anthropic-ai/sdk": "npm:^0.71.2"
+    "@axe-core/playwright": "npm:^4.11.0"
+    "@fast-check/vitest": "npm:^0.2.4"
     "@nuxt/devtools": "npm:^3.1.1"
     "@nuxt/eslint": "npm:^1.5.0"
     "@nuxt/test-utils": "npm:^3.21.0"
@@ -8344,6 +8403,8 @@ __metadata:
     "@playwright/test": "npm:^1.57.0"
     "@prettier/plugin-xml": "npm:^3.4.2"
     "@tailwindcss/postcss": "npm:^4.1.17"
+    "@trpc/client": "npm:^11.8.1"
+    "@trpc/server": "npm:^11.8.1"
     "@types/node": "npm:^24.10.1"
     "@vue/compiler-sfc": "npm:^3.5.17"
     "@vue/eslint-config-prettier": "npm:^10.2.0"
@@ -8351,6 +8412,7 @@ __metadata:
     "@vueuse/core": "npm:^12.8.2"
     autoprefixer: "npm:^10.4.22"
     cssnano: "npm:^7.1.2"
+    dotenv: "npm:^17.2.3"
     drizzle-kit: "npm:^0.31.5"
     drizzle-orm: "npm:^0.44.2"
     drizzle-zod: "npm:^0.7.1"
@@ -8358,6 +8420,7 @@ __metadata:
     eslint-plugin-import-x: "npm:^4.16.1"
     eslint-plugin-unused-imports: "npm:^4.3.0"
     eslint-plugin-vue: "npm:^10.6.2"
+    fast-check: "npm:^4.5.2"
     happy-dom: "npm:^20.0.11"
     libphonenumber-js: "npm:^1.12.31"
     marked: "npm:^17.0.1"
@@ -8371,7 +8434,9 @@ __metadata:
     prettier-plugin-tailwindcss: "npm:^0.7.2"
     stripe: "npm:^20.0.0"
     supabase: "npm:^2.65.7"
+    superjson: "npm:^2.2.6"
     tailwindcss: "npm:^4.1.17"
+    trpc-nuxt: "npm:^2.0.1"
     tsx: "npm:^4.21.0"
     typescript: "npm:^5.9.3"
     unplugin-fonts: "npm:^1.4.0"
@@ -8382,7 +8447,7 @@ __metadata:
     vue-router: "npm:^4.6.3"
     vue-tel-input: "npm:^9.5.1"
     vue-tsc: "npm:^3.1.6"
-    zod: "npm:^3.25.36"
+    zod: "npm:3"
   languageName: unknown
   linkType: soft
 
@@ -9533,6 +9598,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pure-rand@npm:^7.0.0":
+  version: 7.0.1
+  resolution: "pure-rand@npm:7.0.1"
+  checksum: 10c0/9cade41030f5ec95f5d55a11a71404cd6f46b69becaad892097cd7f58e2c6248cd0a933349ca7d21336ab629f1da42ffe899699b671bc4651600eaf6e57f837e
+  languageName: node
+  linkType: hard
+
 "qs@npm:^6.11.0":
   version: 6.14.0
   resolution: "qs@npm:6.14.0"
@@ -10463,7 +10535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superjson@npm:^2.2.2":
+"superjson@npm:^2.2.2, superjson@npm:^2.2.6":
   version: 2.2.6
   resolution: "superjson@npm:2.2.6"
   dependencies:
@@ -10692,6 +10764,20 @@ __metadata:
   version: 0.0.3
   resolution: "tr46@npm:0.0.3"
   checksum: 10c0/047cb209a6b60c742f05c9d3ace8fa510bff609995c129a37ace03476a9b12db4dbf975e74600830ef0796e18882b2381fb5fb1f6b4f96b832c374de3ab91a11
+  languageName: node
+  linkType: hard
+
+"trpc-nuxt@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "trpc-nuxt@npm:2.0.1"
+  dependencies:
+    h3: "npm:^1.15.4"
+    ofetch: "npm:^1.5.1"
+    ohash: "npm:^2.0.11"
+  peerDependencies:
+    "@trpc/client": ^11.0.0
+    "@trpc/server": ^11.0.0
+  checksum: 10c0/16191399e782ec6080afe72de9e135dfa4a295d1150f7f129fb6abc1dac7762f4d18278c0a0434ebae6add7759ac8e623912e438537fa9923a7ac752ac17ab54
   languageName: node
   linkType: hard
 
@@ -11882,7 +11968,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.36":
+"zod@npm:3":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c

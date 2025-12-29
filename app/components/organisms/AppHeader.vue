@@ -140,8 +140,10 @@ const itemInitial = { opacity: 0, x: -10 }
         <!-- Theme Toggle with glow effect -->
         <button
           type="button"
+          data-testid="theme-toggle"
           class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/10 rounded-lg p-2 transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
           :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+          :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
           @click="toggleTheme"
         >
           <svg
@@ -201,6 +203,8 @@ const itemInitial = { opacity: 0, x: -10 }
         <div class="relative">
           <button
             type="button"
+            data-testid="lang-switcher"
+            aria-label="Change language"
             class="text-brand-muted hover:text-brand-accent hover:bg-brand-accent/10 flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-medium transition-all duration-300 hover:shadow-[0_0_12px_var(--color-brand-glow)]"
             title="Change language"
             @click.stop="langMenuOpen = !langMenuOpen"
@@ -228,6 +232,7 @@ const itemInitial = { opacity: 0, x: -10 }
             <Motion
               v-if="langMenuOpen"
               as="div"
+              data-testid="lang-dropdown"
               :initial="{ opacity: 0, y: -8, scale: 0.95 }"
               :animate="{ opacity: 1, y: 0, scale: 1 }"
               :exit="{ opacity: 0, y: -8, scale: 0.95 }"
@@ -441,6 +446,7 @@ const itemInitial = { opacity: 0, x: -10 }
 
         <!-- Mobile Menu Button -->
         <button
+          data-testid="mobile-menu-toggle"
           class="text-brand-muted hover:text-brand-accent p-2 transition-colors md:hidden"
           aria-label="Toggle menu"
           @click="mobileMenuOpen = !mobileMenuOpen"
@@ -476,6 +482,7 @@ const itemInitial = { opacity: 0, x: -10 }
       <Motion
         v-if="mobileMenuOpen"
         as="div"
+        data-testid="mobile-menu"
         :initial="menuInitial"
         :animate="menuAnimation"
         :exit="menuExit"

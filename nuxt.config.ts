@@ -104,6 +104,11 @@ export default defineNuxtConfig({
   // Code-based routing - routes defined in app/router.options.ts
   // Pages scanning is enabled but routes are overridden programmatically
 
+  // Required for tRPC type resolution
+  build: {
+    transpile: ['trpc-nuxt'],
+  },
+
   css: ['~/assets/css/main.css'],
 
   postcss: {
@@ -122,6 +127,18 @@ export default defineNuxtConfig({
         },
       }),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split large vendor dependencies into separate chunks
+            'vendor-vue': ['vue', 'vue-router', 'pinia'],
+            'vendor-supabase': ['@supabase/supabase-js'],
+            'vendor-motion': ['motion-v'],
+          },
+        },
+      },
+    },
   },
 
   runtimeConfig: {
