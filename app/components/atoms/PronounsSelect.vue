@@ -87,7 +87,7 @@ onUnmounted(() => {
       type="button"
       :disabled="disabled"
       class="bg-brand-neutral border-brand-base/20 text-brand-base focus:border-brand-accent focus:ring-brand-accent/20 flex w-full items-center justify-between rounded-lg border px-4 py-2.5 text-left transition outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
-      :class="{ 'border-brand-accent ring-2 ring-brand-accent/20': isOpen }"
+      :class="{ 'border-brand-accent ring-brand-accent/20 ring-2': isOpen }"
       @click="toggleDropdown"
     >
       <span :class="{ 'text-brand-muted': !selectedOption }">

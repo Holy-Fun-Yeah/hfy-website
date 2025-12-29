@@ -110,7 +110,7 @@ function handleCancel() {
         >
           <div
             v-if="open"
-            class="bg-brand-neutral relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-6 shadow-2xl"
+            class="bg-brand-neutral relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6 shadow-2xl"
           >
             <!-- Close button -->
             <button

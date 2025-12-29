@@ -659,6 +659,7 @@ test('authenticated user can access modal', async ({ authenticatedPage }) => {
 ```
 
 Test users (seeded via `yarn seed:test-users`):
+
 - `test-user@hfy.test` / `TestUser123!` - Regular user
 - `test-admin@hfy.test` / `TestAdmin123!` - Admin user
 
@@ -682,9 +683,7 @@ When sending to external services (e.g., Stripe), format as E.164:
 
 ```ts
 // Format as E.164 for Stripe billing details
-const phoneE164 = phoneCountryCode && phoneNumber
-  ? `+${phoneCountryCode}${phoneNumber}`
-  : ''
+const phoneE164 = phoneCountryCode && phoneNumber ? `+${phoneCountryCode}${phoneNumber}` : ''
 
 // In RegistrationModal.vue
 const initialPhone = computed(() => {

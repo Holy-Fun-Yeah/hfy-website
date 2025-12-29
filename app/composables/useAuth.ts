@@ -105,7 +105,8 @@ export function useAuth() {
       return data.profile || null
     } catch (error: unknown) {
       // 401 is expected for unauthenticated users, don't log it
-      const is401 = error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 401
+      const is401 =
+        error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 401
       if (!is401) {
         profileError.value = error instanceof Error ? error.message : 'Failed to fetch profile'
         console.error('Profile fetch error:', error)

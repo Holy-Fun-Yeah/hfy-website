@@ -193,8 +193,9 @@ async function handleSubmit() {
 
     <!-- Attendee Info (read-only) -->
     <div class="text-brand-muted text-sm">
-      Registering as: <strong class="text-brand-base">{{ attendeeName }}</strong>
-      ({{ attendeeEmail }})
+      Registering as: <strong class="text-brand-base">{{ attendeeName }}</strong> ({{
+        attendeeEmail
+      }})
     </div>
 
     <!-- Loading state while initializing payment -->
@@ -255,4 +256,3 @@ async function handleSubmit() {
     </div>
   </form>
 </template>
-

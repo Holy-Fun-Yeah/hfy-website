@@ -90,27 +90,28 @@ onMounted(() => {
   <div class="mx-auto max-w-md p-8">
     <h1 class="font-headers text-brand-base mb-6 text-2xl font-bold">Stripe Component Test</h1>
 
-    <div class="bg-brand-neutral rounded-xl border border-amber-500 p-4 mb-6">
-      <p class="text-amber-700 text-sm font-medium">Development Only</p>
-      <p class="text-brand-muted text-xs mt-1">This page is only available in development mode.</p>
+    <div class="bg-brand-neutral mb-6 rounded-xl border border-amber-500 p-4">
+      <p class="text-sm font-medium text-amber-700">Development Only</p>
+      <p class="text-brand-muted mt-1 text-xs">This page is only available in development mode.</p>
     </div>
 
     <!-- Test Cards Info -->
-    <div class="bg-brand-neutral/50 rounded-lg p-4 mb-6 text-sm">
-      <p class="font-medium text-brand-base mb-2">Test Card Numbers:</p>
+    <div class="bg-brand-neutral/50 mb-6 rounded-lg p-4 text-sm">
+      <p class="text-brand-base mb-2 font-medium">Test Card Numbers:</p>
       <ul class="text-brand-muted space-y-1">
-        <li><code class="bg-brand-neutral px-1 rounded">4242 4242 4242 4242</code> - Success</li>
-        <li><code class="bg-brand-neutral px-1 rounded">4000 0000 0000 0002</code> - Decline</li>
+        <li><code class="bg-brand-neutral rounded px-1">4242 4242 4242 4242</code> - Success</li>
+        <li><code class="bg-brand-neutral rounded px-1">4000 0000 0000 0002</code> - Decline</li>
         <li>Any future expiry, any 3-digit CVC</li>
       </ul>
     </div>
 
     <!-- Step 1: Create Payment Intent -->
-    <div v-if="!clientSecret" class="space-y-4">
+    <div
+      v-if="!clientSecret"
+      class="space-y-4"
+    >
       <div>
-        <label class="text-brand-base mb-1 block text-sm font-medium">
-          Amount (cents)
-        </label>
+        <label class="text-brand-base mb-1 block text-sm font-medium"> Amount (cents) </label>
         <input
           v-model.number="testAmount"
           type="number"
@@ -118,9 +119,7 @@ onMounted(() => {
           max="100000"
           class="bg-brand-neutral border-brand-base/20 text-brand-base w-full rounded-lg border px-4 py-2.5"
         />
-        <p class="text-brand-muted text-xs mt-1">
-          = ${{ (testAmount / 100).toFixed(2) }}
-        </p>
+        <p class="text-brand-muted mt-1 text-xs">= ${{ (testAmount / 100).toFixed(2) }}</p>
       </div>
 
       <BaseButton
@@ -133,14 +132,15 @@ onMounted(() => {
     </div>
 
     <!-- Step 2: Stripe Payment Element -->
-    <div v-else class="space-y-4">
+    <div
+      v-else
+      class="space-y-4"
+    >
       <div class="bg-brand-neutral/50 rounded-lg p-4">
         <p class="text-brand-muted text-sm">
           Payment Intent: <code class="text-brand-base">{{ paymentIntentId }}</code>
         </p>
-        <p class="text-brand-accent font-bold mt-2">
-          ${{ (testAmount / 100).toFixed(2) }}
-        </p>
+        <p class="text-brand-accent mt-2 font-bold">${{ (testAmount / 100).toFixed(2) }}</p>
       </div>
 
       <!-- Stripe Element -->
@@ -171,12 +171,18 @@ onMounted(() => {
     </div>
 
     <!-- Error Message -->
-    <p v-if="error" class="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+    <p
+      v-if="error"
+      class="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600"
+    >
       {{ error }}
     </p>
 
     <!-- Success Message -->
-    <p v-if="result" class="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-600">
+    <p
+      v-if="result"
+      class="mt-4 rounded-lg bg-green-50 p-3 text-sm text-green-600"
+    >
       {{ result }}
     </p>
   </div>

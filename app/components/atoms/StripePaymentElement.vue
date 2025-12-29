@@ -86,11 +86,13 @@ async function initializeStripe() {
     })
 
     // Create payment element with default values for billing details
-    // Email is set to 'never' - uses default value, not editable
+    // Email is set to 'never' - uses default value passed in confirmParams
+    // Phone is set to 'never' - Stripe's phone field doesn't handle E.164 format well
     const paymentElementOptions: Record<string, unknown> = {
       fields: {
         billingDetails: {
-          email: 'never', // Don't show email field - use default value
+          email: 'never', // Don't show email field - pass in confirmParams
+          phone: 'never', // Don't show phone field - pass in confirmParams
         },
       },
     }
@@ -99,8 +101,7 @@ async function initializeStripe() {
       paymentElementOptions.defaultValues = {
         billingDetails: {
           name: props.billingDetails.name || '',
-          email: props.billingDetails.email || '',
-          phone: props.billingDetails.phone || '',
+          // Email and phone are passed in confirmParams, not as defaultValues
         },
       }
     }
@@ -177,8 +178,8 @@ async function confirmPayment(returnUrl: string) {
     throw new Error('Payment system not initialized')
   }
 
-  // Since we hide the email field (fields.billingDetails.email: 'never'),
-  // we must pass the email in payment_method_data.billing_details
+  // Since we hide email and phone fields (fields.billingDetails: 'never'),
+  // we must pass them in payment_method_data.billing_details
   const { error: confirmError } = await stripe.value.confirmPayment({
     elements: elements.value,
     confirmParams: {
@@ -186,6 +187,7 @@ async function confirmPayment(returnUrl: string) {
       payment_method_data: {
         billing_details: {
           email: props.billingDetails?.email || '',
+          phone: props.billingDetails?.phone || '',
         },
       },
     },

@@ -247,9 +247,7 @@ async function handleDeleteAccount() {
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <!-- Pronouns -->
               <div>
-                <label class="text-brand-muted mb-1 block text-sm font-medium">
-                  Pronouns
-                </label>
+                <label class="text-brand-muted mb-1 block text-sm font-medium"> Pronouns </label>
                 <PronounsSelect v-model="pronouns" />
               </div>
 
