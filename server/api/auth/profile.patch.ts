@@ -7,18 +7,16 @@
 
 import { eq } from 'drizzle-orm'
 
-import { db } from '../../database'
+import { useDatabase } from '../../database'
 import { profiles, profileUpdateApiSchema } from '../../database/schema'
 import { defineApiHandler, Errors } from '../../lib'
 import { requireAuth } from '../../utils/auth'
 
 export default defineApiHandler(async (event) => {
+  const db = useDatabase()
+
   // Get authenticated user
   const user = await requireAuth(event)
-
-  if (!db) {
-    throw Errors.serviceUnavailable('Database not available')
-  }
 
   // Parse and validate request body
   const body = await readBody(event)

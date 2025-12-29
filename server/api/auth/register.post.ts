@@ -14,7 +14,7 @@ import { createClient } from '@supabase/supabase-js'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
-import { db } from '../../database'
+import { useDatabase } from '../../database'
 import { profiles } from '../../database/schema'
 import { env } from '../../env'
 import { defineApiHandler, Errors } from '../../lib'
@@ -28,6 +28,8 @@ const registerSchema = z.object({
 })
 
 export default defineApiHandler(async (event) => {
+  const db = useDatabase()
+
   // Validate request body
   const body = await readBody(event)
   const parsed = registerSchema.safeParse(body)
@@ -41,10 +43,6 @@ export default defineApiHandler(async (event) => {
   // Ensure we have required env vars
   if (!env.SUPABASE_URL || !env.SUPABASE_SECRET_KEY) {
     throw Errors.serviceUnavailable('Auth service not configured')
-  }
-
-  if (!db) {
-    throw Errors.serviceUnavailable('Database not available')
   }
 
   // Create Supabase admin client (uses secret key for admin operations)
