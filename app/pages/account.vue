@@ -24,6 +24,7 @@ const showConfirmationSuccess = ref(false)
 
 // Form state
 const displayName = ref('')
+const pronouns = ref<string | null>(null)
 const phone = ref('')
 const newsletterSubscribed = ref(false)
 
@@ -45,9 +46,10 @@ watch(
   (newProfile) => {
     if (newProfile) {
       displayName.value = newProfile.displayName || ''
+      pronouns.value = (newProfile as { pronouns?: string | null }).pronouns || null
       phone.value = (newProfile as { phone?: string }).phone || ''
       newsletterSubscribed.value =
-        (newProfile as { newsletterSubscribed?: boolean }).newsletterSubscribed || false
+        (newProfile as { newsletterSubscribed?: boolean }).newsletterSubscribed ?? true
     }
   },
   { immediate: true }
@@ -82,6 +84,7 @@ async function handleSaveProfile() {
       method: 'PATCH',
       body: {
         displayName: displayName.value,
+        pronouns: pronouns.value,
         phone: phone.value || null,
         newsletterSubscribed: newsletterSubscribed.value,
       },
@@ -240,21 +243,32 @@ async function handleDeleteAccount() {
               <p class="text-brand-muted mt-1 text-xs">Email cannot be changed from this page</p>
             </div>
 
-            <!-- Display Name -->
-            <div>
-              <label
-                for="displayName"
-                class="text-brand-muted mb-1 block text-sm font-medium"
-              >
-                Display Name
-              </label>
-              <input
-                id="displayName"
-                v-model="displayName"
-                type="text"
-                class="bg-brand-neutral text-brand-base placeholder:text-brand-muted border-brand-base/20 focus:border-brand-accent focus:ring-brand-accent/20 w-full rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
-                :placeholder="profile?.displayName || 'Your name'"
-              />
+            <!-- Pronouns and Display Name (same row) -->
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <!-- Pronouns -->
+              <div>
+                <label class="text-brand-muted mb-1 block text-sm font-medium">
+                  Pronouns
+                </label>
+                <PronounsSelect v-model="pronouns" />
+              </div>
+
+              <!-- Display Name -->
+              <div class="sm:col-span-2">
+                <label
+                  for="displayName"
+                  class="text-brand-muted mb-1 block text-sm font-medium"
+                >
+                  Display Name
+                </label>
+                <input
+                  id="displayName"
+                  v-model="displayName"
+                  type="text"
+                  class="bg-brand-neutral text-brand-base placeholder:text-brand-muted border-brand-base/20 focus:border-brand-accent focus:ring-brand-accent/20 w-full rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
+                  :placeholder="profile?.displayName || 'Your name'"
+                />
+              </div>
             </div>
 
             <!-- Phone -->

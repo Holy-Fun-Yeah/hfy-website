@@ -262,6 +262,18 @@ export const localeSchema = z.object({
     ogDescription: z.string(),
   }),
 
+  // Pronouns/Gender (inclusive options)
+  pronouns: z.object({
+    selectPronouns: z.string(),
+    sheHer: z.string(),
+    heHim: z.string(),
+    theyThem: z.string(),
+    sheThey: z.string(),
+    heThey: z.string(),
+    any: z.string(),
+    preferNotToSay: z.string(),
+  }),
+
   // Authentication
   auth: z.object({
     signIn: z.string(),

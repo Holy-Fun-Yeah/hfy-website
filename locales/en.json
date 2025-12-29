@@ -214,6 +214,16 @@
     "ogTitle": "Holy Fuck Yeah! — Awaken Your Cosmic Power",
     "ogDescription": "Transformative experiences guided by modern astrology and ancient intuition."
   },
+  "pronouns": {
+    "selectPronouns": "Select pronouns",
+    "sheHer": "She/Her",
+    "heHim": "He/Him",
+    "theyThem": "They/Them",
+    "sheThey": "She/They",
+    "heThey": "He/They",
+    "any": "Any pronouns",
+    "preferNotToSay": "Prefer not to say"
+  },
   "auth": {
     "signIn": "Sign In",
     "signOut": "Sign Out",

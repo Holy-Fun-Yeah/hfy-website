@@ -15,11 +15,26 @@ import { z } from 'zod'
 // - Email remains locked (can't re-register with same email)
 // - Admin can restore by unbanning auth user + clearing deletedAt
 
+// Valid pronouns values (inclusive options)
+export const PRONOUNS_OPTIONS = [
+  'she/her',
+  'he/him',
+  'they/them',
+  'she/they',
+  'he/they',
+  'any',
+  'prefer_not_to_say',
+] as const
+
+export type Pronouns = (typeof PRONOUNS_OPTIONS)[number]
+
 export const profiles = pgTable('profiles', {
   // UUID from Supabase auth.users - NOT auto-generated
   id: uuid('id').primaryKey(),
   // Display name (can differ from auth email)
   displayName: text('display_name').notNull(),
+  // Pronouns (inclusive options)
+  pronouns: text('pronouns').$type<Pronouns>(),
   // Email (denormalized from auth.users for convenience)
   email: text('email').notNull(),
   // Contact info
@@ -27,8 +42,8 @@ export const profiles = pgTable('profiles', {
   // App-specific profile data
   bio: text('bio'),
   avatarUrl: text('avatar_url'),
-  // Preferences
-  newsletterSubscribed: boolean('newsletter_subscribed').default(false).notNull(),
+  // Preferences - default to true for newsletter
+  newsletterSubscribed: boolean('newsletter_subscribed').default(true).notNull(),
   // Admin flag (managed via Supabase dashboard or admin API)
   isAdmin: boolean('is_admin').default(false).notNull(),
   // Soft-delete: null = active, timestamp = deleted (user is banned in auth.users)
@@ -41,15 +56,20 @@ export const profiles = pgTable('profiles', {
 // ============================================================
 // Zod Schemas
 // ============================================================
+
+// Zod enum for pronouns validation
+export const pronounsSchema = z.enum(PRONOUNS_OPTIONS)
+
 export const selectProfileSchema = createSelectSchema(profiles)
 export const insertProfileSchema = createInsertSchema(profiles, {
   id: z.string().uuid(),
   displayName: z.string().min(1, 'Display name is required').max(100),
+  pronouns: pronounsSchema.optional().nullable(),
   email: z.string().email('Invalid email address'),
   phone: z.string().max(20).optional().nullable(),
   bio: z.string().max(500).optional().nullable(),
   avatarUrl: z.string().url().optional().nullable(),
-  newsletterSubscribed: z.boolean().default(false),
+  newsletterSubscribed: z.boolean().default(true),
   isAdmin: z.boolean().default(false),
 })
 
@@ -64,6 +84,7 @@ export const updateProfileSchema = insertProfileSchema.partial().omit({
 // Schema for profile update API (user-editable fields only)
 export const profileUpdateApiSchema = z.object({
   displayName: z.string().min(1).max(100).optional(),
+  pronouns: pronounsSchema.optional().nullable(),
   phone: z.string().max(20).optional().nullable(),
   bio: z.string().max(500).optional().nullable(),
   newsletterSubscribed: z.boolean().optional(),

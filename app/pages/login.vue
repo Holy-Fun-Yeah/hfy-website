@@ -56,6 +56,7 @@ const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const fullName = ref('')
+const pronouns = ref<string | null>(null)
 const phoneNumber = ref('')
 const loading = ref(false)
 const errorMessage = ref('')
@@ -110,6 +111,7 @@ function getFormData() {
   } else if (mode.value === 'signUp') {
     return {
       fullName: fullName.value,
+      pronouns: pronouns.value,
       email: email.value,
       phone: phoneNumber.value,
       password: password.value,
@@ -300,6 +302,7 @@ async function handleSignUp() {
       email: email.value,
       password: password.value,
       displayName: fullName.value,
+      pronouns: pronouns.value || undefined,
       phone: phoneNumber.value || undefined,
     })
 
@@ -396,6 +399,7 @@ function switchMode(newMode: FormMode) {
   touchedFields.value.clear()
   if (newMode !== 'signUp') {
     fullName.value = ''
+    pronouns.value = null
     phoneNumber.value = ''
   }
 }
@@ -511,30 +515,44 @@ useSeoMeta({
             class="space-y-4"
             @submit.prevent="handleSubmit"
           >
-            <!-- Full Name (sign up only) -->
-            <div v-if="mode === 'signUp'">
-              <label
-                for="fullName"
-                class="text-brand-base mb-1 block text-sm font-medium"
-              >
-                {{ t('auth.fullName') }}
-              </label>
-              <input
-                id="fullName"
-                v-model="fullName"
-                type="text"
-                required
-                autocomplete="name"
-                :class="getInputClass('fullName')"
-                :placeholder="t('auth.fullNamePlaceholder')"
-                @blur="handleBlur('fullName')"
-              />
-              <p
-                v-if="shouldShowError('fullName')"
-                class="mt-1 text-sm text-red-500"
-              >
-                {{ fieldErrors.fullName }}
-              </p>
+            <!-- Pronouns and Full Name (sign up only, same row) -->
+            <div
+              v-if="mode === 'signUp'"
+              class="grid grid-cols-1 gap-4 sm:grid-cols-3"
+            >
+              <!-- Pronouns -->
+              <div>
+                <label class="text-brand-base mb-1 block text-sm font-medium">
+                  {{ t('pronouns.selectPronouns') }}
+                </label>
+                <PronounsSelect v-model="pronouns" />
+              </div>
+
+              <!-- Full Name -->
+              <div class="sm:col-span-2">
+                <label
+                  for="fullName"
+                  class="text-brand-base mb-1 block text-sm font-medium"
+                >
+                  {{ t('auth.fullName') }}
+                </label>
+                <input
+                  id="fullName"
+                  v-model="fullName"
+                  type="text"
+                  required
+                  autocomplete="name"
+                  :class="getInputClass('fullName')"
+                  :placeholder="t('auth.fullNamePlaceholder')"
+                  @blur="handleBlur('fullName')"
+                />
+                <p
+                  v-if="shouldShowError('fullName')"
+                  class="mt-1 text-sm text-red-500"
+                >
+                  {{ fieldErrors.fullName }}
+                </p>
+              </div>
             </div>
 
             <!-- Email -->

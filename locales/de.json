@@ -214,6 +214,16 @@
     "ogTitle": "Holy Fuck Yeah! — Erwecke Deine Kosmische Kraft",
     "ogDescription": "Transformative Erfahrungen geleitet von moderner Astrologie und uralter Intuition."
   },
+  "pronouns": {
+    "selectPronouns": "Pronomen auswählen",
+    "sheHer": "Sie/Ihr",
+    "heHim": "Er/Ihm",
+    "theyThem": "They/Them",
+    "sheThey": "Sie/They",
+    "heThey": "Er/They",
+    "any": "Alle Pronomen",
+    "preferNotToSay": "Lieber nicht sagen"
+  },
   "auth": {
     "signIn": "Anmelden",
     "signOut": "Abmelden",

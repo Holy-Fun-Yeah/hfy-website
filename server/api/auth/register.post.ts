@@ -15,7 +15,7 @@ import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { useDatabase } from '../../database'
-import { profiles } from '../../database/schema'
+import { profiles, pronounsSchema } from '../../database/schema'
 import { env } from '../../env'
 import { defineApiHandler, Errors } from '../../lib'
 
@@ -24,6 +24,7 @@ const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   displayName: z.string().min(1, 'Display name is required').max(100),
+  pronouns: pronounsSchema.optional().nullable(),
   phone: z.string().max(20).optional(),
 })
 
@@ -38,7 +39,7 @@ export default defineApiHandler(async (event) => {
     throw Errors.validation(parsed.error.issues.map((i) => i.message).join(', '))
   }
 
-  const { email, password, displayName, phone } = parsed.data
+  const { email, password, displayName, pronouns, phone } = parsed.data
 
   // Ensure we have required env vars
   if (!env.SUPABASE_URL || !env.SUPABASE_SECRET_KEY) {
@@ -97,14 +98,17 @@ export default defineApiHandler(async (event) => {
         id: authData.user.id,
         email: email.toLowerCase(),
         displayName,
+        pronouns: pronouns || null,
         phone: phone || null,
         bio: null,
         avatarUrl: null,
+        newsletterSubscribed: true, // Default to subscribed
       })
       .onConflictDoUpdate({
         target: profiles.id,
         set: {
           displayName,
+          pronouns: pronouns || null,
           phone: phone || null,
           updatedAt: new Date(),
         },
