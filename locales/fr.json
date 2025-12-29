@@ -257,5 +257,66 @@
     "courses": "Cours",
     "content": "Contenu",
     "editor": "Éditeur"
+  },
+  "member": {
+    "nav": {
+      "dashboard": "Tableau de Bord",
+      "courses": "Mes Cours",
+      "appointments": "Rendez-vous",
+      "purchases": "Achats"
+    },
+    "dashboard": {
+      "welcome": "Bienvenue",
+      "welcomeBack": "Bon retour",
+      "quickStats": "Statistiques Rapides",
+      "coursesEnrolled": "Cours Inscrits",
+      "upcomingAppointments": "Prochains Rendez-vous",
+      "nextAppointment": "Prochain Rendez-vous",
+      "noUpcomingAppointments": "Aucun rendez-vous à venir",
+      "continueLearning": "Continuer à Apprendre",
+      "noCoursesYet": "Pas encore de cours",
+      "browseStore": "Parcourir la Boutique",
+      "recentPurchases": "Achats Récents",
+      "noPurchasesYet": "Pas encore d'achats"
+    },
+    "courses": {
+      "title": "Mes Cours",
+      "enrolled": "Inscrit",
+      "progress": "Progression",
+      "continue": "Continuer",
+      "completed": "Terminé",
+      "lessons": "leçons",
+      "lesson": "Leçon",
+      "duration": "Durée",
+      "markComplete": "Marquer Terminé",
+      "nextLesson": "Leçon Suivante",
+      "previousLesson": "Leçon Précédente",
+      "courseComplete": "Cours Terminé!",
+      "emptyCourses": "Vous n'êtes inscrit à aucun cours"
+    },
+    "appointments": {
+      "title": "Rendez-vous",
+      "upcoming": "À Venir",
+      "past": "Passés",
+      "noUpcoming": "Aucun rendez-vous à venir",
+      "noPast": "Aucun rendez-vous passé",
+      "joinMeeting": "Rejoindre la Réunion",
+      "status": {
+        "pending": "En Attente",
+        "confirmed": "Confirmé",
+        "completed": "Terminé",
+        "cancelled": "Annulé"
+      }
+    },
+    "purchases": {
+      "title": "Historique des Achats",
+      "date": "Date",
+      "item": "Article",
+      "amount": "Montant",
+      "status": "Statut",
+      "receipt": "Reçu",
+      "noPurchases": "Pas encore d'achats",
+      "viewReceipt": "Voir le Reçu"
+    }
   }
 }

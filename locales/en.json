@@ -266,5 +266,66 @@
     "courses": "Courses",
     "content": "Content",
     "editor": "Editor"
+  },
+  "member": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "courses": "My Courses",
+      "appointments": "Appointments",
+      "purchases": "Purchases"
+    },
+    "dashboard": {
+      "welcome": "Welcome",
+      "welcomeBack": "Welcome back",
+      "quickStats": "Quick Stats",
+      "coursesEnrolled": "Courses Enrolled",
+      "upcomingAppointments": "Upcoming Appointments",
+      "nextAppointment": "Next Appointment",
+      "noUpcomingAppointments": "No upcoming appointments",
+      "continueLearning": "Continue Learning",
+      "noCoursesYet": "No courses yet",
+      "browseStore": "Browse Store",
+      "recentPurchases": "Recent Purchases",
+      "noPurchasesYet": "No purchases yet"
+    },
+    "courses": {
+      "title": "My Courses",
+      "enrolled": "Enrolled",
+      "progress": "Progress",
+      "continue": "Continue",
+      "completed": "Completed",
+      "lessons": "lessons",
+      "lesson": "Lesson",
+      "duration": "Duration",
+      "markComplete": "Mark Complete",
+      "nextLesson": "Next Lesson",
+      "previousLesson": "Previous Lesson",
+      "courseComplete": "Course Complete!",
+      "emptyCourses": "You haven't enrolled in any courses yet"
+    },
+    "appointments": {
+      "title": "Appointments",
+      "upcoming": "Upcoming",
+      "past": "Past",
+      "noUpcoming": "No upcoming appointments",
+      "noPast": "No past appointments",
+      "joinMeeting": "Join Meeting",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "purchases": {
+      "title": "Purchase History",
+      "date": "Date",
+      "item": "Item",
+      "amount": "Amount",
+      "status": "Status",
+      "receipt": "Receipt",
+      "noPurchases": "No purchases yet",
+      "viewReceipt": "View Receipt"
+    }
   }
 }

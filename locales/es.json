@@ -257,5 +257,66 @@
     "courses": "Cursos",
     "content": "Contenido",
     "editor": "Editor"
+  },
+  "member": {
+    "nav": {
+      "dashboard": "Panel",
+      "courses": "Mis Cursos",
+      "appointments": "Citas",
+      "purchases": "Compras"
+    },
+    "dashboard": {
+      "welcome": "Bienvenido",
+      "welcomeBack": "Bienvenido de nuevo",
+      "quickStats": "Estadísticas Rápidas",
+      "coursesEnrolled": "Cursos Inscritos",
+      "upcomingAppointments": "Próximas Citas",
+      "nextAppointment": "Próxima Cita",
+      "noUpcomingAppointments": "No hay citas próximas",
+      "continueLearning": "Continuar Aprendiendo",
+      "noCoursesYet": "Sin cursos aún",
+      "browseStore": "Explorar Tienda",
+      "recentPurchases": "Compras Recientes",
+      "noPurchasesYet": "Sin compras aún"
+    },
+    "courses": {
+      "title": "Mis Cursos",
+      "enrolled": "Inscrito",
+      "progress": "Progreso",
+      "continue": "Continuar",
+      "completed": "Completado",
+      "lessons": "lecciones",
+      "lesson": "Lección",
+      "duration": "Duración",
+      "markComplete": "Marcar Completo",
+      "nextLesson": "Siguiente Lección",
+      "previousLesson": "Lección Anterior",
+      "courseComplete": "¡Curso Completado!",
+      "emptyCourses": "Aún no te has inscrito en ningún curso"
+    },
+    "appointments": {
+      "title": "Citas",
+      "upcoming": "Próximas",
+      "past": "Pasadas",
+      "noUpcoming": "No hay citas próximas",
+      "noPast": "No hay citas pasadas",
+      "joinMeeting": "Unirse a la Reunión",
+      "status": {
+        "pending": "Pendiente",
+        "confirmed": "Confirmada",
+        "completed": "Completada",
+        "cancelled": "Cancelada"
+      }
+    },
+    "purchases": {
+      "title": "Historial de Compras",
+      "date": "Fecha",
+      "item": "Artículo",
+      "amount": "Monto",
+      "status": "Estado",
+      "receipt": "Recibo",
+      "noPurchases": "Sin compras aún",
+      "viewReceipt": "Ver Recibo"
+    }
   }
 }

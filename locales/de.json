@@ -257,5 +257,66 @@
     "courses": "Kurse",
     "content": "Inhalt",
     "editor": "Editor"
+  },
+  "member": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "courses": "Meine Kurse",
+      "appointments": "Termine",
+      "purchases": "Käufe"
+    },
+    "dashboard": {
+      "welcome": "Willkommen",
+      "welcomeBack": "Willkommen zurück",
+      "quickStats": "Schnellstatistik",
+      "coursesEnrolled": "Eingeschriebene Kurse",
+      "upcomingAppointments": "Bevorstehende Termine",
+      "nextAppointment": "Nächster Termin",
+      "noUpcomingAppointments": "Keine bevorstehenden Termine",
+      "continueLearning": "Lernen Fortsetzen",
+      "noCoursesYet": "Noch keine Kurse",
+      "browseStore": "Shop Durchsuchen",
+      "recentPurchases": "Letzte Käufe",
+      "noPurchasesYet": "Noch keine Käufe"
+    },
+    "courses": {
+      "title": "Meine Kurse",
+      "enrolled": "Eingeschrieben",
+      "progress": "Fortschritt",
+      "continue": "Fortsetzen",
+      "completed": "Abgeschlossen",
+      "lessons": "Lektionen",
+      "lesson": "Lektion",
+      "duration": "Dauer",
+      "markComplete": "Als Abgeschlossen Markieren",
+      "nextLesson": "Nächste Lektion",
+      "previousLesson": "Vorherige Lektion",
+      "courseComplete": "Kurs Abgeschlossen!",
+      "emptyCourses": "Du hast dich noch für keinen Kurs eingeschrieben"
+    },
+    "appointments": {
+      "title": "Termine",
+      "upcoming": "Bevorstehend",
+      "past": "Vergangen",
+      "noUpcoming": "Keine bevorstehenden Termine",
+      "noPast": "Keine vergangenen Termine",
+      "joinMeeting": "Meeting Beitreten",
+      "status": {
+        "pending": "Ausstehend",
+        "confirmed": "Bestätigt",
+        "completed": "Abgeschlossen",
+        "cancelled": "Abgesagt"
+      }
+    },
+    "purchases": {
+      "title": "Kaufhistorie",
+      "date": "Datum",
+      "item": "Artikel",
+      "amount": "Betrag",
+      "status": "Status",
+      "receipt": "Quittung",
+      "noPurchases": "Noch keine Käufe",
+      "viewReceipt": "Quittung Anzeigen"
+    }
   }
 }
