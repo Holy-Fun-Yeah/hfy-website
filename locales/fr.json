@@ -144,7 +144,9 @@
       "viewOnGoogleMaps": "Voir sur Google Maps",
       "exploreMore": "Explorer plus d'événements",
       "viewAllEvents": "Voir tous les événements",
-      "showingInEnglish": "Affiché en anglais"
+      "showingInEnglish": "Affiché en anglais",
+      "registered": "Vous êtes inscrit !",
+      "seeYouThere": "À bientôt !"
     }
   },
   "blog": {

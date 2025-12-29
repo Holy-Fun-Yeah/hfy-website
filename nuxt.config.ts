@@ -150,6 +150,7 @@ export default defineNuxtConfig({
       appName: process.env.NUXT_PUBLIC_APP_NAME || 'Holy Fuck Yeah!',
       supabaseUrl: process.env.SUPABASE_URL || '',
       supabasePublicKey: process.env.SUPABASE_PUBLIC_KEY || '',
+      stripePublicKey: process.env.STRIPE_PUBLIC_KEY || '',
     },
   },
 

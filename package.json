@@ -30,6 +30,7 @@
   "dependencies": {
     "@nuxtjs/supabase": "^2.0.3",
     "@pinia/nuxt": "^0.11.3",
+    "@stripe/stripe-js": "^8.6.0",
     "@trpc/client": "^11.8.1",
     "@trpc/server": "^11.8.1",
     "@vueuse/core": "^12.8.2",

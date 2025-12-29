@@ -176,6 +176,8 @@ export const localeSchema = z.object({
       exploreMore: z.string(),
       viewAllEvents: z.string(),
       showingInEnglish: z.string(),
+      registered: z.string(),
+      seeYouThere: z.string(),
     }),
   }),
 

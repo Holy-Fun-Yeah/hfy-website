@@ -31,6 +31,7 @@ const envSchema = z.object({
 
   // Stripe (Payments)
   STRIPE_SECRET_KEY: z.string().startsWith('sk_').optional(),
+  STRIPE_PUBLIC_KEY: z.string().startsWith('pk_').optional(),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_').optional(),
 })
 
@@ -60,6 +61,7 @@ export const env = result.success
       SUPABASE_PUBLIC_KEY: undefined,
       SUPABASE_SECRET_KEY: undefined,
       STRIPE_SECRET_KEY: undefined,
+      STRIPE_PUBLIC_KEY: undefined,
       STRIPE_WEBHOOK_SECRET: undefined,
     }
 

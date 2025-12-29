@@ -2846,6 +2846,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stripe/stripe-js@npm:^8.6.0":
+  version: 8.6.0
+  resolution: "@stripe/stripe-js@npm:8.6.0"
+  checksum: 10c0/9286be05080049bddd6ad59d13e858ec3d1a36c33d553f806b127e2696232a447fa0f4775b44f18d9d251f6784bb8e8d849a5ef87970ef7f8516a30aee59f5f0
+  languageName: node
+  linkType: hard
+
 "@stylistic/eslint-plugin@npm:^5.6.1":
   version: 5.6.1
   resolution: "@stylistic/eslint-plugin@npm:5.6.1"
@@ -8402,6 +8409,7 @@ __metadata:
     "@pinia/nuxt": "npm:^0.11.3"
     "@playwright/test": "npm:^1.57.0"
     "@prettier/plugin-xml": "npm:^3.4.2"
+    "@stripe/stripe-js": "npm:^8.6.0"
     "@tailwindcss/postcss": "npm:^4.1.17"
     "@trpc/client": "npm:^11.8.1"
     "@trpc/server": "npm:^11.8.1"

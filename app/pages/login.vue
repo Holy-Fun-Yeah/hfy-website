@@ -225,11 +225,25 @@ function handlePhoneUpdate(
   }
 }
 
+// Get redirect URL from query params
+const redirectUrl = computed(() => {
+  const redirect = route.query.redirect as string | undefined
+  if (redirect && redirect.startsWith('/')) {
+    return redirect
+  }
+  return null
+})
+
 // Redirect logged-in users
 watch(
   user,
   (newUser) => {
     if (newUser) {
+      // Check for redirect query param first
+      if (redirectUrl.value) {
+        navigateTo(redirectUrl.value)
+        return
+      }
       // Admins go to editor, regular users go home
       if (isAdmin.value) {
         navigateTo('/admin/editor')

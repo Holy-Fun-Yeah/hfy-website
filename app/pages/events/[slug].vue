@@ -6,9 +6,15 @@
  * Uses async loading with skeleton state via tRPC.
  */
 const route = useRoute()
+const router = useRouter()
 const eventSlug = route.params.slug as string
 const { t, currentLocale } = useLocale()
 const { $trpc } = useNuxtApp()
+const { isLoggedIn } = useAuth()
+
+// Registration modal state
+const showRegistrationModal = ref(false)
+const registrationSuccess = ref(false)
 
 // Fetch event via tRPC (use slug)
 const {
@@ -70,6 +76,50 @@ useSeoMeta({
   title: () => event.value?.title ?? 'Event',
   description: () => event.value?.description ?? 'Event details',
 })
+
+// Check registration status (only when logged in and event loaded)
+const { data: registrationStatus, refresh: refreshRegistration } = useLazyAsyncData(
+  `registration-${eventSlug}`,
+  async () => {
+    if (!isLoggedIn.value || !event.value) return null
+    return await $trpc.registrations.checkRegistration.query({ eventId: event.value.id })
+  },
+  {
+    watch: [isLoggedIn, event],
+    server: false,
+  }
+)
+
+const isRegistered = computed(() => registrationStatus.value?.isRegistered ?? false)
+
+// Check if redirected after login (has registered=pending query param)
+onMounted(() => {
+  if (route.query.register === 'true' && isLoggedIn.value && event.value && !isPast.value) {
+    // User was redirected here after login, open modal
+    showRegistrationModal.value = true
+    // Clear the query param
+    router.replace({ query: {} })
+  }
+})
+
+// Handle Register Now click
+function handleRegisterClick() {
+  if (!isLoggedIn.value) {
+    // Redirect to login with return URL
+    const returnUrl = `/events/${eventSlug}?register=true`
+    router.push(`/login?redirect=${encodeURIComponent(returnUrl)}`)
+    return
+  }
+
+  showRegistrationModal.value = true
+}
+
+// Handle registration success
+function handleRegistrationSuccess(_registrationId: string) {
+  showRegistrationModal.value = false
+  registrationSuccess.value = true
+  refreshRegistration()
+}
 </script>
 
 <template>
@@ -324,13 +374,33 @@ useSeoMeta({
                   </div>
                 </div>
 
+                <!-- Registration Success Message -->
+                <div
+                  v-if="registrationSuccess || isRegistered"
+                  class="bg-brand-accent/10 border-brand-accent/30 flex items-center gap-3 rounded-lg border p-3"
+                >
+                  <div class="text-brand-accent text-xl">✓</div>
+                  <div class="flex-1">
+                    <p class="text-brand-base text-sm font-medium">
+                      {{ t('events.detail.registered') }}
+                    </p>
+                    <p class="text-brand-muted text-xs">
+                      {{ t('events.detail.seeYouThere') }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Register Button -->
                 <BaseButton
-                  v-if="!isPast"
+                  v-else-if="!isPast"
                   class="w-full"
                   size="lg"
+                  @click="handleRegisterClick"
                 >
                   {{ t('events.detail.registerNow') }}
                 </BaseButton>
+
+                <!-- Event Ended -->
                 <p
                   v-else
                   class="text-brand-base/50 text-center text-sm"
@@ -366,6 +436,21 @@ useSeoMeta({
           {{ t('events.detail.viewAllEvents') }}
         </BaseButton>
       </PageSection>
+
+      <!-- Registration Modal -->
+      <RegistrationModal
+        v-if="event"
+        :event="{
+          id: event.id,
+          title: event.title,
+          startsAt:
+            event.startsAt instanceof Date ? event.startsAt.toISOString() : String(event.startsAt),
+          usdPrice: event.usdPrice,
+        }"
+        :open="showRegistrationModal"
+        @close="showRegistrationModal = false"
+        @success="handleRegistrationSuccess"
+      />
     </template>
   </div>
 </template>

@@ -9,11 +9,13 @@ import { router } from '../trpc'
 import { eventsRouter } from './events'
 import { postsRouter } from './posts'
 import { profileRouter } from './profile'
+import { registrationsRouter } from './registrations'
 
 export const appRouter = router({
   posts: postsRouter,
   events: eventsRouter,
   profile: profileRouter,
+  registrations: registrationsRouter,
 })
 
 // Export type for client usage
