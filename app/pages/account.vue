@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { VueTelInput } from 'vue-tel-input'
+import 'vue-tel-input/vue-tel-input.css'
 import { getErrorMessage } from '~/utils/parseApiError'
 
 /**
@@ -95,6 +97,14 @@ async function handleSaveProfile() {
   } finally {
     saving.value = false
   }
+}
+
+// Phone input handler - v-model updates phone directly
+// This handler processes the phone value for E.164 format storage
+function handlePhoneUpdate(value: string) {
+  // v-model already updates phone.value, but we can process here if needed
+  // Value comes in E.164 format (e.g., +528118471700)
+  phone.value = value || ''
 }
 
 // Toggle newsletter subscription
@@ -250,18 +260,30 @@ async function handleDeleteAccount() {
             <!-- Phone -->
             <div>
               <label
-                for="phone"
+                for="phoneNumber"
                 class="text-brand-muted mb-1 block text-sm font-medium"
               >
                 Phone Number
               </label>
-              <input
-                id="phone"
-                v-model="phone"
-                type="tel"
-                class="bg-brand-neutral text-brand-base placeholder:text-brand-muted border-brand-base/20 focus:border-brand-accent focus:ring-brand-accent/20 w-full rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
-                placeholder="+1 (555) 000-0000"
-              />
+              <ClientOnly>
+                <VueTelInput
+                  v-model="phone"
+                  mode="national"
+                  :input-options="{
+                    placeholder: '+1 (555) 000-0000',
+                    id: 'phoneNumber',
+                    styleClasses: 'phone-input',
+                  }"
+                  :dropdown-options="{
+                    showDialCodeInSelection: true,
+                    showFlags: true,
+                    showSearchBox: true,
+                  }"
+                  default-country="US"
+                  class="phone-input-wrapper"
+                  @update:model-value="handlePhoneUpdate"
+                />
+              </ClientOnly>
               <p class="text-brand-muted mt-1 text-xs">Used for appointment reminders</p>
             </div>
 
@@ -513,3 +535,64 @@ async function handleDeleteAccount() {
     </Teleport>
   </main>
 </template>
+
+<style scoped>
+/* Phone input styling to match brand */
+:deep(.phone-input-wrapper) {
+  width: 100%;
+}
+
+:deep(.phone-input-wrapper .vue-tel-input) {
+  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+  border-radius: 0.5rem;
+  background: var(--color-brand-neutral);
+}
+
+:deep(.phone-input-wrapper .vue-tel-input:focus-within) {
+  border-color: var(--color-brand-accent);
+  box-shadow: 0 0 0 2px var(--color-brand-accent-20, rgba(216, 27, 96, 0.2));
+}
+
+:deep(.phone-input-wrapper .vti__input) {
+  background: transparent;
+  color: var(--color-brand-base);
+  padding: 0.625rem 1rem;
+}
+
+:deep(.phone-input-wrapper .vti__input::placeholder) {
+  color: var(--color-brand-muted);
+}
+
+:deep(.phone-input-wrapper .vti__dropdown) {
+  background: var(--color-brand-neutral);
+  border-right: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-list) {
+  background: var(--color-brand-neutral);
+  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-item) {
+  color: var(--color-brand-base);
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-item:hover) {
+  background: var(--color-brand-accent-10, rgba(216, 27, 96, 0.1));
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-item.highlighted) {
+  background: var(--color-brand-accent);
+  color: white;
+}
+
+:deep(.phone-input-wrapper .vti__search_box) {
+  background: var(--color-brand-neutral);
+  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+  border-radius: 0.375rem;
+  color: var(--color-brand-base);
+  margin: 0.5rem;
+}
+</style>
