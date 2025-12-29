@@ -143,7 +143,7 @@ const legalLinks = computed(() => [
 
       <!-- Bottom section: Copyright with gradient accent -->
       <div class="border-brand-base/10 mt-8 border-t pt-6">
-        <p class="text-brand-muted/60 text-center text-sm">
+        <p class="text-brand-muted text-center text-sm">
           &copy; {{ year }} {{ brand.name }}. {{ t('footer.copyright') }}
         </p>
       </div>
