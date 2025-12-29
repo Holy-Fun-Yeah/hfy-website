@@ -2,7 +2,7 @@
  * Auth Composable
  *
  * Wraps Supabase auth methods and provides admin checking.
- * Uses email allowlist from app/config/admin.ts for admin verification.
+ * Admin status is determined by the `is_admin` column in the profiles table.
  *
  * Auth Flow:
  * 1. Register: POST /api/auth/register → creates auth user + profile
@@ -19,8 +19,6 @@
 
 import type { Profile } from '~~/server/database/schema'
 
-import { isAdminEmail } from '~/config/admin'
-
 // Profile state (shared across components)
 const profile = ref<Profile | null>(null)
 const profileLoading = ref(false)
@@ -32,7 +30,7 @@ export function useAuth() {
 
   // Reactive computed properties
   const isLoggedIn = computed(() => !!user.value)
-  const isAdmin = computed(() => isAdminEmail(user.value?.email))
+  const isAdmin = computed(() => profile.value?.isAdmin ?? false)
   const userEmail = computed(() => user.value?.email)
   const displayName = computed(() => profile.value?.displayName || user.value?.email?.split('@')[0])
 

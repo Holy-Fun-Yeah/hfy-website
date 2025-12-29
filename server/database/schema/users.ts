@@ -29,6 +29,8 @@ export const profiles = pgTable('profiles', {
   avatarUrl: text('avatar_url'),
   // Preferences
   newsletterSubscribed: boolean('newsletter_subscribed').default(false).notNull(),
+  // Admin flag (managed via Supabase dashboard or admin API)
+  isAdmin: boolean('is_admin').default(false).notNull(),
   // Soft-delete: null = active, timestamp = deleted (user is banned in auth.users)
   deletedAt: timestamp('deleted_at', { withTimezone: true }),
   // Timestamps
@@ -48,6 +50,7 @@ export const insertProfileSchema = createInsertSchema(profiles, {
   bio: z.string().max(500).optional().nullable(),
   avatarUrl: z.string().url().optional().nullable(),
   newsletterSubscribed: z.boolean().default(false),
+  isAdmin: z.boolean().default(false),
 })
 
 export const updateProfileSchema = insertProfileSchema.partial().omit({

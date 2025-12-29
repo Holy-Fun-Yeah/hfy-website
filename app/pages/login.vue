@@ -23,20 +23,32 @@ const router = useRouter()
 // Check for email confirmation success message
 const showEmailConfirmedMessage = ref(false)
 
+// Check for auth error from redirect (e.g., expired link)
+const authErrorMessage = ref<string | null>(null)
+const authErrorCode = ref<string | null>(null)
+
 onMounted(() => {
   if (route.query.message === 'email_confirmed') {
     showEmailConfirmedMessage.value = true
     // Clear the query param from URL
     router.replace({ query: {} })
   }
+
+  // Handle auth errors redirected from plugin
+  if (route.query.auth_error) {
+    authErrorMessage.value = route.query.auth_error as string
+    authErrorCode.value = (route.query.error_code as string) || null
+    // Clear the query params from URL
+    router.replace({ query: {} })
+  }
 })
 
 // Form modes
-type FormMode = 'signIn' | 'signUp' | 'forgotPassword' | 'emailSent'
+type FormMode = 'signIn' | 'signUp' | 'forgotPassword' | 'resendVerification' | 'emailSent'
 const mode = ref<FormMode>('signIn')
 
 // Track which flow triggered the email sent screen
-type EmailSentSource = 'signUp' | 'forgotPassword'
+type EmailSentSource = 'signUp' | 'forgotPassword' | 'resendVerification'
 const emailSentSource = ref<EmailSentSource>('forgotPassword')
 
 // Form state
@@ -47,6 +59,12 @@ const fullName = ref('')
 const phoneNumber = ref('')
 const loading = ref(false)
 const errorMessage = ref('')
+
+// Detect if error is about email verification
+const isVerificationError = computed(() => {
+  const msg = errorMessage.value.toLowerCase()
+  return msg.includes('verify') || msg.includes('confirm') || msg.includes('email')
+})
 
 // Field-level validation errors
 const fieldErrors = ref<Record<string, string>>({})
@@ -310,6 +328,36 @@ async function handleForgotPassword() {
   }
 }
 
+// Handle resend verification email
+async function handleResendVerification() {
+  // Mark email as touched for validation display
+  touchedFields.value.add('email')
+
+  if (!validateForm()) {
+    return
+  }
+
+  errorMessage.value = ''
+  loading.value = true
+
+  try {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: email.value,
+    })
+    if (error) throw error
+    emailSentSource.value = 'resendVerification'
+    mode.value = 'emailSent'
+    // Clear any auth error since user is taking action
+    authErrorMessage.value = null
+  } catch (error) {
+    errorMessage.value = getErrorMessage(error, t('auth.unknownError'))
+    console.error('[Login] Resend verification failed:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
 // Handle form submission based on mode
 function handleSubmit() {
   if (mode.value === 'signIn') {
@@ -318,6 +366,8 @@ function handleSubmit() {
     handleSignUp()
   } else if (mode.value === 'forgotPassword') {
     handleForgotPassword()
+  } else if (mode.value === 'resendVerification') {
+    handleResendVerification()
   }
 }
 
@@ -358,6 +408,36 @@ useSeoMeta({
         </div>
       </div>
 
+      <!-- Auth error banner (e.g., expired link) -->
+      <div
+        v-if="authErrorMessage"
+        class="mb-4 flex items-start gap-3 rounded-xl border border-red-400 bg-red-50 p-4 dark:border-red-700 dark:bg-red-950"
+      >
+        <div class="text-2xl text-red-600 dark:text-red-400">
+          <span aria-hidden="true">&#9888;</span>
+        </div>
+        <div>
+          <p class="font-medium text-red-900 dark:text-red-100">Authentication Error</p>
+          <p class="text-sm text-red-800 dark:text-red-200">{{ authErrorMessage }}</p>
+          <button
+            v-if="authErrorCode === 'otp_expired'"
+            type="button"
+            class="text-brand-accent hover:text-brand-accent/80 mt-2 text-sm font-medium underline"
+            @click="switchMode('resendVerification')"
+          >
+            Resend verification email
+          </button>
+        </div>
+        <button
+          type="button"
+          class="ml-auto text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200"
+          aria-label="Dismiss"
+          @click="authErrorMessage = null"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
       <BaseCard padding="lg">
         <!-- Email sent confirmation (sign up or forgot password) -->
         <div
@@ -372,7 +452,9 @@ useSeoMeta({
           </h1>
           <p class="text-brand-muted mb-6">
             {{
-              emailSentSource === 'signUp' ? t('auth.confirmEmailSent') : t('auth.resetEmailSent')
+              emailSentSource === 'signUp' || emailSentSource === 'resendVerification'
+                ? t('auth.confirmEmailSent')
+                : t('auth.resetEmailSent')
             }}
           </p>
           <BaseButton
@@ -392,7 +474,9 @@ useSeoMeta({
                   ? t('auth.signIn')
                   : mode === 'signUp'
                     ? t('auth.createAccount')
-                    : t('auth.forgotPassword')
+                    : mode === 'resendVerification'
+                      ? 'Resend Verification'
+                      : t('auth.forgotPassword')
               }}
             </h1>
             <p
@@ -400,6 +484,12 @@ useSeoMeta({
               class="text-brand-muted text-sm"
             >
               {{ t('auth.forgotPasswordDescription') }}
+            </p>
+            <p
+              v-if="mode === 'resendVerification'"
+              class="text-brand-muted text-sm"
+            >
+              Enter your email to receive a new verification link.
             </p>
           </div>
 
@@ -490,8 +580,8 @@ useSeoMeta({
               </p>
             </div>
 
-            <!-- Password (not shown for forgot password) -->
-            <div v-if="mode !== 'forgotPassword'">
+            <!-- Password (not shown for forgot password or resend verification) -->
+            <div v-if="mode !== 'forgotPassword' && mode !== 'resendVerification'">
               <label
                 for="password"
                 class="text-brand-base mb-1 block text-sm font-medium"
@@ -557,12 +647,19 @@ useSeoMeta({
             </div>
 
             <!-- Error message -->
-            <p
-              v-if="errorMessage"
-              class="text-sm text-red-500"
-            >
-              {{ errorMessage }}
-            </p>
+            <div v-if="errorMessage">
+              <p class="text-sm text-red-500">
+                {{ errorMessage }}
+              </p>
+              <button
+                v-if="isVerificationError && mode === 'signIn'"
+                type="button"
+                class="mt-1 text-sm font-medium text-red-600 underline hover:text-red-800"
+                @click="switchMode('resendVerification')"
+              >
+                Resend verification email
+              </button>
+            </div>
 
             <!-- Submit button -->
             <BaseButton
@@ -575,7 +672,9 @@ useSeoMeta({
                   ? t('auth.signIn')
                   : mode === 'signUp'
                     ? t('auth.createAccount')
-                    : t('auth.sendResetLink')
+                    : mode === 'resendVerification'
+                      ? 'Resend Verification Email'
+                      : t('auth.sendResetLink')
               }}
             </BaseButton>
           </form>
@@ -607,6 +706,17 @@ useSeoMeta({
               </p>
             </template>
             <template v-else-if="mode === 'forgotPassword'">
+              <p class="text-brand-muted text-sm">
+                <button
+                  type="button"
+                  class="text-brand-accent hover:text-brand-accent/80 font-medium transition"
+                  @click="switchMode('signIn')"
+                >
+                  {{ t('auth.backToSignIn') }}
+                </button>
+              </p>
+            </template>
+            <template v-else-if="mode === 'resendVerification'">
               <p class="text-brand-muted text-sm">
                 <button
                   type="button"

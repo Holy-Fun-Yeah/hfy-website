@@ -243,7 +243,7 @@ async function handleDeleteAccount() {
                 v-model="displayName"
                 type="text"
                 class="bg-brand-neutral text-brand-base placeholder:text-brand-muted border-brand-base/20 focus:border-brand-accent focus:ring-brand-accent/20 w-full rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
-                placeholder="Your name"
+                :placeholder="profile?.displayName || 'Your name'"
               />
             </div>
 

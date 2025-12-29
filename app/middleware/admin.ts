@@ -2,7 +2,7 @@
  * Admin Middleware
  *
  * Protects admin routes by checking if the user is authenticated
- * and has admin privileges (via email allowlist).
+ * and has admin privileges (via profile.isAdmin in database).
  *
  * - Not logged in: redirects to /login
  * - Logged in but not admin: page handles showing access denied
@@ -17,8 +17,6 @@
  * ```
  */
 
-import { isAdminEmail } from '~/config/admin'
-
 export default defineNuxtRouteMiddleware(() => {
   const user = useSupabaseUser()
 
@@ -27,10 +25,6 @@ export default defineNuxtRouteMiddleware(() => {
     return navigateTo('/login')
   }
 
-  // Logged in but not admin - let the page handle showing access denied
-  if (!isAdminEmail(user.value.email)) {
-    return
-  }
-
-  // User is admin - allow access
+  // User is authenticated - page will use useAuth().isAdmin to show content or access denied
+  // The isAdmin check is done in the page/component level using profile.isAdmin from database
 })

@@ -1,14 +1,30 @@
 /**
  * Admin Configuration
  *
- * Defines which email addresses have admin access.
- * This is a simple allowlist approach - suitable for a small number of known admins.
+ * IMPORTANT: Admin status is now stored in the database (profiles.is_admin column).
+ * Use `useAuth().isAdmin` to check admin status in the app.
+ *
+ * This file is kept for:
+ * 1. E2E test user seeding (test-admin@hfy.test)
+ * 2. Initial admin setup reference
+ *
+ * To grant admin access, set is_admin=true in the profiles table via Supabase dashboard.
  */
 
-export const ADMIN_EMAILS = ['hfy.world@outlook.com', 'danyiel5978@gmail.com'] as const
+/**
+ * Known admin emails (for seeding and reference only)
+ * @deprecated Use profiles.is_admin column instead
+ */
+export const ADMIN_EMAILS = [
+  'hfy.world@outlook.com',
+  'danyiel5978@gmail.com',
+  'tim-escher98@outlook.com',
+  'test-admin@hfy.test', // E2E testing
+] as const
 
 /**
- * Check if an email address has admin privileges
+ * Check if an email is in the known admin list
+ * @deprecated Use profile.isAdmin from useAuth() instead
  * @param email - The email to check (case-insensitive)
  */
 export function isAdminEmail(email: string | undefined | null): boolean {
