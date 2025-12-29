@@ -2,64 +2,38 @@
 /**
  * Events Listing Page
  *
- * Displays upcoming and past events fetched from the API.
+ * Displays upcoming and past events fetched via tRPC.
  * Uses async loading with skeleton states.
  */
 const { t, currentLocale } = useLocale()
+const { $trpc } = useNuxtApp()
 
 useSeoMeta({
   title: () => t('events.sectionLabel'),
   description: () => t('events.hero.subtitle'),
 })
 
-// Types (matching API response)
-interface Event {
-  id: string
-  slug: string
-  type: 'online' | 'in_person'
-  startsAt: string
-  endsAt: string
-  host: string
-  location: string
-  bannerUrl: string | null
-  usdPrice: string
-  capacity: number | null
-  title: string
-  description: string
-  lang: string
-  isFallback: boolean
-}
-
-// API response type
-interface ApiResponse {
-  success: boolean
-  data: Event[]
-}
-
 // Filter state
 const activeFilter = ref<'upcoming' | 'past'>('upcoming')
 
-// Fetch events from API based on filter
+// Fetch events via tRPC based on filter
 const {
-  data: apiResponse,
+  data: trpcResponse,
   pending,
   error,
-} = useLazyAsyncData<ApiResponse | null>(
+} = useLazyAsyncData(
   () => `events-${activeFilter.value}`,
-  async () => {
-    const result = await $fetch<ApiResponse>('/api/events', {
-      query: { lang: currentLocale.value, filter: activeFilter.value, limit: 20 },
-    })
-    return result
-  },
+  () =>
+    $trpc.events.list.query({
+      lang: currentLocale.value,
+      filter: activeFilter.value,
+      limit: 20,
+    }),
   { server: true, watch: [currentLocale, activeFilter] }
 )
 
-// Extract events from API response (handle error case)
-const filteredEvents = computed<Event[]>(() => {
-  if (!apiResponse.value || !('data' in apiResponse.value)) return []
-  return apiResponse.value.data as Event[]
-})
+// Extract events from tRPC response
+const filteredEvents = computed(() => trpcResponse.value?.data ?? [])
 
 // Format date for display
 function formatDateTime(dateString: string): { date: string; time: string } {

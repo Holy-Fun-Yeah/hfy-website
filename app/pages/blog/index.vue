@@ -2,60 +2,30 @@
 /**
  * Blog Listing Page
  *
- * Displays blog posts fetched from the API.
+ * Displays blog posts fetched via tRPC.
  * Uses async loading with skeleton states.
  */
 const { t, currentLocale } = useLocale()
+const { $trpc } = useNuxtApp()
 
 useSeoMeta({
   title: () => t('blog.sectionLabel'),
   description: () => t('blog.hero.subtitle'),
 })
 
-// Types (matching API response)
-interface Post {
-  id: number
-  slug: string
-  bannerUrl: string | null
-  publishedAt: string
-  author: {
-    id: string
-    displayName: string | null
-    avatarUrl: string | null
-  } | null
-  title: string
-  excerpt: string
-  lang: string
-  isFallback: boolean
-}
-
-// API response type
-interface ApiResponse {
-  success: boolean
-  data: Post[]
-}
-
-// Fetch posts from API
+// Fetch posts via tRPC
 const {
-  data: apiResponse,
+  data: trpcResponse,
   pending,
   error,
-} = useLazyAsyncData<ApiResponse | null>(
+} = useLazyAsyncData(
   'blog-posts',
-  async () => {
-    const result = await $fetch<ApiResponse>('/api/posts', {
-      query: { lang: currentLocale.value, limit: 20 },
-    })
-    return result
-  },
+  () => $trpc.posts.list.query({ lang: currentLocale.value, limit: 20 }),
   { server: true, watch: [currentLocale] }
 )
 
-// Extract posts from API response (handle error case)
-const allPosts = computed<Post[]>(() => {
-  if (!apiResponse.value || !('data' in apiResponse.value)) return []
-  return apiResponse.value.data as Post[]
-})
+// Extract posts from tRPC response
+const allPosts = computed(() => trpcResponse.value?.data ?? [])
 
 // Format date for display
 function formatDate(dateString: string): string {

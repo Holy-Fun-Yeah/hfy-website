@@ -2,61 +2,24 @@
 /**
  * Blog Post Detail Page
  *
- * Displays full blog post with markdown content from API.
+ * Displays full blog post with markdown content via tRPC.
  * Uses BaseMarkdown component for rendering.
  */
 const route = useRoute()
 const slug = route.params.slug as string
 const { t, currentLocale } = useLocale()
+const { $trpc } = useNuxtApp()
 
-// Types matching API response
-interface PostDetail {
-  id: number
-  slug: string
-  bannerUrl: string | null
-  publishedAt: string
-  updatedAt: string
-  author: {
-    id: string
-    displayName: string | null
-    avatarUrl: string | null
-  } | null
-  title: string
-  excerpt: string
-  content: string
-  lang: string
-  isFallback: boolean
-  availableLanguages: string[]
-}
-
-// API response wrapper type
-interface ApiResponse {
-  success: boolean
-  data?: PostDetail
-  error?: unknown
-}
-
-// Fetch post from API
+// Fetch post via tRPC
 const {
-  data: apiResponse,
+  data: post,
   pending,
   error,
-} = useLazyAsyncData<ApiResponse | null>(
+} = useLazyAsyncData(
   `post-${slug}-${currentLocale.value}`,
-  async () => {
-    const result = await $fetch<ApiResponse>(`/api/posts/${slug}`, {
-      query: { lang: currentLocale.value },
-    })
-    return result
-  },
+  () => $trpc.posts.bySlug.query({ slug, lang: currentLocale.value }),
   { server: true, watch: [currentLocale] }
 )
-
-// Extract post from API response
-const post = computed<PostDetail | null>(() => {
-  if (!apiResponse.value || !apiResponse.value.success || !apiResponse.value.data) return null
-  return apiResponse.value.data
-})
 
 // Calculate read time (rough estimate: 200 words per minute)
 function calculateReadTime(content: string): string {
@@ -194,7 +157,7 @@ useSeoMeta({
               <span>·</span>
               <span>{{ formatDate(post.publishedAt) }}</span>
               <span>·</span>
-              <span>{{ calculateReadTime(post.content) }}</span>
+              <span>{{ calculateReadTime(post.bodyMarkdown ?? '') }}</span>
             </div>
           </header>
 
@@ -213,7 +176,7 @@ useSeoMeta({
           <!-- Article Body - Markdown rendered -->
           <div class="border-brand-base/10 border-t pt-8">
             <BaseMarkdown
-              :content="post.content"
+              :content="post.bodyMarkdown ?? ''"
               size="lg"
             />
           </div>

@@ -3,67 +3,23 @@
  * Event Detail Page
  *
  * Displays full event information with registration CTA.
- * Uses async loading with skeleton state.
+ * Uses async loading with skeleton state via tRPC.
  */
 const route = useRoute()
 const eventSlug = route.params.slug as string
 const { t, currentLocale } = useLocale()
+const { $trpc } = useNuxtApp()
 
-// Types matching API response
-interface EventDetail {
-  id: string
-  slug: string
-  type: 'online' | 'in_person'
-  status: string
-  startsAt: string
-  endsAt: string
-  host: string
-  location: string
-  address: string | null
-  googleMapsUrl: string | null
-  capacity: number | null
-  usdPrice: string | null
-  bannerUrl: string | null
-  createdAt: string
-  updatedAt: string
-  // Content
-  title: string
-  description: string
-  detail: string
-  // Language info
-  lang: string
-  isFallback: boolean
-  availableLanguages: string[]
-}
-
-// API response wrapper type
-interface ApiResponse {
-  success: boolean
-  data?: EventDetail
-  error?: unknown
-}
-
-// Fetch event from API (use slug)
+// Fetch event via tRPC (use slug)
 const {
-  data: apiResponse,
+  data: event,
   pending,
   error,
-} = useLazyAsyncData<ApiResponse | null>(
+} = useLazyAsyncData(
   `event-${eventSlug}-${currentLocale.value}`,
-  async () => {
-    const result = await $fetch<ApiResponse>(`/api/events/${eventSlug}`, {
-      query: { lang: currentLocale.value },
-    })
-    return result
-  },
+  () => $trpc.events.bySlug.query({ slug: eventSlug, lang: currentLocale.value }),
   { server: true, watch: [currentLocale] }
 )
-
-// Extract event from API response
-const event = computed<EventDetail | null>(() => {
-  if (!apiResponse.value || !apiResponse.value.success || !apiResponse.value.data) return null
-  return apiResponse.value.data
-})
 
 // Check if event is past
 const isPast = computed(() => {
