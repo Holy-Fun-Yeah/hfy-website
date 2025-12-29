@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { VueTelInput } from 'vue-tel-input'
+import 'vue-tel-input/vue-tel-input.css'
+
 /**
  * Registration Form
  *
- * Collects attendee info and handles payment for event registration.
+ * Single-step event registration with Stripe payment.
+ * Shows user info (name/email read-only, phone editable) + payment element.
  * Supports both free and paid events.
  */
 
@@ -28,24 +32,12 @@ const emit = defineEmits<{
 // Note: t is available for future i18n but we use English for registration
 const { t: _t } = useLocale()
 
-// Form state
-const attendeeName = ref(props.initialName || '')
-const attendeeEmail = ref(props.initialEmail || '')
+// Attendee info (name/email from profile, phone editable)
+const attendeeName = computed(() => props.initialName || '')
+const attendeeEmail = computed(() => props.initialEmail || '')
 const attendeePhone = ref(props.initialPhone || '')
 
-// Update form when initial values change (e.g., profile loads after modal opens)
-watch(
-  () => props.initialName,
-  (newVal) => {
-    if (newVal && !attendeeName.value) attendeeName.value = newVal
-  }
-)
-watch(
-  () => props.initialEmail,
-  (newVal) => {
-    if (newVal && !attendeeEmail.value) attendeeEmail.value = newVal
-  }
-)
+// Update phone when profile loads
 watch(
   () => props.initialPhone,
   (newVal) => {
@@ -54,6 +46,7 @@ watch(
 )
 
 const loading = ref(false)
+const initializing = ref(true)
 const error = ref<string | null>(null)
 const clientSecret = ref<string | null>(null)
 const registrationId = ref<string | null>(null)
@@ -85,9 +78,35 @@ const isValid = computed(() => {
   return attendeeName.value.trim() && attendeeEmail.value.trim()
 })
 
+// Phone input handler
+function handlePhoneUpdate(
+  _nationalNumber: string,
+  phoneObject: { number?: string; valid?: boolean }
+) {
+  attendeePhone.value = phoneObject.number || ''
+}
+
+// Initialize payment intent on mount (single-step flow)
+onMounted(async () => {
+  // Wait for profile data to be available
+  await nextTick()
+
+  // Small delay to ensure props are populated
+  setTimeout(() => {
+    if (attendeeName.value && attendeeEmail.value) {
+      initiatePayment()
+    } else {
+      initializing.value = false
+    }
+  }, 100)
+})
+
 // Methods
 async function initiatePayment() {
-  if (!isValid.value) return
+  if (!isValid.value) {
+    initializing.value = false
+    return
+  }
 
   loading.value = true
   error.value = null
@@ -125,6 +144,7 @@ async function initiatePayment() {
     error.value = err.data?.error?.message || err.message || 'Failed to initiate registration'
   } finally {
     loading.value = false
+    initializing.value = false
   }
 }
 
@@ -149,11 +169,16 @@ async function confirmPayment() {
   }
 }
 
-function handleSubmit() {
-  if (clientSecret.value) {
-    confirmPayment()
+async function handleSubmit() {
+  if (isFreeEvent.value) {
+    // Free event - just register
+    await initiatePayment()
+  } else if (clientSecret.value) {
+    // Paid event with payment intent ready - confirm payment
+    await confirmPayment()
   } else {
-    initiatePayment()
+    // No payment intent yet - create one first
+    await initiatePayment()
   }
 }
 </script>
@@ -176,45 +201,15 @@ function handleSubmit() {
       </p>
     </div>
 
-    <!-- Attendee Info (only show if not yet in payment step) -->
-    <div
-      v-if="!clientSecret"
-      class="space-y-4"
-    >
-      <div>
-        <label
-          for="attendeeName"
-          class="text-brand-base mb-1 block text-sm font-medium"
-        >
-          Full Name *
-        </label>
-        <input
-          id="attendeeName"
-          v-model="attendeeName"
-          type="text"
-          required
-          class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-muted focus:border-brand-accent focus:ring-brand-accent/20 w-full rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
-          placeholder="Your full name"
-        />
+    <!-- Attendee Info (read-only name/email, editable phone) -->
+    <div class="space-y-4">
+      <!-- Name & Email (read-only display) -->
+      <div class="text-brand-muted text-sm">
+        Registering as <strong class="text-brand-base">{{ attendeeName }}</strong>
+        ({{ attendeeEmail }})
       </div>
 
-      <div>
-        <label
-          for="attendeeEmail"
-          class="text-brand-base mb-1 block text-sm font-medium"
-        >
-          Email *
-        </label>
-        <input
-          id="attendeeEmail"
-          v-model="attendeeEmail"
-          type="email"
-          required
-          class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-muted focus:border-brand-accent focus:ring-brand-accent/20 w-full rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
-          placeholder="your@email.com"
-        />
-      </div>
-
+      <!-- Phone (editable) -->
       <div>
         <label
           for="attendeePhone"
@@ -222,22 +217,45 @@ function handleSubmit() {
         >
           Phone (optional)
         </label>
-        <input
-          id="attendeePhone"
-          v-model="attendeePhone"
-          type="tel"
-          class="bg-brand-neutral border-brand-base/20 text-brand-base placeholder:text-brand-muted focus:border-brand-accent focus:ring-brand-accent/20 w-full rounded-lg border px-4 py-2.5 transition outline-none focus:ring-2"
-          placeholder="+1 (555) 123-4567"
-        />
+        <ClientOnly>
+          <VueTelInput
+            :model-value="attendeePhone"
+            mode="national"
+            :input-options="{
+              placeholder: '+1 (555) 123-4567',
+              id: 'attendeePhone',
+              styleClasses: 'phone-input',
+            }"
+            :dropdown-options="{
+              showDialCodeInSelection: true,
+              showFlags: true,
+              showSearchBox: true,
+            }"
+            default-country="US"
+            class="phone-input-wrapper"
+            @on-input="handlePhoneUpdate"
+          />
+        </ClientOnly>
       </div>
     </div>
 
-    <!-- Payment Element (only for paid events after info submitted) -->
-    <div v-if="clientSecret && !isFreeEvent">
-      <p class="text-brand-muted mb-4 text-sm">
-        Registering as <strong>{{ attendeeName }}</strong> ({{ attendeeEmail }})
-      </p>
+    <!-- Loading state while initializing payment -->
+    <div
+      v-if="initializing"
+      class="space-y-3"
+    >
+      <BaseSkeleton
+        h="2.5rem"
+        w="100%"
+      />
+      <BaseSkeleton
+        h="2.5rem"
+        w="100%"
+      />
+    </div>
 
+    <!-- Payment Element (for paid events) -->
+    <div v-else-if="clientSecret && !isFreeEvent">
       <StripePaymentElement
         ref="stripeElementRef"
         :client-secret="clientSecret"
@@ -268,13 +286,74 @@ function handleSubmit() {
       <BaseButton
         type="submit"
         class="flex-1"
-        :loading="loading"
-        :disabled="!isValid || loading"
+        :loading="loading || initializing"
+        :disabled="!isValid || loading || initializing"
       >
-        <template v-if="clientSecret"> Pay {{ formattedPrice }} </template>
-        <template v-else-if="isFreeEvent"> Register Free </template>
-        <template v-else> Continue to Payment </template>
+        <template v-if="isFreeEvent"> Register Free </template>
+        <template v-else> Pay {{ formattedPrice }} </template>
       </BaseButton>
     </div>
   </form>
 </template>
+
+<style scoped>
+/* Phone input styling to match brand */
+:deep(.phone-input-wrapper) {
+  width: 100%;
+}
+
+:deep(.phone-input-wrapper .vue-tel-input) {
+  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+  border-radius: 0.5rem;
+  background: var(--color-brand-neutral);
+}
+
+:deep(.phone-input-wrapper .vue-tel-input:focus-within) {
+  border-color: var(--color-brand-accent);
+  box-shadow: 0 0 0 2px var(--color-brand-accent-20, rgba(216, 27, 96, 0.2));
+}
+
+:deep(.phone-input-wrapper .vti__input) {
+  background: transparent;
+  color: var(--color-brand-base);
+  padding: 0.625rem 1rem;
+}
+
+:deep(.phone-input-wrapper .vti__input::placeholder) {
+  color: var(--color-brand-muted);
+}
+
+:deep(.phone-input-wrapper .vti__dropdown) {
+  background: var(--color-brand-neutral);
+  border-right: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-list) {
+  background: var(--color-brand-neutral);
+  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-item) {
+  color: var(--color-brand-base);
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-item:hover) {
+  background: var(--color-brand-accent-10, rgba(216, 27, 96, 0.1));
+}
+
+:deep(.phone-input-wrapper .vti__dropdown-item.highlighted) {
+  background: var(--color-brand-accent);
+  color: white;
+}
+
+:deep(.phone-input-wrapper .vti__search_box) {
+  background: var(--color-brand-neutral);
+  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
+  border-radius: 0.375rem;
+  color: var(--color-brand-base);
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+</style>
