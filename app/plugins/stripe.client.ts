@@ -21,7 +21,10 @@ export default defineNuxtPlugin(() => {
     }
 
     if (!stripePromise) {
-      stripePromise = loadStripe(stripePublicKey)
+      // Use stable API version to avoid compatibility issues
+      stripePromise = loadStripe(stripePublicKey, {
+        apiVersion: '2024-12-18.acacia',
+      })
     }
 
     return stripePromise

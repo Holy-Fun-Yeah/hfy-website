@@ -109,7 +109,9 @@ export default defineApiHandler(async (event) => {
     throw Errors.serviceUnavailable('Payment processing is not configured')
   }
 
-  const stripe = new Stripe(env.STRIPE_SECRET_KEY)
+  const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+    apiVersion: '2024-12-18.acacia',
+  })
 
   // Amount in cents for Stripe
   const amountInCents = Math.round(amount * 100)
