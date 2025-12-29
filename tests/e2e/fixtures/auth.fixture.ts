@@ -22,6 +22,11 @@
 import { test as base, type Page } from '@playwright/test'
 import * as fs from 'fs'
 import * as path from 'path'
+import { fileURLToPath } from 'url'
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Storage state directory (gitignored)
 const AUTH_DIR = path.join(__dirname, '../.auth')

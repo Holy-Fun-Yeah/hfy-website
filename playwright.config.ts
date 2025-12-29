@@ -70,6 +70,20 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
+    // Registration tests - event registration with payment
+    {
+      name: 'registration',
+      testMatch: /registration\/.*\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    // Stripe tests - payment component tests
+    {
+      name: 'stripe',
+      testMatch: /stripe\/.*\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+
     // Navigation tests - header/footer navigation
     {
       name: 'navigation',

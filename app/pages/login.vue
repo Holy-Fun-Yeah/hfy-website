@@ -58,6 +58,7 @@ const confirmPassword = ref('')
 const fullName = ref('')
 const pronouns = ref<string | null>(null)
 const phoneNumber = ref('')
+const phoneCountryCode = ref('')
 const loading = ref(false)
 const errorMessage = ref('')
 
@@ -113,7 +114,8 @@ function getFormData() {
       fullName: fullName.value,
       pronouns: pronouns.value,
       email: email.value,
-      phone: phoneNumber.value,
+      phoneCountryCode: phoneCountryCode.value,
+      phoneNumber: phoneNumber.value,
       password: password.value,
       confirmPassword: confirmPassword.value,
     }
@@ -215,13 +217,27 @@ function getInputClass(fieldName: string): string {
 }
 
 // Phone input handler - receives phone object with full details
-// We store the E.164 formatted number (e.g., +528118471700) for the database
+// We store the country code and phone number separately
 function handlePhoneUpdate(
   _nationalNumber: string,
   phoneObject: { number?: string; valid?: boolean; country?: { dialCode?: string } }
 ) {
-  // phoneObject.number is the full E.164 format (e.g., +528118471700)
-  phoneNumber.value = phoneObject.number || ''
+  // Extract country code and national number
+  const dialCode = phoneObject.country?.dialCode || ''
+  phoneCountryCode.value = dialCode.replace('+', '') // Remove + prefix if present
+
+  // Get national number (without country code)
+  // phoneObject.number is E.164 format (e.g., +528118471700)
+  // We extract just the number portion after the dial code
+  const fullNumber = phoneObject.number || ''
+  if (fullNumber.startsWith('+') && dialCode) {
+    // Remove + and country code to get national number
+    const prefix = '+' + phoneCountryCode.value
+    phoneNumber.value = fullNumber.slice(prefix.length)
+  } else {
+    phoneNumber.value = fullNumber
+  }
+
   if (touchedFields.value.has('phone')) {
     validateField('phone')
   }
@@ -303,7 +319,8 @@ async function handleSignUp() {
       password: password.value,
       displayName: fullName.value,
       pronouns: pronouns.value || undefined,
-      phone: phoneNumber.value || undefined,
+      phoneCountryCode: phoneCountryCode.value || undefined,
+      phoneNumber: phoneNumber.value || undefined,
     })
 
     // Show success message - user needs to verify email
@@ -400,6 +417,7 @@ function switchMode(newMode: FormMode) {
   if (newMode !== 'signUp') {
     fullName.value = ''
     pronouns.value = null
+    phoneCountryCode.value = ''
     phoneNumber.value = ''
   }
 }

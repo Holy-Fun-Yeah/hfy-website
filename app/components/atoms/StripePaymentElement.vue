@@ -8,9 +8,16 @@
  * IMPORTANT: Use a :key on this component to force recreation when clientSecret changes.
  */
 
+interface BillingDetails {
+  name?: string
+  email?: string
+  phone?: string
+}
+
 interface Props {
   clientSecret: string
   disabled?: boolean
+  billingDetails?: BillingDetails
 }
 
 const props = defineProps<Props>()
@@ -78,7 +85,27 @@ async function initializeStripe() {
       },
     })
 
-    paymentElement.value = elements.value.create('payment')
+    // Create payment element with default values for billing details
+    // Email is set to 'never' - uses default value, not editable
+    const paymentElementOptions: Record<string, unknown> = {
+      fields: {
+        billingDetails: {
+          email: 'never', // Don't show email field - use default value
+        },
+      },
+    }
+
+    if (props.billingDetails) {
+      paymentElementOptions.defaultValues = {
+        billingDetails: {
+          name: props.billingDetails.name || '',
+          email: props.billingDetails.email || '',
+          phone: props.billingDetails.phone || '',
+        },
+      }
+    }
+
+    paymentElement.value = elements.value.create('payment', paymentElementOptions)
 
     // Wait for DOM element to be available
     await nextTick()

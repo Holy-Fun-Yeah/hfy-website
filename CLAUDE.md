@@ -622,9 +622,146 @@ yarn test:e2e:ui       # Interactive UI mode
 yarn test:e2e:debug    # Debug mode with inspector
 ```
 
-Tests are in `tests/e2e/`. The test suite covers navigation, login flow, and header functionality.
+Tests are in `tests/e2e/`. The test suite covers navigation, login flow, header functionality, and event registration.
 
 **Note:** Start the dev server (`yarn dev`) before running tests locally. CI runs the server automatically.
+
+### Test Wait Patterns
+
+**IMPORTANT:** Avoid `networkidle` - it can hang indefinitely with WebSocket connections or polling.
+
+```ts
+// WRONG - Can hang forever
+await page.waitForLoadState('networkidle')
+
+// CORRECT - Use domcontentloaded + explicit timeout
+await page.goto('/events')
+await page.waitForLoadState('domcontentloaded')
+await page.waitForTimeout(2000) // Allow async content to load
+
+// CORRECT - Wait for URL change after navigation
+await eventLink.click()
+await page.waitForURL(/\/events\/[a-z0-9-]+/, { timeout: 10000 })
+
+// CORRECT - Use visibility checks with timeout
+await expect(page.getByRole('button', { name: /register/i })).toBeVisible({ timeout: 5000 })
+```
+
+### Authenticated Page Fixture
+
+Use `authenticatedPage` fixture for tests requiring login:
+
+```ts
+test('authenticated user can access modal', async ({ authenticatedPage }) => {
+  await authenticatedPage.goto('/events')
+  // User is already logged in as test-user@hfy.test
+})
+```
+
+Test users (seeded via `yarn seed:test-users`):
+- `test-user@hfy.test` / `TestUser123!` - Regular user
+- `test-admin@hfy.test` / `TestAdmin123!` - Admin user
+
+## Phone Number Storage
+
+Phone numbers are stored as **separate country code and number** (not E.164 combined):
+
+```ts
+// Database schema (server/database/schema/users.ts)
+phoneCountryCode: text('phone_country_code'), // e.g., "52" for Mexico, "1" for US
+phoneNumber: text('phone_number'),            // e.g., "8118471700" (digits only)
+
+// Zod validation
+phoneCountryCodeSchema: z.string().regex(/^\d{1,4}$/)  // 1-4 digits
+phoneNumberSchema: z.string().regex(/^\d{6,15}$/)     // 6-15 digits
+```
+
+### Formatting for External Services
+
+When sending to external services (e.g., Stripe), format as E.164:
+
+```ts
+// Format as E.164 for Stripe billing details
+const phoneE164 = phoneCountryCode && phoneNumber
+  ? `+${phoneCountryCode}${phoneNumber}`
+  : ''
+
+// In RegistrationModal.vue
+const initialPhone = computed(() => {
+  const code = profile.value?.phoneCountryCode
+  const number = profile.value?.phoneNumber
+  if (code && number) {
+    return `+${code}${number}`
+  }
+  return ''
+})
+```
+
+### Phone Input Handling
+
+When receiving from phone input components, extract country code and number:
+
+```ts
+function handlePhoneUpdate(
+  _nationalNumber: string,
+  phoneObject: { number?: string; country?: { dialCode?: string } }
+) {
+  const dialCode = phoneObject.country?.dialCode || ''
+  phoneCountryCode.value = dialCode.replace('+', '')
+
+  const fullNumber = phoneObject.number || ''
+  if (fullNumber.startsWith('+') && dialCode) {
+    const prefix = '+' + phoneCountryCode.value
+    phoneNumber.value = fullNumber.slice(prefix.length)
+  } else {
+    phoneNumber.value = fullNumber
+  }
+}
+```
+
+## Stripe Integration
+
+Stripe is used for event registration payments. Configuration:
+
+- **Payment Element**: Card-only payments (`payment_method_types: ['card']`)
+- **Auto-fill**: User profile data (name, email, phone) auto-fills Stripe billing details
+- **Test Cards**: `4242 4242 4242 4242` (success), `4000 0000 0000 0002` (decline)
+
+### Stripe Component Pattern
+
+```vue
+<!-- StripePaymentElement.vue -->
+<script setup>
+const props = defineProps<{
+  clientSecret: string
+  billingDetails?: { name?: string; email?: string; phone?: string }
+}>()
+
+// Hide email field (use default value), auto-fill other fields
+const paymentElementOptions = {
+  fields: { billingDetails: { email: 'never' } },
+  defaultValues: {
+    billingDetails: {
+      name: props.billingDetails?.name || '',
+      email: props.billingDetails?.email || '',
+      phone: props.billingDetails?.phone || '',
+    },
+  },
+}
+</script>
+```
+
+### Server-side Payment Intent
+
+```ts
+// server/api/stripe/create-payment-intent.post.ts
+const paymentIntent = await stripe.paymentIntents.create({
+  amount: amountInCents,
+  currency: 'usd',
+  payment_method_types: ['card'], // Card only, no Amazon Pay/Cash App
+  metadata: { eventId, registrationId, userId, attendeeEmail },
+})
+```
 
 ## Debugging
 

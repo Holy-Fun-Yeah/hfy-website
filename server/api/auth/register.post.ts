@@ -15,7 +15,12 @@ import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { useDatabase } from '../../database'
-import { profiles, pronounsSchema } from '../../database/schema'
+import {
+  phoneCountryCodeSchema,
+  phoneNumberSchema,
+  profiles,
+  pronounsSchema,
+} from '../../database/schema'
 import { env } from '../../env'
 import { defineApiHandler, Errors } from '../../lib'
 
@@ -25,7 +30,8 @@ const registerSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
   displayName: z.string().min(1, 'Display name is required').max(100),
   pronouns: pronounsSchema.optional().nullable(),
-  phone: z.string().max(20).optional(),
+  phoneCountryCode: phoneCountryCodeSchema,
+  phoneNumber: phoneNumberSchema,
 })
 
 export default defineApiHandler(async (event) => {
@@ -39,7 +45,7 @@ export default defineApiHandler(async (event) => {
     throw Errors.validation(parsed.error.issues.map((i) => i.message).join(', '))
   }
 
-  const { email, password, displayName, pronouns, phone } = parsed.data
+  const { email, password, displayName, pronouns, phoneCountryCode, phoneNumber } = parsed.data
 
   // Ensure we have required env vars
   if (!env.SUPABASE_URL || !env.SUPABASE_SECRET_KEY) {
@@ -66,13 +72,16 @@ export default defineApiHandler(async (event) => {
   }
 
   // Create user in Supabase Auth
+  // Format phone as E.164 for Supabase metadata
+  const phoneE164 = phoneCountryCode && phoneNumber ? `+${phoneCountryCode}${phoneNumber}` : ''
+
   const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,
     email_confirm: false, // User will need to confirm email
     user_metadata: {
       display_name: displayName,
-      phone: phone || '',
+      phone: phoneE164,
     },
   })
 
@@ -99,7 +108,8 @@ export default defineApiHandler(async (event) => {
         email: email.toLowerCase(),
         displayName,
         pronouns: pronouns || null,
-        phone: phone || null,
+        phoneCountryCode: phoneCountryCode || null,
+        phoneNumber: phoneNumber || null,
         bio: null,
         avatarUrl: null,
         newsletterSubscribed: true, // Default to subscribed
@@ -109,7 +119,8 @@ export default defineApiHandler(async (event) => {
         set: {
           displayName,
           pronouns: pronouns || null,
-          phone: phone || null,
+          phoneCountryCode: phoneCountryCode || null,
+          phoneNumber: phoneNumber || null,
           updatedAt: new Date(),
         },
       })

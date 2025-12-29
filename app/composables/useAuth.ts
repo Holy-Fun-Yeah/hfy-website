@@ -125,7 +125,8 @@ export function useAuth() {
     password: string
     displayName: string
     pronouns?: string
-    phone?: string
+    phoneCountryCode?: string
+    phoneNumber?: string
   }) {
     const response = await $fetch('/api/auth/register', {
       method: 'POST',

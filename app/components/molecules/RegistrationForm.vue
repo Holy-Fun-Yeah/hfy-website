@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { VueTelInput } from 'vue-tel-input'
-import 'vue-tel-input/vue-tel-input.css'
-
 /**
  * Registration Form
  *
  * Single-step event registration with Stripe payment.
- * Shows user info (name/email read-only, phone editable) + payment element.
+ * Shows email read-only, name editable (for payment only, not saved to profile).
+ * Phone is collected by Stripe in the card form.
  * Supports both free and paid events.
  */
 
@@ -32,18 +30,10 @@ const emit = defineEmits<{
 // Note: t is available for future i18n but we use English for registration
 const { t: _t } = useLocale()
 
-// Attendee info (name/email from profile, phone editable)
+// Attendee info (all read-only from profile, auto-filled to Stripe)
 const attendeeName = computed(() => props.initialName || '')
 const attendeeEmail = computed(() => props.initialEmail || '')
-const attendeePhone = ref(props.initialPhone || '')
-
-// Update phone when profile loads
-watch(
-  () => props.initialPhone,
-  (newVal) => {
-    if (newVal && !attendeePhone.value) attendeePhone.value = newVal
-  }
-)
+const attendeePhone = computed(() => props.initialPhone || '')
 
 const loading = ref(false)
 const initializing = ref(true)
@@ -78,13 +68,13 @@ const isValid = computed(() => {
   return attendeeName.value.trim() && attendeeEmail.value.trim()
 })
 
-// Phone input handler
-function handlePhoneUpdate(
-  _nationalNumber: string,
-  phoneObject: { number?: string; valid?: boolean }
-) {
-  attendeePhone.value = phoneObject.number || ''
-}
+// Billing details for Stripe auto-fill
+// Phone must be E.164 format (no spaces): +14155551234
+const billingDetails = computed(() => ({
+  name: attendeeName.value,
+  email: attendeeEmail.value,
+  phone: attendeePhone.value.replace(/\s+/g, ''), // Remove spaces for E.164
+}))
 
 // Initialize payment intent on mount (single-step flow)
 onMounted(async () => {
@@ -118,7 +108,7 @@ async function initiatePayment() {
         eventId: props.event.id,
         attendeeName: attendeeName.value.trim(),
         attendeeEmail: attendeeEmail.value.trim(),
-        attendeePhone: attendeePhone.value.trim() || undefined,
+        // Phone is collected by Stripe card form, not sent here
       },
     })
 
@@ -201,42 +191,10 @@ async function handleSubmit() {
       </p>
     </div>
 
-    <!-- Attendee Info (read-only name/email, editable phone) -->
-    <div class="space-y-4">
-      <!-- Name & Email (read-only display) -->
-      <div class="text-brand-muted text-sm">
-        Registering as <strong class="text-brand-base">{{ attendeeName }}</strong>
-        ({{ attendeeEmail }})
-      </div>
-
-      <!-- Phone (editable) -->
-      <div>
-        <label
-          for="attendeePhone"
-          class="text-brand-base mb-1 block text-sm font-medium"
-        >
-          Phone (optional)
-        </label>
-        <ClientOnly>
-          <VueTelInput
-            :model-value="attendeePhone"
-            mode="national"
-            :input-options="{
-              placeholder: '+1 (555) 123-4567',
-              id: 'attendeePhone',
-              styleClasses: 'phone-input',
-            }"
-            :dropdown-options="{
-              showDialCodeInSelection: true,
-              showFlags: true,
-              showSearchBox: true,
-            }"
-            default-country="US"
-            class="phone-input-wrapper"
-            @on-input="handlePhoneUpdate"
-          />
-        </ClientOnly>
-      </div>
+    <!-- Attendee Info (read-only) -->
+    <div class="text-brand-muted text-sm">
+      Registering as: <strong class="text-brand-base">{{ attendeeName }}</strong>
+      ({{ attendeeEmail }})
     </div>
 
     <!-- Loading state while initializing payment -->
@@ -260,6 +218,7 @@ async function handleSubmit() {
         :key="clientSecret"
         ref="stripeElementRef"
         :client-secret="clientSecret"
+        :billing-details="billingDetails"
         :disabled="loading"
       />
     </div>
@@ -297,64 +256,3 @@ async function handleSubmit() {
   </form>
 </template>
 
-<style scoped>
-/* Phone input styling to match brand */
-:deep(.phone-input-wrapper) {
-  width: 100%;
-}
-
-:deep(.phone-input-wrapper .vue-tel-input) {
-  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
-  border-radius: 0.5rem;
-  background: var(--color-brand-neutral);
-}
-
-:deep(.phone-input-wrapper .vue-tel-input:focus-within) {
-  border-color: var(--color-brand-accent);
-  box-shadow: 0 0 0 2px var(--color-brand-accent-20, rgba(216, 27, 96, 0.2));
-}
-
-:deep(.phone-input-wrapper .vti__input) {
-  background: transparent;
-  color: var(--color-brand-base);
-  padding: 0.625rem 1rem;
-}
-
-:deep(.phone-input-wrapper .vti__input::placeholder) {
-  color: var(--color-brand-muted);
-}
-
-:deep(.phone-input-wrapper .vti__dropdown) {
-  background: var(--color-brand-neutral);
-  border-right: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
-}
-
-:deep(.phone-input-wrapper .vti__dropdown-list) {
-  background: var(--color-brand-neutral);
-  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-:deep(.phone-input-wrapper .vti__dropdown-item) {
-  color: var(--color-brand-base);
-}
-
-:deep(.phone-input-wrapper .vti__dropdown-item:hover) {
-  background: var(--color-brand-accent-10, rgba(216, 27, 96, 0.1));
-}
-
-:deep(.phone-input-wrapper .vti__dropdown-item.highlighted) {
-  background: var(--color-brand-accent);
-  color: white;
-}
-
-:deep(.phone-input-wrapper .vti__search_box) {
-  background: var(--color-brand-neutral);
-  border: 1px solid var(--color-brand-base-20, rgba(0, 0, 0, 0.2));
-  border-radius: 0.375rem;
-  color: var(--color-brand-base);
-  margin: 0.5rem;
-  padding: 0.5rem;
-}
-</style>

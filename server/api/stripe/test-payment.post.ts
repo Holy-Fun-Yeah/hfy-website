@@ -36,14 +36,12 @@ export default defineApiHandler(async (event) => {
 
   const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 
-  // Create a test payment intent
+  // Create a test payment intent - Card only
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: 'usd',
     description,
-    automatic_payment_methods: {
-      enabled: true,
-    },
+    payment_method_types: ['card'],
     metadata: {
       test: 'true',
       purpose: 'e2e-testing',

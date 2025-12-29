@@ -24,12 +24,31 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useLocale()
-const { profile, user } = useAuth()
+const { profile, profileLoading, user, fetchProfile } = useAuth()
+
+// Ensure profile is loaded when modal opens
+watch(
+  () => props.open,
+  async (isOpen) => {
+    if (isOpen && !profile.value && !profileLoading.value) {
+      await fetchProfile()
+    }
+  },
+  { immediate: true }
+)
 
 // Autofill from profile (with user email as fallback)
 const initialName = computed(() => profile.value?.displayName || '')
 const initialEmail = computed(() => profile.value?.email || user.value?.email || '')
-const initialPhone = computed(() => profile.value?.phone || '')
+// Format phone as E.164 from separate country code and number
+const initialPhone = computed(() => {
+  const code = profile.value?.phoneCountryCode
+  const number = profile.value?.phoneNumber
+  if (code && number) {
+    return `+${code}${number}`
+  }
+  return ''
+})
 
 // Handle escape key to close modal
 function handleKeydown(e: KeyboardEvent) {
@@ -91,7 +110,7 @@ function handleCancel() {
         >
           <div
             v-if="open"
-            class="bg-brand-neutral relative w-full max-w-md rounded-2xl p-6 shadow-2xl"
+            class="bg-brand-neutral relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-6 shadow-2xl"
           >
             <!-- Close button -->
             <button
@@ -120,8 +139,28 @@ function handleCancel() {
               {{ t('events.detail.registerNow') }}
             </h2>
 
+            <!-- Loading state while profile loads -->
+            <div
+              v-if="profileLoading"
+              class="space-y-4"
+            >
+              <BaseSkeleton
+                h="4rem"
+                w="100%"
+              />
+              <BaseSkeleton
+                h="1.5rem"
+                w="60%"
+              />
+              <BaseSkeleton
+                h="3rem"
+                w="100%"
+              />
+            </div>
+
             <!-- Registration Form -->
             <RegistrationForm
+              v-else
               :event="event"
               :initial-name="initialName"
               :initial-email="initialEmail"

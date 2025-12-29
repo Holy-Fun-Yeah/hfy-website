@@ -141,13 +141,11 @@ export default defineApiHandler(async (event) => {
     throw Errors.internal('Failed to create registration')
   }
 
-  // Create PaymentIntent
+  // Create PaymentIntent - Card only (no Amazon Pay, Cash App, etc.)
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amountInCents,
     currency: 'usd',
-    automatic_payment_methods: {
-      enabled: true,
-    },
+    payment_method_types: ['card'],
     metadata: {
       eventId,
       registrationId: registration.id,

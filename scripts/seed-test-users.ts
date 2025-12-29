@@ -22,14 +22,18 @@ const TEST_USERS = [
     email: 'test-user@hfy.test',
     password: 'TestUser123!',
     displayName: 'Test User',
-    phone: '+1234567890',
+    pronouns: 'they/them',
+    phoneCountryCode: '1', // US
+    phoneNumber: '5551234567',
     isAdmin: false,
   },
   {
     email: 'test-admin@hfy.test',
     password: 'TestAdmin123!',
     displayName: 'Test Admin',
-    phone: '+1234567891',
+    pronouns: 'she/her',
+    phoneCountryCode: '1', // US
+    phoneNumber: '5559876543',
     isAdmin: true,
   },
 ] as const
@@ -99,23 +103,27 @@ async function createTestUser(user: (typeof TEST_USERS)[number]): Promise<void> 
   // Create profile in database
   try {
     await sql`
-      INSERT INTO profiles (id, email, display_name, phone, is_admin, created_at, updated_at)
+      INSERT INTO profiles (id, email, display_name, pronouns, phone_country_code, phone_number, is_admin, created_at, updated_at)
       VALUES (
         ${data.user.id},
         ${user.email.toLowerCase()},
         ${user.displayName},
-        ${user.phone},
+        ${user.pronouns},
+        ${user.phoneCountryCode},
+        ${user.phoneNumber},
         ${user.isAdmin},
         NOW(),
         NOW()
       )
       ON CONFLICT (id) DO UPDATE SET
         display_name = ${user.displayName},
-        phone = ${user.phone},
+        pronouns = ${user.pronouns},
+        phone_country_code = ${user.phoneCountryCode},
+        phone_number = ${user.phoneNumber},
         is_admin = ${user.isAdmin},
         updated_at = NOW()
     `
-    console.log(`  Profile created/updated (isAdmin: ${user.isAdmin})`)
+    console.log(`  Profile created/updated (isAdmin: ${user.isAdmin}, pronouns: ${user.pronouns})`)
   } catch (err) {
     console.error(`  Failed to create profile: ${err}`)
   }

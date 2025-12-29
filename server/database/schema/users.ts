@@ -37,8 +37,9 @@ export const profiles = pgTable('profiles', {
   pronouns: text('pronouns').$type<Pronouns>(),
   // Email (denormalized from auth.users for convenience)
   email: text('email').notNull(),
-  // Contact info
-  phone: text('phone'),
+  // Phone - stored as separate country code and number
+  phoneCountryCode: text('phone_country_code'), // e.g., "52" for Mexico, "1" for US
+  phoneNumber: text('phone_number'), // e.g., "1234567890" (digits only)
   // App-specific profile data
   bio: text('bio'),
   avatarUrl: text('avatar_url'),
@@ -60,13 +61,27 @@ export const profiles = pgTable('profiles', {
 // Zod enum for pronouns validation
 export const pronounsSchema = z.enum(PRONOUNS_OPTIONS)
 
+// Phone validation schemas
+export const phoneCountryCodeSchema = z
+  .string()
+  .regex(/^\d{1,4}$/, 'Country code must be 1-4 digits')
+  .optional()
+  .nullable()
+
+export const phoneNumberSchema = z
+  .string()
+  .regex(/^\d{6,15}$/, 'Phone number must be 6-15 digits')
+  .optional()
+  .nullable()
+
 export const selectProfileSchema = createSelectSchema(profiles)
 export const insertProfileSchema = createInsertSchema(profiles, {
   id: z.string().uuid(),
   displayName: z.string().min(1, 'Display name is required').max(100),
   pronouns: pronounsSchema.optional().nullable(),
   email: z.string().email('Invalid email address'),
-  phone: z.string().max(20).optional().nullable(),
+  phoneCountryCode: phoneCountryCodeSchema,
+  phoneNumber: phoneNumberSchema,
   bio: z.string().max(500).optional().nullable(),
   avatarUrl: z.string().url().optional().nullable(),
   newsletterSubscribed: z.boolean().default(true),
@@ -85,7 +100,8 @@ export const updateProfileSchema = insertProfileSchema.partial().omit({
 export const profileUpdateApiSchema = z.object({
   displayName: z.string().min(1).max(100).optional(),
   pronouns: pronounsSchema.optional().nullable(),
-  phone: z.string().max(20).optional().nullable(),
+  phoneCountryCode: phoneCountryCodeSchema,
+  phoneNumber: phoneNumberSchema,
   bio: z.string().max(500).optional().nullable(),
   newsletterSubscribed: z.boolean().optional(),
 })

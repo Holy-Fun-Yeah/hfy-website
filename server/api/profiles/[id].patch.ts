@@ -68,8 +68,11 @@ export default defineApiHandler(async (event) => {
   if (parsed.data.displayName !== undefined) {
     updateData.displayName = parsed.data.displayName
   }
-  if (parsed.data.phone !== undefined) {
-    updateData.phone = parsed.data.phone
+  if (parsed.data.phoneCountryCode !== undefined) {
+    updateData.phoneCountryCode = parsed.data.phoneCountryCode
+  }
+  if (parsed.data.phoneNumber !== undefined) {
+    updateData.phoneNumber = parsed.data.phoneNumber
   }
   if (parsed.data.bio !== undefined) {
     updateData.bio = parsed.data.bio
