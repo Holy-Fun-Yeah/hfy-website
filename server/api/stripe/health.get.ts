@@ -8,9 +8,7 @@ export default defineApiHandler(async () => {
     throw Errors.serviceUnavailable('STRIPE_SECRET_KEY not configured')
   }
 
-  const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: '2024-12-18.acacia',
-  })
+  const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 
   // Test API connectivity by fetching account info
   const account = await stripe.accounts.retrieve()

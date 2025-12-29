@@ -18,9 +18,7 @@ export default defineEventHandler(async (event) => {
     return { error: 'Webhook not configured' }
   }
 
-  const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: '2024-12-18.acacia',
-  })
+  const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 
   // Get raw body for signature verification
   const body = await readRawBody(event)

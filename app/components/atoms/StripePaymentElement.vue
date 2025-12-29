@@ -4,6 +4,8 @@
  *
  * Wraps Stripe's Payment Element for embedded payment collection.
  * Uses the brand design system for styling.
+ *
+ * IMPORTANT: Use a :key on this component to force recreation when clientSecret changes.
  */
 
 interface Props {
@@ -20,18 +22,30 @@ const emit = defineEmits<{
 
 const { $stripe } = useNuxtApp()
 
+// Use unique ID for each instance to avoid DOM conflicts
+const elementId = `payment-element-${Math.random().toString(36).slice(2, 11)}`
+
 const stripe = ref<any>(null)
 const elements = ref<any>(null)
 const paymentElement = ref<any>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
+const mounted = ref(false)
 
-onMounted(async () => {
+async function initializeStripe() {
+  if (mounted.value) return
+
   try {
     stripe.value = await $stripe.getStripe()
 
     if (!stripe.value) {
       error.value = 'Payment system not available'
+      emit('error', error.value)
+      return
+    }
+
+    if (!props.clientSecret) {
+      error.value = 'Missing payment configuration'
       emit('error', error.value)
       return
     }
@@ -65,11 +79,30 @@ onMounted(async () => {
     })
 
     paymentElement.value = elements.value.create('payment')
-    paymentElement.value.mount('#payment-element')
+
+    // Wait for DOM element to be available
+    await nextTick()
+
+    const container = document.getElementById(elementId)
+    if (!container) {
+      error.value = 'Payment container not found'
+      emit('error', error.value)
+      return
+    }
+
+    paymentElement.value.mount(`#${elementId}`)
+    mounted.value = true
 
     paymentElement.value.on('ready', () => {
       loading.value = false
       emit('ready')
+    })
+
+    paymentElement.value.on('loaderror', (event: any) => {
+      error.value = event.error?.message || 'Failed to load payment form'
+      loading.value = false
+      emit('error', error.value)
+      console.error('[StripePaymentElement] Load error:', event.error)
     })
 
     paymentElement.value.on('change', (event: any) => {
@@ -79,17 +112,36 @@ onMounted(async () => {
         error.value = null
       }
     })
-  } catch (err) {
-    error.value = 'Failed to load payment form'
+  } catch (err: any) {
+    error.value = err.message || 'Failed to load payment form'
+    loading.value = false
     emit('error', error.value)
     console.error('[StripePaymentElement]', err)
   }
+}
+
+function cleanup() {
+  if (paymentElement.value) {
+    try {
+      paymentElement.value.unmount()
+      paymentElement.value.destroy()
+    } catch (e) {
+      // Ignore cleanup errors
+    }
+    paymentElement.value = null
+  }
+  if (elements.value) {
+    elements.value = null
+  }
+  mounted.value = false
+}
+
+onMounted(() => {
+  initializeStripe()
 })
 
-onUnmounted(() => {
-  if (paymentElement.value) {
-    paymentElement.value.unmount()
-  }
+onBeforeUnmount(() => {
+  cleanup()
 })
 
 // Expose confirm method for parent component
@@ -120,7 +172,7 @@ defineExpose({ confirmPayment })
   <div class="stripe-payment-element">
     <!-- Loading skeleton -->
     <div
-      v-if="loading"
+      v-if="loading && !error"
       class="space-y-3"
     >
       <BaseSkeleton
@@ -135,8 +187,8 @@ defineExpose({ confirmPayment })
 
     <!-- Payment element container -->
     <div
-      id="payment-element"
-      :class="{ 'pointer-events-none opacity-50': disabled }"
+      :id="elementId"
+      :class="{ 'pointer-events-none opacity-50': disabled, hidden: loading && !error }"
     />
 
     <!-- Error message -->

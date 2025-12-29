@@ -257,6 +257,7 @@ async function handleSubmit() {
     <!-- Payment Element (for paid events) -->
     <div v-else-if="clientSecret && !isFreeEvent">
       <StripePaymentElement
+        :key="clientSecret"
         ref="stripeElementRef"
         :client-secret="clientSecret"
         :disabled="loading"
