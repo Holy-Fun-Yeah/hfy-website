@@ -6913,6 +6913,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"husky@npm:^9.1.7":
+  version: 9.1.7
+  resolution: "husky@npm:9.1.7"
+  bin:
+    husky: bin.js
+  checksum: 10c0/35bb110a71086c48906aa7cd3ed4913fb913823715359d65e32e0b964cb1e255593b0ae8014a5005c66a68e6fa66c38dcfa8056dbbdfb8b0187c0ffe7ee3a58f
+  languageName: node
+  linkType: hard
+
 "iceberg-js@npm:^0.8.1":
   version: 0.8.1
   resolution: "iceberg-js@npm:0.8.1"
@@ -8430,6 +8439,7 @@ __metadata:
     eslint-plugin-vue: "npm:^10.6.2"
     fast-check: "npm:^4.5.2"
     happy-dom: "npm:^20.0.11"
+    husky: "npm:^9.1.7"
     libphonenumber-js: "npm:^1.12.31"
     marked: "npm:^17.0.1"
     motion-v: "npm:^1.7.4"
