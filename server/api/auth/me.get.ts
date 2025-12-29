@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm'
 
 import { useDatabase } from '../../database'
 import { profiles } from '../../database/schema'
-import { defineApiHandler, Errors } from '../../lib'
+import { defineApiHandler } from '../../lib'
 import { requireAuth } from '../../utils/auth'
 
 export default defineApiHandler(async (event) => {
@@ -26,8 +26,8 @@ export default defineApiHandler(async (event) => {
     auth: {
       id: user.id,
       email: user.email,
-      emailConfirmed: !!user.email_confirmed_at,
-      lastSignIn: user.last_sign_in_at,
+      emailConfirmed: !!user.emailConfirmedAt,
+      lastSignIn: user.lastSignInAt,
     },
     // Profile from our database (may be null if not synced)
     profile: profile || null,

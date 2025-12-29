@@ -31,17 +31,42 @@ export async function getUser(event: H3Event) {
 }
 
 /**
+ * Normalized user object returned from requireAuth
+ * Maps JWT claims to more intuitive property names
+ */
+export interface AuthUser {
+  id: string
+  email: string | undefined
+  emailConfirmedAt: string | undefined
+  lastSignInAt: string | undefined
+  userMetadata: Record<string, unknown>
+}
+
+/**
  * Require authentication for an API route
  * Throws 401 if user is not authenticated
+ *
+ * Note: serverSupabaseUser returns JWT payload where:
+ * - `sub` = user ID (not `id`)
+ * - `email` = user email
+ * - `user_metadata` = custom metadata
  */
-export async function requireAuth(event: H3Event) {
-  const user = await serverSupabaseUser(event)
+export async function requireAuth(event: H3Event): Promise<AuthUser> {
+  const jwtUser = await serverSupabaseUser(event)
 
-  if (!user) {
+  if (!jwtUser) {
     throw Errors.unauthorized('Authentication required')
   }
 
-  return user
+  // Map JWT claims to normalized user object
+  // The JWT `sub` claim contains the user ID
+  return {
+    id: jwtUser.sub as string,
+    email: jwtUser.email,
+    emailConfirmedAt: jwtUser.email_confirmed_at as string | undefined,
+    lastSignInAt: jwtUser.last_sign_in_at as string | undefined,
+    userMetadata: (jwtUser.user_metadata as Record<string, unknown>) || {},
+  }
 }
 
 /**

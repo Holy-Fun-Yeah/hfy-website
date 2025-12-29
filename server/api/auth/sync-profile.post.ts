@@ -12,7 +12,7 @@ import { eq } from 'drizzle-orm'
 
 import { useDatabase } from '../../database'
 import { profiles } from '../../database/schema'
-import { defineApiHandler, Errors } from '../../lib'
+import { defineApiHandler } from '../../lib'
 import { requireAuth } from '../../utils/auth'
 
 export default defineApiHandler(async (event) => {
@@ -34,11 +34,12 @@ export default defineApiHandler(async (event) => {
   }
 
   // Extract display name from user metadata or email
-  const userMetadata = user.user_metadata || {}
+  const userMetadata = user.userMetadata || {}
   const displayName =
-    userMetadata.display_name ||
-    userMetadata.full_name ||
-    userMetadata.name ||
+    (userMetadata.display_name as string) ||
+    (userMetadata.displayName as string) ||
+    (userMetadata.full_name as string) ||
+    (userMetadata.name as string) ||
     user.email?.split('@')[0] ||
     'User'
 
@@ -50,7 +51,7 @@ export default defineApiHandler(async (event) => {
       email: user.email?.toLowerCase() || '',
       displayName,
       bio: null,
-      avatarUrl: userMetadata.avatar_url || null,
+      avatarUrl: (userMetadata.avatar_url as string) || null,
     })
     .returning()
 
