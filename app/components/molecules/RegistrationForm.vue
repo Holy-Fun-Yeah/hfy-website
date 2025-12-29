@@ -33,6 +33,26 @@ const attendeeName = ref(props.initialName || '')
 const attendeeEmail = ref(props.initialEmail || '')
 const attendeePhone = ref(props.initialPhone || '')
 
+// Update form when initial values change (e.g., profile loads after modal opens)
+watch(
+  () => props.initialName,
+  (newVal) => {
+    if (newVal && !attendeeName.value) attendeeName.value = newVal
+  }
+)
+watch(
+  () => props.initialEmail,
+  (newVal) => {
+    if (newVal && !attendeeEmail.value) attendeeEmail.value = newVal
+  }
+)
+watch(
+  () => props.initialPhone,
+  (newVal) => {
+    if (newVal && !attendeePhone.value) attendeePhone.value = newVal
+  }
+)
+
 const loading = ref(false)
 const error = ref<string | null>(null)
 const clientSecret = ref<string | null>(null)

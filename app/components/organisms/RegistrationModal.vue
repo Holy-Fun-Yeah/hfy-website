@@ -24,12 +24,12 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useLocale()
-const { profile } = useAuth()
+const { profile, user } = useAuth()
 
-// Autofill from profile
+// Autofill from profile (with user email as fallback)
 const initialName = computed(() => profile.value?.displayName || '')
-const initialEmail = computed(() => profile.value?.email || '')
-const initialPhone = computed(() => (profile.value as { phone?: string })?.phone || '')
+const initialEmail = computed(() => profile.value?.email || user.value?.email || '')
+const initialPhone = computed(() => profile.value?.phone || '')
 
 // Handle escape key to close modal
 function handleKeydown(e: KeyboardEvent) {
