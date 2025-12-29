@@ -19,11 +19,13 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
   ],
 
-  // Supabase configuration
+  // Supabase configuration (auth only - using Drizzle for DB)
   supabase: {
     url: process.env.SUPABASE_URL,
     key: process.env.SUPABASE_PUBLIC_KEY,
     serviceKey: process.env.SUPABASE_SECRET_KEY,
+    // Disable database types - we use Drizzle ORM instead
+    types: '',
     redirectOptions: {
       login: '/login',
       callback: '/auth/confirm',
