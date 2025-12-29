@@ -40,6 +40,7 @@ export default defineNuxtConfig({
         '/login',
         '/reset-password',
         '/auth/confirm',
+        '/test/*', // Development test pages
       ],
       cookieRedirect: false,
     },
