@@ -177,10 +177,17 @@ async function confirmPayment(returnUrl: string) {
     throw new Error('Payment system not initialized')
   }
 
+  // Since we hide the email field (fields.billingDetails.email: 'never'),
+  // we must pass the email in payment_method_data.billing_details
   const { error: confirmError } = await stripe.value.confirmPayment({
     elements: elements.value,
     confirmParams: {
       return_url: returnUrl,
+      payment_method_data: {
+        billing_details: {
+          email: props.billingDetails?.email || '',
+        },
+      },
     },
     redirect: 'if_required',
   })
