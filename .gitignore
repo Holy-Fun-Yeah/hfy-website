@@ -45,3 +45,4 @@ tests/e2e/.auth/
 
 # Generated locale assets
 server/assets/
+tests/e2e/screenshots/
